@@ -1,0 +1,21 @@
+{
+  "b": 0.75,
+  "case_count": 300,
+  "cases_path": "dataset/cases.jsonl",
+  "cases_sha256": "462705db5e62be9b0eb70a4a99172d4c50332f43e1c69081442bce22081ace28",
+  "idf": "ln(1 + (N - n_t + 0.5) / (n_t + 0.5))",
+  "k1": 1.5,
+  "lowercase": true,
+  "passage_count": 126,
+  "passages_path": "corpus/passages.jsonl",
+  "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
+  "python_version": "3.12.13",
+  "query_term_multiplicity": "retained",
+  "retrieval_path": "dataset/retrieval.jsonl",
+  "retrieval_sha256": "8447926d08e906f245a695f9d0b9bf3536e59ba55fa70a1caf10fd6d37a293de",
+  "schema_version": "1.0.0",
+  "score_serialisation": "CPython standard JSON binary64 float",
+  "tie_break": "passage_id ascending",
+  "token_pattern": "(?u)\\b\\w+\\b",
+  "top_k": 8
+}

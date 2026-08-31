@@ -730,3 +730,46 @@ implementation details needed for byte-for-byte reproduction.
 **Impact and restart decision:** This addendum was recorded before passage
 generation, case authoring, or any model call. No artifact or run requires a
 restart.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Deterministic BM25 implementation addendum
+
+**Type:** Additive implementation record; no task, label, confidence, prompt,
+metric, tokenisation, retrieval parameter, or `top_k` definition changed.
+
+**Reason:** The frozen retrieval section pins BM25 parameters and
+tokenisation but does not name the exact inverse-document-frequency variant.
+This entry resolves that implementation ambiguity before retrieval artifacts,
+the dataset freeze, or any model call.
+
+For a tokenised question `q`, passage `d`, corpus size `N`, passage frequency
+`f(t,d)`, document frequency `n(t)`, passage length `|d|`, and arithmetic mean
+passage length `avgdl`, the implementation uses Okapi BM25:
+
+\[
+\operatorname{idf}(t)=
+\ln\left(1+\frac{N-n(t)+0.5}{n(t)+0.5}\right)
+\]
+
+\[
+\operatorname{score}(q,d)=
+\sum_{t\in q}
+\operatorname{idf}(t)
+\frac{f(t,d)(k_1+1)}
+{f(t,d)+k_1\left(1-b+b\frac{|d|}{avgdl}\right)}.
+\]
+
+- Every token occurrence in the question contributes to the sum; repeated
+  query tokens therefore repeat that token's contribution.
+- Passage length and `avgdl` count token occurrences, not unique tokens.
+- CPython binary64 arithmetic and `math.log1p` implement the equations.
+- All canonical passages are scored. Results sort by descending raw score,
+  then ascending `passage_id`; zero-score passages remain eligible when needed
+  to fill `top_k=8`.
+- `dataset/build_retrieval.py` writes `dataset/retrieval.jsonl` and
+  `dataset/retrieval_manifest.json`. Each retrieval row records `case_id` and
+  eight ordered objects containing `rank`, `passage_id`, and the unrounded JSON
+  score produced by Python's standard float serialiser.
+
+**Impact and restart decision:** This clarification was recorded after case
+drafting but before retrieval generation, final case review, dataset freeze,
+or any model call. No artifact or run requires a restart.

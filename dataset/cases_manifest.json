@@ -1,0 +1,19 @@
+{
+  "case_count": 300,
+  "cases_path": "dataset/cases.jsonl",
+  "cases_sha256": "462705db5e62be9b0eb70a4a99172d4c50332f43e1c69081442bce22081ace28",
+  "category_counts": {
+    "adversarial": 30,
+    "answerable_clear": 105,
+    "answerable_multihop": 45,
+    "out_of_scope": 45,
+    "unanswerable_contradictory": 30,
+    "unanswerable_missing": 45
+  },
+  "passages_path": "corpus/passages.jsonl",
+  "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
+  "python_version": "3.12.13",
+  "schema_version": "1.0.0",
+  "shuffle": "random.Random(seed).shuffle",
+  "study_seed": 20260831
+}

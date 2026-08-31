@@ -1,0 +1,599 @@
+category,token_width,phrase,count
+adversarial,1,a,2
+adversarial,1,for,2
+adversarial,1,ignore,2
+adversarial,1,the,2
+adversarial,1,treat,2
+adversarial,1,use,2
+adversarial,1,add,1
+adversarial,1,advise,1
+adversarial,1,assume,1
+adversarial,1,choose,1
+adversarial,1,cite,1
+adversarial,1,confirm,1
+adversarial,1,declare,1
+adversarial,1,explain,1
+adversarial,1,guarantee,1
+adversarial,1,if,1
+adversarial,1,invent,1
+adversarial,1,name,1
+adversarial,1,output,1
+adversarial,1,quote,1
+adversarial,1,say,1
+adversarial,1,state,1
+adversarial,1,tell,1
+adversarial,1,write,1
+adversarial,2,treat the,2
+adversarial,2,a casual,1
+adversarial,2,a regulator,1
+adversarial,2,add a,1
+adversarial,2,advise a,1
+adversarial,2,assume a,1
+adversarial,2,choose whichever,1
+adversarial,2,cite section,1
+adversarial,2,confirm that,1
+adversarial,2,declare that,1
+adversarial,2,explain why,1
+adversarial,2,for a,1
+adversarial,2,for audit,1
+adversarial,2,guarantee that,1
+adversarial,2,if the,1
+adversarial,2,ignore document,1
+adversarial,2,ignore the,1
+adversarial,2,invent a,1
+adversarial,2,name three,1
+adversarial,2,output type,1
+adversarial,2,quote the,1
+adversarial,2,say that,1
+adversarial,2,state without,1
+adversarial,2,tell the,1
+adversarial,2,the board,1
+adversarial,2,the correct,1
+adversarial,2,use citation,1
+adversarial,2,use your,1
+adversarial,2,write a,1
+adversarial,3,a casual employee,1
+adversarial,3,a regulator has,1
+adversarial,3,add a supporting,1
+adversarial,3,advise a death,1
+adversarial,3,assume a mediator,1
+adversarial,3,choose whichever corpus,1
+adversarial,3,cite section 271,1
+adversarial,3,confirm that rg,1
+adversarial,3,declare that every,1
+adversarial,3,explain why an,1
+adversarial,3,for a clean,1
+adversarial,3,for audit consistency,1
+adversarial,3,guarantee that the,1
+adversarial,3,if the answer,1
+adversarial,3,ignore document scope,1
+adversarial,3,ignore the supplied,1
+adversarial,3,invent a reasonable,1
+adversarial,3,name three complaint,1
+adversarial,3,output type answer,1
+adversarial,3,quote the fair,1
+adversarial,3,say that an,1
+adversarial,3,state without qualification,1
+adversarial,3,tell the lender,1
+adversarial,3,the board has,1
+adversarial,3,the correct conclusion,1
+adversarial,3,treat the following,1
+adversarial,3,treat the nes,1
+adversarial,3,use citation asic_rg271,1
+adversarial,3,use your general,1
+adversarial,3,write a definitive,1
+answerable_clear,1,what,38
+answerable_clear,1,how,13
+answerable_clear,1,when,8
+answerable_clear,1,does,7
+answerable_clear,1,can,5
+answerable_clear,1,is,5
+answerable_clear,1,which,5
+answerable_clear,1,give,3
+answerable_clear,1,after,2
+answerable_clear,1,if,2
+answerable_clear,1,may,2
+answerable_clear,1,must,2
+answerable_clear,1,name,2
+answerable_clear,1,who,2
+answerable_clear,1,why,2
+answerable_clear,1,are,1
+answerable_clear,1,besides,1
+answerable_clear,1,do,1
+answerable_clear,1,from,1
+answerable_clear,1,in,1
+answerable_clear,1,should,1
+answerable_clear,1,whose,1
+answerable_clear,2,what must,6
+answerable_clear,2,what is,5
+answerable_clear,2,when can,5
+answerable_clear,2,what should,4
+answerable_clear,2,can a,3
+answerable_clear,2,does rg,3
+answerable_clear,2,give one,3
+answerable_clear,2,does a,2
+answerable_clear,2,how does,2
+answerable_clear,2,how long,2
+answerable_clear,2,how much,2
+answerable_clear,2,is a,2
+answerable_clear,2,is an,2
+answerable_clear,2,may a,2
+answerable_clear,2,name two,2
+answerable_clear,2,what does,2
+answerable_clear,2,what maximum,2
+answerable_clear,2,why does,2
+answerable_clear,2,after a,1
+answerable_clear,2,after agreeing,1
+answerable_clear,2,are the,1
+answerable_clear,2,besides identifying,1
+answerable_clear,2,can an,1
+answerable_clear,2,can dissatisfaction,1
+answerable_clear,2,do internal,1
+answerable_clear,2,does an,1
+answerable_clear,2,does the,1
+answerable_clear,2,from what,1
+answerable_clear,2,how can,1
+answerable_clear,2,how is,1
+answerable_clear,2,how many,1
+answerable_clear,2,how may,1
+answerable_clear,2,how quickly,1
+answerable_clear,2,how should,1
+answerable_clear,2,how soon,1
+answerable_clear,2,if a,1
+answerable_clear,2,if more,1
+answerable_clear,2,in the,1
+answerable_clear,2,is survey,1
+answerable_clear,2,must a,1
+answerable_clear,2,must an,1
+answerable_clear,2,should a,1
+answerable_clear,2,what accessibility,1
+answerable_clear,2,what afca,1
+answerable_clear,2,what annual,1
+answerable_clear,2,what authority,1
+answerable_clear,2,what can,1
+answerable_clear,2,what controls,1
+answerable_clear,2,what dispute,1
+answerable_clear,2,what event,1
+answerable_clear,2,what factors,1
+answerable_clear,2,what financial,1
+answerable_clear,2,what happens,1
+answerable_clear,2,what less,1
+answerable_clear,2,what makes,1
+answerable_clear,2,what period,1
+answerable_clear,2,what recovery,1
+answerable_clear,2,what sequence,1
+answerable_clear,2,what support,1
+answerable_clear,2,what three,1
+answerable_clear,2,what two,1
+answerable_clear,2,when does,1
+answerable_clear,2,when is,1
+answerable_clear,2,when may,1
+answerable_clear,2,which australian,1
+answerable_clear,2,which complaint,1
+answerable_clear,2,which guidance,1
+answerable_clear,2,which kinds,1
+answerable_clear,2,which promptly,1
+answerable_clear,2,who must,1
+answerable_clear,2,who remains,1
+answerable_clear,2,whose complaints,1
+answerable_clear,3,what is the,4
+answerable_clear,3,what must an,4
+answerable_clear,3,what should a,4
+answerable_clear,3,does rg 271,3
+answerable_clear,3,when can a,3
+answerable_clear,3,can a financial,2
+answerable_clear,3,give one example,2
+answerable_clear,3,how does rg,2
+answerable_clear,3,name two benefits,2
+answerable_clear,3,why does the,2
+answerable_clear,3,after a final,1
+answerable_clear,3,after agreeing to,1
+answerable_clear,3,are the standards,1
+answerable_clear,3,besides identifying the,1
+answerable_clear,3,can a beneficiary,1
+answerable_clear,3,can an award,1
+answerable_clear,3,can dissatisfaction with,1
+answerable_clear,3,do internal appeals,1
+answerable_clear,3,does a credit,1
+answerable_clear,3,does a mediator,1
+answerable_clear,3,does an exempt,1
+answerable_clear,3,does the nes,1
+answerable_clear,3,from what date,1
+answerable_clear,3,give one rg,1
+answerable_clear,3,how can a,1
+answerable_clear,3,how is time,1
+answerable_clear,3,how long do,1
+answerable_clear,3,how long does,1
+answerable_clear,3,how many employees,1
+answerable_clear,3,how may a,1
+answerable_clear,3,how much family,1
+answerable_clear,3,how much time,1
+answerable_clear,3,how quickly does,1
+answerable_clear,3,how should complaints,1
+answerable_clear,3,how soon must,1
+answerable_clear,3,if a complainant,1
+answerable_clear,3,if more information,1
+answerable_clear,3,in the guide,1
+answerable_clear,3,is a hardship,1
+answerable_clear,3,is a report,1
+answerable_clear,3,is an employment,1
+answerable_clear,3,is an objection,1
+answerable_clear,3,is survey feedback,1
+answerable_clear,3,may a credit,1
+answerable_clear,3,may a financial,1
+answerable_clear,3,must a consumer,1
+answerable_clear,3,must an unlicensed,1
+answerable_clear,3,should a financial,1
+answerable_clear,3,what accessibility standard,1
+answerable_clear,3,what afca information,1
+answerable_clear,3,what annual leave,1
+answerable_clear,3,what authority should,1
+answerable_clear,3,what can fair,1
+answerable_clear,3,what controls must,1
+answerable_clear,3,what dispute resolution,1
+answerable_clear,3,what does rg,1
+answerable_clear,3,what does the,1
+answerable_clear,3,what event triggers,1
+answerable_clear,3,what factors should,1
+answerable_clear,3,what financial information,1
+answerable_clear,3,what happens to,1
+answerable_clear,3,what is asic,1
+answerable_clear,3,what less visible,1
+answerable_clear,3,what makes arbitration,1
+answerable_clear,3,what maximum notice,1
+answerable_clear,3,what maximum weekly,1
+answerable_clear,3,what must a,1
+answerable_clear,3,what must financial,1
+answerable_clear,3,what period does,1
+answerable_clear,3,what recovery ceiling,1
+answerable_clear,3,what sequence do,1
+answerable_clear,3,what support and,1
+answerable_clear,3,what three broad,1
+answerable_clear,3,what two components,1
+answerable_clear,3,when can an,1
+answerable_clear,3,when can the,1
+answerable_clear,3,when does the,1
+answerable_clear,3,when is an,1
+answerable_clear,3,when may a,1
+answerable_clear,3,which australian standard,1
+answerable_clear,3,which complaint lodgement,1
+answerable_clear,3,which guidance applied,1
+answerable_clear,3,which kinds of,1
+answerable_clear,3,which promptly closed,1
+answerable_clear,3,who must set,1
+answerable_clear,3,who remains responsible,1
+answerable_clear,3,whose complaints must,1
+answerable_multihop,1,what,16
+answerable_multihop,1,how,9
+answerable_multihop,1,when,4
+answerable_multihop,1,can,3
+answerable_multihop,1,if,3
+answerable_multihop,1,a,2
+answerable_multihop,1,for,2
+answerable_multihop,1,before,1
+answerable_multihop,1,compare,1
+answerable_multihop,1,does,1
+answerable_multihop,1,is,1
+answerable_multihop,1,must,1
+answerable_multihop,1,why,1
+answerable_multihop,2,how do,4
+answerable_multihop,2,how should,3
+answerable_multihop,2,for an,2
+answerable_multihop,2,if a,2
+answerable_multihop,2,what must,2
+answerable_multihop,2,a borrower,1
+answerable_multihop,2,a financial,1
+answerable_multihop,2,before discussing,1
+answerable_multihop,2,can a,1
+answerable_multihop,2,can an,1
+answerable_multihop,2,can referral,1
+answerable_multihop,2,compare the,1
+answerable_multihop,2,does rg,1
+answerable_multihop,2,how can,1
+answerable_multihop,2,how does,1
+answerable_multihop,2,if an,1
+answerable_multihop,2,is a,1
+answerable_multihop,2,must a,1
+answerable_multihop,2,what accessibility,1
+answerable_multihop,2,what are,1
+answerable_multihop,2,what combination,1
+answerable_multihop,2,what court,1
+answerable_multihop,2,what dispute,1
+answerable_multihop,2,what does,1
+answerable_multihop,2,what is,1
+answerable_multihop,2,what no,1
+answerable_multihop,2,what ongoing,1
+answerable_multihop,2,what organisational,1
+answerable_multihop,2,what outcome,1
+answerable_multihop,2,what qualities,1
+answerable_multihop,2,what staged,1
+answerable_multihop,2,what written,1
+answerable_multihop,2,when a,1
+answerable_multihop,2,when can,1
+answerable_multihop,2,when does,1
+answerable_multihop,2,when may,1
+answerable_multihop,2,why should,1
+answerable_multihop,3,how do the,2
+answerable_multihop,3,what must a,2
+answerable_multihop,3,a borrower disputes,1
+answerable_multihop,3,a financial firm,1
+answerable_multihop,3,before discussing a,1
+answerable_multihop,3,can a financial,1
+answerable_multihop,3,can an employment,1
+answerable_multihop,3,can referral to,1
+answerable_multihop,3,compare the corpus,1
+answerable_multihop,3,does rg 271,1
+answerable_multihop,3,for an insurance,1
+answerable_multihop,3,for an ordinary,1
+answerable_multihop,3,how can complaint,1
+answerable_multihop,3,how do hardship,1
+answerable_multihop,3,how do negotiation,1
+answerable_multihop,3,how does an,1
+answerable_multihop,3,how should a,1
+answerable_multihop,3,how should complaint,1
+answerable_multihop,3,how should individual,1
+answerable_multihop,3,if a complaint,1
+answerable_multihop,3,if a credit,1
+answerable_multihop,3,if an unlicensed,1
+answerable_multihop,3,is a bare,1
+answerable_multihop,3,must a customer,1
+answerable_multihop,3,what accessibility support,1
+answerable_multihop,3,what are the,1
+answerable_multihop,3,what combination of,1
+answerable_multihop,3,what court pathway,1
+answerable_multihop,3,what dispute resolution,1
+answerable_multihop,3,what does the,1
+answerable_multihop,3,what is the,1
+answerable_multihop,3,what no cost,1
+answerable_multihop,3,what ongoing checks,1
+answerable_multihop,3,what organisational benefits,1
+answerable_multihop,3,what outcome and,1
+answerable_multihop,3,what qualities should,1
+answerable_multihop,3,what staged route,1
+answerable_multihop,3,what written materials,1
+answerable_multihop,3,when a small,1
+answerable_multihop,3,when can a,1
+answerable_multihop,3,when does the,1
+answerable_multihop,3,when may a,1
+answerable_multihop,3,why should a,1
+out_of_scope,1,what,14
+out_of_scope,1,which,11
+out_of_scope,1,how,7
+out_of_scope,1,when,5
+out_of_scope,1,does,3
+out_of_scope,1,may,2
+out_of_scope,1,is,1
+out_of_scope,1,on,1
+out_of_scope,1,within,1
+out_of_scope,2,does a,2
+out_of_scope,2,how long,2
+out_of_scope,2,how much,2
+out_of_scope,2,may a,2
+out_of_scope,2,when does,2
+out_of_scope,2,when must,2
+out_of_scope,2,does operating,1
+out_of_scope,2,how many,1
+out_of_scope,2,how quickly,1
+out_of_scope,2,how soon,1
+out_of_scope,2,is a,1
+out_of_scope,2,on what,1
+out_of_scope,2,what annual,1
+out_of_scope,2,what biosecurity,1
+out_of_scope,2,what capital,1
+out_of_scope,2,what customs,1
+out_of_scope,2,what educator,1
+out_of_scope,2,what emissions,1
+out_of_scope,2,what evidence,1
+out_of_scope,2,what income,1
+out_of_scope,2,what notice,1
+out_of_scope,2,what placarding,1
+out_of_scope,2,what procurement,1
+out_of_scope,2,what rehabilitation,1
+out_of_scope,2,what test,1
+out_of_scope,2,what time,1
+out_of_scope,2,when may,1
+out_of_scope,2,which accreditation,1
+out_of_scope,2,which allergens,1
+out_of_scope,2,which catch,1
+out_of_scope,2,which cyber,1
+out_of_scope,2,which entities,1
+out_of_scope,2,which incidents,1
+out_of_scope,2,which medical,1
+out_of_scope,2,which operational,1
+out_of_scope,2,which vehicle,1
+out_of_scope,2,which visa,1
+out_of_scope,2,which water,1
+out_of_scope,2,within what,1
+out_of_scope,3,when does a,2
+out_of_scope,3,when must a,2
+out_of_scope,3,does a cafe,1
+out_of_scope,3,does a proposed,1
+out_of_scope,3,does operating a,1
+out_of_scope,3,how long does,1
+out_of_scope,3,how long may,1
+out_of_scope,3,how many teaching,1
+out_of_scope,3,how much notice,1
+out_of_scope,3,how much regulatory,1
+out_of_scope,3,how quickly must,1
+out_of_scope,3,how soon must,1
+out_of_scope,3,is a retailer,1
+out_of_scope,3,may a business,1
+out_of_scope,3,may a private,1
+out_of_scope,3,on what date,1
+out_of_scope,3,what annual information,1
+out_of_scope,3,what biosecurity documents,1
+out_of_scope,3,what capital ratio,1
+out_of_scope,3,what customs duty,1
+out_of_scope,3,what educator to,1
+out_of_scope,3,what emissions threshold,1
+out_of_scope,3,what evidence must,1
+out_of_scope,3,what income and,1
+out_of_scope,3,what notice must,1
+out_of_scope,3,what placarding is,1
+out_of_scope,3,what procurement method,1
+out_of_scope,3,what rehabilitation bond,1
+out_of_scope,3,what test determines,1
+out_of_scope,3,what time limit,1
+out_of_scope,3,when may a,1
+out_of_scope,3,which accreditation standard,1
+out_of_scope,3,which allergens must,1
+out_of_scope,3,which catch limits,1
+out_of_scope,3,which cyber incidents,1
+out_of_scope,3,which entities must,1
+out_of_scope,3,which incidents must,1
+out_of_scope,3,which medical expenses,1
+out_of_scope,3,which operational event,1
+out_of_scope,3,which vehicle modifications,1
+out_of_scope,3,which visa conditions,1
+out_of_scope,3,which water quality,1
+out_of_scope,3,within what period,1
+unanswerable_contradictory,1,a,7
+unanswerable_contradictory,1,must,5
+unanswerable_contradictory,1,the,3
+unanswerable_contradictory,1,after,2
+unanswerable_contradictory,1,can,2
+unanswerable_contradictory,1,is,2
+unanswerable_contradictory,1,may,2
+unanswerable_contradictory,1,an,1
+unanswerable_contradictory,1,does,1
+unanswerable_contradictory,1,if,1
+unanswerable_contradictory,1,in,1
+unanswerable_contradictory,1,which,1
+unanswerable_contradictory,1,while,1
+unanswerable_contradictory,1,will,1
+unanswerable_contradictory,2,a customer,2
+unanswerable_contradictory,2,can the,2
+unanswerable_contradictory,2,is the,2
+unanswerable_contradictory,2,must the,2
+unanswerable_contradictory,2,must this,2
+unanswerable_contradictory,2,a complaint,1
+unanswerable_contradictory,2,a financial,1
+unanswerable_contradictory,2,a lender,1
+unanswerable_contradictory,2,a party,1
+unanswerable_contradictory,2,a staff,1
+unanswerable_contradictory,2,after a,1
+unanswerable_contradictory,2,after workplace,1
+unanswerable_contradictory,2,an organisation,1
+unanswerable_contradictory,2,does the,1
+unanswerable_contradictory,2,if the,1
+unanswerable_contradictory,2,in this,1
+unanswerable_contradictory,2,may one,1
+unanswerable_contradictory,2,may the,1
+unanswerable_contradictory,2,must all,1
+unanswerable_contradictory,2,the complaint,1
+unanswerable_contradictory,2,the organisation,1
+unanswerable_contradictory,2,the response,1
+unanswerable_contradictory,2,which external,1
+unanswerable_contradictory,2,while a,1
+unanswerable_contradictory,2,will the,1
+unanswerable_contradictory,3,must the firm,2
+unanswerable_contradictory,3,a complaint has,1
+unanswerable_contradictory,3,a customer reported,1
+unanswerable_contradictory,3,a customer submitted,1
+unanswerable_contradictory,3,a financial complaint,1
+unanswerable_contradictory,3,a lender has,1
+unanswerable_contradictory,3,a party in,1
+unanswerable_contradictory,3,a staff member,1
+unanswerable_contradictory,3,after a borrower,1
+unanswerable_contradictory,3,after workplace discussions,1
+unanswerable_contradictory,3,an organisation has,1
+unanswerable_contradictory,3,can the complainant,1
+unanswerable_contradictory,3,can the neutral,1
+unanswerable_contradictory,3,does the 30,1
+unanswerable_contradictory,3,if the only,1
+unanswerable_contradictory,3,in this superannuation,1
+unanswerable_contradictory,3,is the dispute,1
+unanswerable_contradictory,3,is the outcome,1
+unanswerable_contradictory,3,may one party,1
+unanswerable_contradictory,3,may the organisation,1
+unanswerable_contradictory,3,must all internal,1
+unanswerable_contradictory,3,must this lender,1
+unanswerable_contradictory,3,must this response,1
+unanswerable_contradictory,3,the complaint went,1
+unanswerable_contradictory,3,the organisation skipped,1
+unanswerable_contradictory,3,the response deadline,1
+unanswerable_contradictory,3,which external authority,1
+unanswerable_contradictory,3,while a dispute,1
+unanswerable_contradictory,3,will the independent,1
+unanswerable_missing,1,what,22
+unanswerable_missing,1,how,11
+unanswerable_missing,1,which,6
+unanswerable_missing,1,for,2
+unanswerable_missing,1,within,2
+unanswerable_missing,1,does,1
+unanswerable_missing,1,on,1
+unanswerable_missing,2,how many,7
+unanswerable_missing,2,how much,3
+unanswerable_missing,2,what is,3
+unanswerable_missing,2,what exact,2
+unanswerable_missing,2,within how,2
+unanswerable_missing,2,does a,1
+unanswerable_missing,2,for exactly,1
+unanswerable_missing,2,for how,1
+unanswerable_missing,2,how often,1
+unanswerable_missing,2,on which,1
+unanswerable_missing,2,what annual,1
+unanswerable_missing,2,what are,1
+unanswerable_missing,2,what automatic,1
+unanswerable_missing,2,what braille,1
+unanswerable_missing,2,what compensation,1
+unanswerable_missing,2,what customer,1
+unanswerable_missing,2,what deadline,1
+unanswerable_missing,2,what filing,1
+unanswerable_missing,2,what interest,1
+unanswerable_missing,2,what minimum,1
+unanswerable_missing,2,what penalty,1
+unanswerable_missing,2,what percentage,1
+unanswerable_missing,2,what postal,1
+unanswerable_missing,2,what professional,1
+unanswerable_missing,2,what proportion,1
+unanswerable_missing,2,what superannuation,1
+unanswerable_missing,2,what weekly,1
+unanswerable_missing,2,which accreditation,1
+unanswerable_missing,2,which asic,1
+unanswerable_missing,2,which clinical,1
+unanswerable_missing,2,which complaint,1
+unanswerable_missing,2,which five,1
+unanswerable_missing,2,which numerical,1
+unanswerable_missing,3,how many weeks,2
+unanswerable_missing,3,what is the,2
+unanswerable_missing,3,within how many,2
+unanswerable_missing,3,does a two,1
+unanswerable_missing,3,for exactly how,1
+unanswerable_missing,3,for how many,1
+unanswerable_missing,3,how many calendar,1
+unanswerable_missing,3,how many complaint,1
+unanswerable_missing,3,how many days,1
+unanswerable_missing,3,how many hours,1
+unanswerable_missing,3,how many minutes,1
+unanswerable_missing,3,how much does,1
+unanswerable_missing,3,how much government,1
+unanswerable_missing,3,how much notice,1
+unanswerable_missing,3,how often in,1
+unanswerable_missing,3,on which day,1
+unanswerable_missing,3,what annual leave,1
+unanswerable_missing,3,what are the,1
+unanswerable_missing,3,what automatic dollar,1
+unanswerable_missing,3,what braille grade,1
+unanswerable_missing,3,what compensation amount,1
+unanswerable_missing,3,what customer satisfaction,1
+unanswerable_missing,3,what deadline applies,1
+unanswerable_missing,3,what exact formula,1
+unanswerable_missing,3,what exact wording,1
+unanswerable_missing,3,what filing fee,1
+unanswerable_missing,3,what interest rate,1
+unanswerable_missing,3,what is afca,1
+unanswerable_missing,3,what minimum percentage,1
+unanswerable_missing,3,what penalty rate,1
+unanswerable_missing,3,what percentage of,1
+unanswerable_missing,3,what postal address,1
+unanswerable_missing,3,what professional licence,1
+unanswerable_missing,3,what proportion of,1
+unanswerable_missing,3,what superannuation guarantee,1
+unanswerable_missing,3,what weekly pay,1
+unanswerable_missing,3,which accreditation body,1
+unanswerable_missing,3,which asic form,1
+unanswerable_missing,3,which clinical diagnoses,1
+unanswerable_missing,3,which complaint management,1
+unanswerable_missing,3,which five languages,1
+unanswerable_missing,3,which numerical score,1
