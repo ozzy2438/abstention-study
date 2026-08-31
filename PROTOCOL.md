@@ -1068,3 +1068,35 @@ metadata request and rely on that saved availability evidence. This prevents a
 non-inference preflight from consuming or rechecking unavailable OpenAI
 provider access; it does not bypass the inference budget guard or alter which
 provider handles any inference call.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Finalize incomplete capable self-check cell
+
+**Type:** Owner-directed Phase 4 stopping decision and disclosure rule. This
+does not change the task, corpus, dataset, labels, prompts, output contract,
+confidence definition, scoring, or metric definitions.
+
+**Observed evidence:** The `capable__self_check` configuration reached 227 of
+300 result rows before the OpenAI account credit was exhausted. The saved raw
+response for `case_0228` records HTTP 429, error type `insufficient_quota`, and
+error code `credit_balance_exhausted`.
+
+**Owner decision:** No further credit was added after this exhaustion event.
+The cell is finalized at `n=227` by owner decision rather than by an unresolved
+technical failure. The remaining 73 rows will not be called through OpenAI and
+will not be filled with Ollama or another provider, because that would mix
+providers inside one labeled configuration.
+
+**Analysis treatment:** Every Phase 5 table, figure, metric, and narrative that
+includes `capable__self_check` must use only its 227 completed rows and display
+`n=227` explicitly. Where space is constrained, the configuration must carry
+an asterisk whose footnote states that the cell is incomplete and finalized by
+owner decision after provider credit exhaustion. No denominator of 300 may be
+used for this cell.
+
+**Correction of the immediately preceding continuation record:** The earlier
+"Continue interrupted Phase 4 after routing change" amendment stated that only
+73 rows were unfinished. The durable `full_r3` summary instead records a
+373-row shortfall: the 73 unfinished `capable__self_check` rows plus all 300
+`capable__escalation` rows. No `full_r3__capable__escalation.csv` or matching
+full-run raw directory exists. This dated correction preserves the original
+text while preventing the absent cell from being represented as completed.
