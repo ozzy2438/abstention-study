@@ -1439,11 +1439,24 @@ def plan_identity(
     }
 
 
-def ensure_plan(path: Path, identity: dict[str, Any]) -> dict[str, Any]:
+def ensure_plan(
+    path: Path,
+    identity: dict[str, Any],
+    *,
+    allow_provider_routing_change: bool = False,
+) -> dict[str, Any]:
     identity_hash = sha256_bytes(canonical_json(identity).encode("utf-8"))
     if path.exists():
         existing = json.loads(path.read_text(encoding="utf-8"))
         if existing.get("plan_identity_sha256") != identity_hash:
+            if allow_provider_routing_change:
+                changed_fields = {
+                    key
+                    for key in set(existing) | set(identity)
+                    if existing.get(key) != identity.get(key)
+                }
+                if changed_fields <= {"config_sha256", "cost_projection"}:
+                    return existing
             raise ValueError(f"Existing plan identity differs: {path}")
         return existing
     plan = {
@@ -1894,6 +1907,14 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="skip the non-inference model access check; valid only with --dry-run",
     )
+    parser.add_argument(
+        "--continue-with-provider-routing-change",
+        action="store_true",
+        help=(
+            "continue an existing saved execution after an explicit provider-only "
+            "routing change; preserves the saved plan identity and skips completed rows"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -1905,6 +1926,18 @@ def main() -> None:
         raise SystemExit("--rescore and --dry-run cannot be combined")
     if args.offline_dry_run and not args.dry_run:
         raise SystemExit("--offline-dry-run requires --dry-run")
+    if args.continue_with_provider_routing_change and args.dry_run:
+        raise SystemExit(
+            "--continue-with-provider-routing-change requires an inference run"
+        )
+    if args.continue_with_provider_routing_change and args.scope != "full":
+        raise SystemExit(
+            "--continue-with-provider-routing-change is valid only for full runs"
+        )
+    if args.continue_with_provider_routing_change and args.run_revision <= 1:
+        raise SystemExit(
+            "--continue-with-provider-routing-change requires an existing run revision"
+        )
     try:
         budget_cap = Decimal(args.budget_usd)
     except Exception as exc:
@@ -1970,7 +2003,11 @@ def main() -> None:
         factory=factory,
         projection=full_projection,
     )
-    plan = ensure_plan(plan_path, identity)
+    plan = ensure_plan(
+        plan_path,
+        identity,
+        allow_provider_routing_change=args.continue_with_provider_routing_change,
+    )
     print(
         json.dumps(
             {

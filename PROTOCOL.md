@@ -1036,3 +1036,18 @@ local response supplies them. Ollama attempts record
 OpenAI pricing is not applied to those critic calls. Existing OpenAI raw
 evidence is never mixed with a new Ollama call sequence; a provider/model
 mismatch requires a new run revision.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Continue interrupted Phase 4 after routing change
+
+**Type:** Owner-directed continuation safeguard. It does not change the task,
+corpus, dataset, labels, prompts, output contract, confidence definition,
+scoring, or metrics.
+
+**Reason and treatment:** The latest saved Phase 4 execution (`full_r3`) has
+2,327 of 2,700 result rows, with only 73 `capable__self_check` rows unfinished.
+The owner requested continuation rather than a matrix restart after the local
+critic-routing change. Completed rows and their OpenAI raw evidence remain
+immutable and are skipped. Only the unfinished rows are processed; their
+`primary` call keeps the registered OpenAI model and their recurring `critic`
+call uses local Ollama `qwen3:8b`. The resulting provider split is retained in
+raw evidence and must be disclosed in the final report.
