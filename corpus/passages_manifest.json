@@ -1,0 +1,34 @@
+{
+  "chunking": {
+    "boundary_search_codepoints": 400,
+    "max_codepoints": 1800,
+    "newline_boundary_in_preceding_chunk": true,
+    "offsets": "zero_based_start_inclusive_end_exclusive",
+    "overlap_codepoints": 200,
+    "page_bounded": true,
+    "unit": "unicode_codepoints"
+  },
+  "extractor": {
+    "method": "PdfReader.pages[index].extract_text()",
+    "pypdf_version": "6.10.0",
+    "python_version": "3.12.13"
+  },
+  "normalisation": [
+    "CRLF_to_LF",
+    "Unicode_NFC",
+    "tab_to_single_space",
+    "remove_trailing_horizontal_spaces",
+    "three_or_more_LF_to_two_LF"
+  ],
+  "passage_count": 126,
+  "passage_count_by_document": {
+    "asic_rg271": 100,
+    "fwo_dispute_resolution": 22,
+    "fwo_nes": 4
+  },
+  "passages_path": "corpus/passages.jsonl",
+  "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
+  "schema_version": "1.0.0",
+  "source_manifest": "corpus/manifest.json",
+  "source_manifest_sha256": "a21a88481f955ea9cfc84c014e0af771b4f5ceca19b1cf470cfc35a19c747920"
+}

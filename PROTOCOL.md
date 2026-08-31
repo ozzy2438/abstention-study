@@ -701,3 +701,32 @@ estimate.
 
 None at freeze. Append amendments below this line; do not edit the frozen text
 above.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Phase 2 extraction implementation addendum
+
+**Type:** Additive implementation record; no task, label, confidence, prompt,
+metric, chunk-size, overlap, or retrieval definition changed.
+
+**Reason:** The owner requested that the concrete Phase 2 chunking
+implementation be recorded as a dated addendum. The original protocol already
+registered the chunking algorithm; this entry pins the extractor and resolves
+implementation details needed for byte-for-byte reproduction.
+
+- Frozen input corpus commit: `933ff79`.
+- Extractor: CPython `3.12.13` with `pypdf==6.10.0`.
+- Extraction call: `PdfReader(path).pages[page_index].extract_text()` once per
+  PDF page in ascending, one-based page order.
+- No source page required OCR. OCR remains prohibited for this corpus version.
+- The normalisation phrase “collapsing runs of more than two blank lines to
+  two” is implemented as replacing three or more consecutive LF characters
+  with two LF characters.
+- A selected newline boundary is included in the preceding chunk; offsets are
+  zero-based, start-inclusive, and end-exclusive over normalised page text.
+- Canonical outputs are `corpus/passages.jsonl` and
+  `corpus/passages_manifest.json`, produced by `corpus/build_passages.py`.
+- Poppler `26.05.0` is used only for visual PDF quality assurance and does not
+  generate canonical text.
+
+**Impact and restart decision:** This addendum was recorded before passage
+generation, case authoring, or any model call. No artifact or run requires a
+restart.
