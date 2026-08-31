@@ -20,10 +20,10 @@ CASES_MANIFEST_PATH = DATASET_DIR / "cases_manifest.json"
 STUDY_SEED = 20260831
 
 TARGETS = {
-    "answerable_clear": 105,
+    "answerable_clear": 115,
     "answerable_multihop": 45,
-    "unanswerable_missing": 45,
-    "unanswerable_contradictory": 30,
+    "unanswerable_missing": 46,
+    "unanswerable_contradictory": 19,
     "out_of_scope": 45,
     "adversarial": 30,
 }
@@ -31,6 +31,85 @@ TARGETS = {
 
 def ref(doc_id: str, page: int, chunk: int = 1) -> str:
     return f"{doc_id}:{page}:{chunk}"
+
+
+def phase2_label_corrections() -> dict[str, dict[str, Any]]:
+    """Owner-requested corrections from the 2026-08-31 Phase 2 re-audit.
+
+    Corrections are applied before the deterministic shuffle so the original
+    item ordering, shuffled case IDs, and unaffected cases remain stable.
+    """
+
+    def clear(answer: str, citation: str, notes: str) -> dict[str, Any]:
+        return {
+            "category": "answerable_clear",
+            "expected_behaviour": "ANSWER",
+            "gold_answer": answer,
+            "gold_citations": [citation],
+            "notes": notes,
+            "author_confidence": "high",
+        }
+
+    return {
+        "An organisation has received a complaint about a service it provides. Is the final response due in 30 or 45 calendar days?": clear(
+            "RG 271 gives standard complaints a 30-calendar-day maximum and traditional-trustee and non-death-benefit superannuation-trustee complaints a 45-calendar-day maximum. The question does not identify which complaint type applies.",
+            ref("asic_rg271", 21, 2),
+            "2026-08-31 correction: one table contains both scoped timeframes, so this is a single-passage conditional answer rather than a contradictory case.",
+        ),
+        "In this superannuation death-benefit dispute, is the next deadline 28 days or 90 days?": clear(
+            "The 28 days are the period for objecting to the proposed distribution. The maximum IDR response period is 90 calendar days after that objection period expires, so which deadline is next depends on the procedural stage.",
+            ref("asic_rg271", 22),
+            "2026-08-31 correction: the table states the relationship between both periods in one passage.",
+        ),
+        "Can the complainant take the matter to the external dispute body before receiving an internal response?": clear(
+            "For specified urgent credit matters, a complainant may go directly to AFCA after the relevant National Credit Code periods. For a death-benefit distribution complaint, AFCA generally cannot consider it until an objection has been lodged with the decision-maker and a response received.",
+            ref("asic_rg271", 28),
+            "2026-08-31 correction: one passage contains both scoped pathways, making a conditional answer possible.",
+        ),
+        "Will the independent person help the parties find their own solution, or make a binding decision for them?": clear(
+            "A mediator helps the parties arrive at their own agreement. An arbitrator or court decides how the dispute should be resolved and makes a binding decision or order.",
+            ref("fwo_dispute_resolution", 3),
+            "2026-08-31 correction: one passage directly contrasts mediated and arbitrated outcomes.",
+        ),
+        "Must the firm identify and handle a complaint posted on social media?": clear(
+            "A qualifying post on a social-media account owned or controlled by the firm is a complaint when the author is identifiable and contactable. The firm is not expected to seek out complaints on third-party accounts or channels.",
+            ref("asic_rg271", 14, 2),
+            "2026-08-31 correction: the overlapping chunk contains both the controlled-channel rule and third-party exception.",
+        ),
+        "Must the firm disclose the supporting information behind its rejection of the complaint?": clear(
+            "The rejection must refer to the information supporting the firm's findings and provide enough detail to explain the decision, but the firm should not provide information that would breach privacy or other legislative obligations.",
+            ref("asic_rg271", 20, 2),
+            "2026-08-31 correction: one passage contains both the disclosure requirement and its legal limitation.",
+        ),
+        "A customer reported an unauthorised transaction. Has the customer made a complaint?": clear(
+            "A report made only to notify the firm is not a complaint. It becomes a complaint if the customer raises a separate qualifying issue or expresses dissatisfaction with the outcome or handling of the transaction.",
+            ref("asic_rg271", 15),
+            "2026-08-31 correction: one passage states both the exclusion and the condition that turns the report into a complaint.",
+        ),
+        "A party in an exempt-SPFE servicing arrangement received a complaint. Must that party operate its own IDR process?": clear(
+            "An exempt SPFE has no IDR requirements. Its servicing credit licensee's IDR process is expected to cover the licensee's servicing activities and the exempt SPFE's conduct.",
+            ref("asic_rg271", 8),
+            "2026-08-31 correction: one table passage distinguishes both parties' IDR responsibilities.",
+        ),
+        "The complaint went straight to AFCA. Was the complainant's consent required for that referral?": clear(
+            "If the financial firm directly referred the complaint to AFCA, it needed the complainant's consent. A complainant may instead pursue their own complaint with AFCA; the consent rule applies to the firm's direct referral.",
+            ref("asic_rg271", 33, 2),
+            "2026-08-31 correction: one overlapping passage distinguishes complainant escalation from a firm's direct referral.",
+        ),
+        "Is the outcome reached through the external process binding on everyone?": clear(
+            "A mediated outcome is an agreement reached by the parties, while an arbitrated or adjudicated outcome is a binding decision or order made by an arbitrator or court.",
+            ref("fwo_dispute_resolution", 3),
+            "2026-08-31 correction: one passage directly contrasts non-binding mediation with binding arbitration or adjudication.",
+        ),
+        "The response deadline arrived and the firm sent an IDR delay notification instead of a final response. Has the firm complied?": {
+            "category": "unanswerable_missing",
+            "expected_behaviour": "ABSTAIN",
+            "gold_answer": None,
+            "gold_citations": [],
+            "notes": "2026-08-31 correction: one passage states the conditions for a valid delay notification, so there is no passage conflict. The question omits whether particular complexity or circumstances beyond the firm's control existed, leaving a material fact missing.",
+            "author_confidence": "high",
+        },
+    }
 
 
 def answerable_clear_specs() -> list[dict[str, Any]]:
@@ -1988,6 +2067,23 @@ def build_cases() -> list[dict[str, Any]]:
         + out_of_scope_specs()
         + adversarial_specs()
     )
+    corrections = phase2_label_corrections()
+    applied_corrections: set[str] = set()
+    for spec in specs:
+        correction = corrections.get(spec["question"])
+        if correction is None:
+            continue
+        if spec["category"] != "unanswerable_contradictory":
+            raise ValueError(
+                "A Phase 2 label correction no longer targets its original "
+                f"contradictory case: {spec['question']}"
+            )
+        spec.update(correction)
+        applied_corrections.add(spec["question"])
+    if applied_corrections != set(corrections):
+        missing = sorted(set(corrections) - applied_corrections)
+        raise ValueError(f"Unapplied Phase 2 label corrections: {missing}")
+
     passage_refs = load_passage_refs()
 
     for spec in specs:
@@ -2051,6 +2147,9 @@ def write_outputs(cases: list[dict[str, Any]]) -> None:
         "cases_sha256": sha256_path(CASES_PATH),
         "case_count": len(cases),
         "category_counts": dict(sorted(counts.items())),
+        "label_correction_date": "2026-08-31",
+        "label_correction_count": len(phase2_label_corrections()),
+        "label_correction_reason": "owner-requested Phase 2 multihop and contradiction re-audit",
         "passages_path": "corpus/passages.jsonl",
         "passages_sha256": sha256_path(PASSAGES_PATH),
     }

@@ -773,3 +773,55 @@ passage length `avgdl`, the implementation uses Okapi BM25:
 **Impact and restart decision:** This clarification was recorded after case
 drafting but before retrieval generation, final case review, dataset freeze,
 or any model call. No artifact or run requires a restart.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Owner-requested Phase 2 label re-audit
+
+**Type:** Label corrections and resulting category-count amendment. Task
+definitions, category criteria, prompts, confidence definitions, metrics,
+chunking, and retrieval are unchanged.
+
+**Reason:** At the Phase 2 gate, the owner required a passage-level re-audit of
+multihop and contradictory cases. The re-audit found that 10 cases labelled
+`unanswerable_contradictory` were answerable conditionally from one passage,
+and one such case instead lacked a material fact. Leaving those cases in the
+contradictory category would measure an avoidable labelling error.
+
+- Reclassified from `unanswerable_contradictory` to `answerable_clear`:
+  `case_0003`, `case_0021`, `case_0042`, `case_0064`, `case_0074`,
+  `case_0108`, `case_0124`, `case_0183`, `case_0225`, and `case_0246`.
+- Reclassified from `unanswerable_contradictory` to
+  `unanswerable_missing`: `case_0211`.
+- The final 300-case distribution is 115 `answerable_clear`, 45
+  `answerable_multihop`, 46 `unanswerable_missing`, 19
+  `unanswerable_contradictory`, 45 `out_of_scope`, and 30 `adversarial`.
+- Case IDs, question text, shuffle seed, corpus, passage IDs, chunking, and
+  retrieval configuration are unchanged. Corrected answer cases received a
+  gold answer and one supporting passage; the corrected missing-fact case has
+  no answer gold.
+
+**Impact and restart decision:** The corrections were made before Phase 3 and
+before any model call. Cases, retrieval-derived artifacts, manifests, and the
+Phase 2 audit were rebuilt in full; no selective result patching occurred.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - BM25 gold-hit diagnostic
+
+**Type:** Additive analysis diagnostic. It does not alter retrieval, a gold
+label, model input, scoring, or any registered metric.
+
+**Reason:** The owner requested that later accuracy and calibration analysis
+be stratifiable by whether deterministic BM25 retrieval exposed the answer's
+gold evidence.
+
+For every answerable case, `dataset/retrieval_diagnostics.json` records
+`bm25_top8_gold_hit` as:
+
+- `full` when every distinct gold passage ID is in the case's frozen BM25
+  top eight;
+- `partial` when at least one, but not every, distinct gold passage ID is in
+  the top eight; or
+- `none` when no gold passage ID is in the top eight.
+
+The artifact is keyed by stable `case_id`, is computed only from committed
+gold citations and frozen retrieval rows, and is validated mechanically. It
+must be treated as a diagnostic stratum, not as an alternative correctness
+label.

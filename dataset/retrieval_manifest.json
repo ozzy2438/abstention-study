@@ -2,7 +2,7 @@
   "b": 0.75,
   "case_count": 300,
   "cases_path": "dataset/cases.jsonl",
-  "cases_sha256": "462705db5e62be9b0eb70a4a99172d4c50332f43e1c69081442bce22081ace28",
+  "cases_sha256": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
   "idf": "ln(1 + (N - n_t + 0.5) / (n_t + 0.5))",
   "k1": 1.5,
   "lowercase": true,
@@ -11,6 +11,14 @@
   "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
   "python_version": "3.12.13",
   "query_term_multiplicity": "retained",
+  "retrieval_diagnostics_answerable_count": 160,
+  "retrieval_diagnostics_counts": {
+    "full": 127,
+    "none": 15,
+    "partial": 18
+  },
+  "retrieval_diagnostics_path": "dataset/retrieval_diagnostics.json",
+  "retrieval_diagnostics_sha256": "c899cd2d483e26daec65ce0d6c265d8c7e72c70f4d27406710a50f81b50a0e7c",
   "retrieval_path": "dataset/retrieval.jsonl",
   "retrieval_sha256": "8447926d08e906f245a695f9d0b9bf3536e59ba55fa70a1caf10fd6d37a293de",
   "schema_version": "1.0.0",

@@ -19,6 +19,7 @@ CASES_PATH = DATASET_DIR / "cases.jsonl"
 PASSAGES_PATH = REPO_ROOT / "corpus" / "passages.jsonl"
 RETRIEVAL_PATH = DATASET_DIR / "retrieval.jsonl"
 MANIFEST_PATH = DATASET_DIR / "retrieval_manifest.json"
+DIAGNOSTICS_PATH = DATASET_DIR / "retrieval_diagnostics.json"
 
 TOKEN_PATTERN = r"(?u)\b\w+\b"
 TOKEN_RE = re.compile(TOKEN_PATTERN)
@@ -120,11 +121,49 @@ def retrieve(
     return rows
 
 
-def write_outputs(rows: list[dict[str, Any]]) -> None:
+def build_diagnostics(
+    cases: list[dict[str, Any]], rows: list[dict[str, Any]]
+) -> dict[str, dict[str, str]]:
+    retrieval_by_id = {
+        row["case_id"]: {item["passage_id"] for item in row["passages"]}
+        for row in rows
+    }
+    diagnostics: dict[str, dict[str, str]] = {}
+    for case in sorted(cases, key=lambda item: item["case_id"]):
+        if case["expected_behaviour"] != "ANSWER":
+            continue
+        gold = set(case["gold_citations"])
+        retrieved_gold = gold & retrieval_by_id[case["case_id"]]
+        if retrieved_gold == gold:
+            hit = "full"
+        elif retrieved_gold:
+            hit = "partial"
+        else:
+            hit = "none"
+        diagnostics[case["case_id"]] = {"bm25_top8_gold_hit": hit}
+    return diagnostics
+
+
+def write_outputs(
+    cases: list[dict[str, Any]], rows: list[dict[str, Any]]
+) -> dict[str, int]:
     payload = "".join(
         json.dumps(row, ensure_ascii=False, sort_keys=False) + "\n" for row in rows
     )
     RETRIEVAL_PATH.write_text(payload, encoding="utf-8", newline="\n")
+    diagnostics = build_diagnostics(cases, rows)
+    DIAGNOSTICS_PATH.write_text(
+        json.dumps(diagnostics, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    diagnostic_counts = dict(
+        sorted(
+            Counter(
+                item["bm25_top8_gold_hit"] for item in diagnostics.values()
+            ).items()
+        )
+    )
     manifest = {
         "schema_version": "1.0.0",
         "python_version": platform.python_version(),
@@ -134,6 +173,10 @@ def write_outputs(rows: list[dict[str, Any]]) -> None:
         "passages_sha256": sha256_path(PASSAGES_PATH),
         "retrieval_path": "dataset/retrieval.jsonl",
         "retrieval_sha256": sha256_path(RETRIEVAL_PATH),
+        "retrieval_diagnostics_path": "dataset/retrieval_diagnostics.json",
+        "retrieval_diagnostics_sha256": sha256_path(DIAGNOSTICS_PATH),
+        "retrieval_diagnostics_answerable_count": len(diagnostics),
+        "retrieval_diagnostics_counts": diagnostic_counts,
         "case_count": len(rows),
         "passage_count": len(load_jsonl(PASSAGES_PATH)),
         "token_pattern": TOKEN_PATTERN,
@@ -151,18 +194,21 @@ def write_outputs(rows: list[dict[str, Any]]) -> None:
         encoding="utf-8",
         newline="\n",
     )
+    return diagnostic_counts
 
 
 def main() -> None:
     cases = load_jsonl(CASES_PATH)
     passages = load_jsonl(PASSAGES_PATH)
     rows = retrieve(cases, passages)
-    write_outputs(rows)
+    diagnostic_counts = write_outputs(cases, rows)
     print(
         json.dumps(
             {
                 "case_count": len(rows),
                 "retrieval_sha256": sha256_path(RETRIEVAL_PATH),
+                "retrieval_diagnostics_sha256": sha256_path(DIAGNOSTICS_PATH),
+                "retrieval_diagnostics_counts": diagnostic_counts,
                 "top_k": TOP_K,
             },
             sort_keys=True,

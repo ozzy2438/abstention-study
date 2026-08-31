@@ -21,6 +21,7 @@ CASES_MANIFEST_PATH = DATASET_DIR / "cases_manifest.json"
 PASSAGES_PATH = REPO_ROOT / "corpus" / "passages.jsonl"
 RETRIEVAL_PATH = DATASET_DIR / "retrieval.jsonl"
 RETRIEVAL_MANIFEST_PATH = DATASET_DIR / "retrieval_manifest.json"
+RETRIEVAL_DIAGNOSTICS_PATH = DATASET_DIR / "retrieval_diagnostics.json"
 LABELLING_NOTES_PATH = DATASET_DIR / "labelling_notes.md"
 SUMMARY_PATH = DATASET_DIR / "audit_summary.json"
 LENGTH_PATH = DATASET_DIR / "audit_question_lengths.csv"
@@ -43,10 +44,10 @@ EXPECTED_KEYS = {
     "author_confidence",
 }
 TARGETS = {
-    "answerable_clear": 105,
+    "answerable_clear": 115,
     "answerable_multihop": 45,
-    "unanswerable_missing": 45,
-    "unanswerable_contradictory": 30,
+    "unanswerable_missing": 46,
+    "unanswerable_contradictory": 19,
     "out_of_scope": 45,
     "adversarial": 30,
 }
@@ -101,6 +102,7 @@ def validate(
     cases: list[dict[str, Any]],
     passages: list[dict[str, Any]],
     retrieval_rows: list[dict[str, Any]],
+    retrieval_diagnostics: dict[str, dict[str, str]],
 ) -> dict[str, Any]:
     errors: list[str] = []
     passage_ids = {row["passage_id"] for row in passages}
@@ -160,8 +162,8 @@ def validate(
         if row["category"] == "unanswerable_contradictory"
         and row["author_confidence"] == "medium"
     }
-    if logged_borderline_ids != expected_borderline_ids:
-        errors.append("borderline ledger case IDs differ from medium contradictory cases")
+    if not expected_borderline_ids.issubset(logged_borderline_ids):
+        errors.append("current medium contradictory cases are missing from the ledger")
     for line in labelling_notes.splitlines():
         if not re.match(r"^\| `case_\d{4}` \|", line):
             continue
@@ -197,6 +199,28 @@ def validate(
         if observed_order != expected_order:
             errors.append(f"{case_id}: retrieval ordering is invalid")
 
+    expected_diagnostic_ids = {
+        row["case_id"] for row in cases if row["expected_behaviour"] == "ANSWER"
+    }
+    if set(retrieval_diagnostics) != expected_diagnostic_ids:
+        errors.append("retrieval diagnostic case IDs differ from answerable cases")
+    for case in cases:
+        if case["case_id"] not in expected_diagnostic_ids:
+            continue
+        diagnostic = retrieval_diagnostics.get(case["case_id"], {})
+        if set(diagnostic) != {"bm25_top8_gold_hit"}:
+            errors.append(f"{case['case_id']}: invalid retrieval diagnostic schema")
+            continue
+        retrieved_ids = {
+            item["passage_id"]
+            for item in retrieval_by_id[case["case_id"]]["passages"]
+        }
+        gold_ids = set(case["gold_citations"])
+        overlap = gold_ids & retrieved_ids
+        expected_hit = "full" if overlap == gold_ids else "partial" if overlap else "none"
+        if diagnostic["bm25_top8_gold_hit"] != expected_hit:
+            errors.append(f"{case['case_id']}: inconsistent retrieval diagnostic")
+
     cases_manifest = json.loads(CASES_MANIFEST_PATH.read_text(encoding="utf-8"))
     retrieval_manifest = json.loads(
         RETRIEVAL_MANIFEST_PATH.read_text(encoding="utf-8")
@@ -207,6 +231,10 @@ def validate(
         errors.append("retrieval manifest hash mismatch")
     if retrieval_manifest.get("cases_sha256") != sha256_path(CASES_PATH):
         errors.append("retrieval manifest cases hash mismatch")
+    if retrieval_manifest.get("retrieval_diagnostics_sha256") != sha256_path(
+        RETRIEVAL_DIAGNOSTICS_PATH
+    ):
+        errors.append("retrieval manifest diagnostics hash mismatch")
 
     if errors:
         raise ValueError("Dataset validation failed:\n- " + "\n- ".join(errors))
@@ -221,9 +249,10 @@ def validate(
             "gold_citations_exist": True,
             "answerable_clear_has_one_gold_passage": True,
             "answerable_multihop_has_at_least_two_gold_passages": True,
-            "borderline_ledger_matches_medium_contradictory_cases": True,
+            "current_medium_contradictory_cases_present_in_borderline_ledger": True,
             "borderline_ledger_passages_exist": True,
             "retrieval_has_eight_unique_ordered_passages_per_case": True,
+            "retrieval_diagnostics_match_gold_overlap": True,
             "manifest_hashes_match": True,
         },
     }
@@ -284,10 +313,12 @@ def lexical_features(question: str) -> Counter[str]:
     return features
 
 
-def stratified_folds(cases: list[dict[str, Any]]) -> dict[str, int]:
+def stratified_folds(
+    cases: list[dict[str, Any]], label_key: str = "category"
+) -> dict[str, int]:
     by_category: dict[str, list[str]] = defaultdict(list)
     for row in cases:
-        by_category[row["category"]].append(row["case_id"])
+        by_category[row[label_key]].append(row["case_id"])
     randomiser = random.Random(STUDY_SEED)
     assignment: dict[str, int] = {}
     for category in sorted(by_category):
@@ -298,9 +329,11 @@ def stratified_folds(cases: list[dict[str, Any]]) -> dict[str, int]:
     return assignment
 
 
-def macro_recall(truth: list[str], predicted: list[str]) -> float:
+def macro_recall(
+    truth: list[str], predicted: list[str], labels: list[str]
+) -> float:
     recalls = []
-    for category in sorted(TARGETS):
+    for category in labels:
         indices = [index for index, value in enumerate(truth) if value == category]
         recalls.append(
             sum(predicted[index] == category for index in indices) / len(indices)
@@ -308,8 +341,14 @@ def macro_recall(truth: list[str], predicted: list[str]) -> float:
     return sum(recalls) / len(recalls)
 
 
-def cross_validated_naive_bayes(cases: list[dict[str, Any]]) -> dict[str, Any]:
-    fold_assignment = stratified_folds(cases)
+def cross_validated_naive_bayes(
+    cases: list[dict[str, Any]],
+    *,
+    label_key: str = "category",
+    labels: list[str] | None = None,
+) -> dict[str, Any]:
+    labels = labels or sorted({row[label_key] for row in cases})
+    fold_assignment = stratified_folds(cases, label_key=label_key)
     predicted_by_id: dict[str, str] = {}
     for fold in range(FOLDS):
         training = [row for row in cases if fold_assignment[row["case_id"]] != fold]
@@ -321,7 +360,7 @@ def cross_validated_naive_bayes(cases: list[dict[str, Any]]) -> dict[str, Any]:
             training_features[row["case_id"]] = features
             document_frequency.update(features.keys())
         vocabulary = {feature for feature, count in document_frequency.items() if count >= 2}
-        class_counts = Counter(row["category"] for row in training)
+        class_counts = Counter(row[label_key] for row in training)
         feature_counts: dict[str, Counter[str]] = defaultdict(Counter)
         feature_totals = Counter()
         for row in training:
@@ -332,13 +371,13 @@ def cross_validated_naive_bayes(cases: list[dict[str, Any]]) -> dict[str, Any]:
                     if feature in vocabulary
                 }
             )
-            feature_counts[row["category"]].update(filtered)
-            feature_totals[row["category"]] += sum(filtered.values())
+            feature_counts[row[label_key]].update(filtered)
+            feature_totals[row[label_key]] += sum(filtered.values())
         vocabulary_size = len(vocabulary)
         for row in testing:
             features = lexical_features(row["question"])
             scores: dict[str, float] = {}
-            for category in sorted(TARGETS):
+            for category in labels:
                 score = math.log(class_counts[category] / len(training))
                 denominator = feature_totals[category] + vocabulary_size
                 for feature, count in features.items():
@@ -353,7 +392,7 @@ def cross_validated_naive_bayes(cases: list[dict[str, Any]]) -> dict[str, Any]:
             )
 
     ordered = sorted(cases, key=lambda row: row["case_id"])
-    truth = [row["category"] for row in ordered]
+    truth = [row[label_key] for row in ordered]
     predicted = [predicted_by_id[row["case_id"]] for row in ordered]
     confusion = {
         actual: {
@@ -361,16 +400,17 @@ def cross_validated_naive_bayes(cases: list[dict[str, Any]]) -> dict[str, Any]:
                 one_actual == actual and one_prediction == prediction
                 for one_actual, one_prediction in zip(truth, predicted)
             )
-            for prediction in sorted(TARGETS)
+            for prediction in labels
         }
-        for actual in sorted(TARGETS)
+        for actual in labels
     }
     return {
         "method": "stratified 5-fold multinomial naive Bayes over word unigrams and bigrams appearing in at least two training questions",
         "seed": STUDY_SEED,
         "accuracy": sum(a == b for a, b in zip(truth, predicted)) / len(truth),
-        "macro_recall": macro_recall(truth, predicted),
-        "majority_class_baseline_accuracy": max(TARGETS.values()) / sum(TARGETS.values()),
+        "macro_recall": macro_recall(truth, predicted, labels),
+        "majority_class_baseline_accuracy": max(Counter(truth).values()) / len(truth),
+        "labels": labels,
         "confusion": confusion,
     }
 
@@ -399,7 +439,7 @@ def cross_validated_length_rule(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "method": "stratified 5-fold nearest training-category median question word count",
         "seed": STUDY_SEED,
         "accuracy": sum(a == b for a, b in zip(truth, predicted)) / len(truth),
-        "macro_recall": macro_recall(truth, predicted),
+        "macro_recall": macro_recall(truth, predicted, sorted(TARGETS)),
     }
 
 
@@ -588,13 +628,40 @@ def main() -> None:
     cases = read_jsonl(CASES_PATH)
     passages = read_jsonl(PASSAGES_PATH)
     retrieval_rows = read_jsonl(RETRIEVAL_PATH)
-    validation = validate(cases, passages, retrieval_rows)
+    retrieval_diagnostics = json.loads(
+        RETRIEVAL_DIAGNOSTICS_PATH.read_text(encoding="utf-8")
+    )
+    validation = validate(
+        cases, passages, retrieval_rows, retrieval_diagnostics
+    )
+    same_topic_labels = [
+        "answerable_clear",
+        "unanswerable_missing",
+        "unanswerable_contradictory",
+    ]
+    same_topic_cases = [
+        row for row in cases if row["category"] in same_topic_labels
+    ]
+    different_topic_cases = [
+        {
+            **row,
+            "audit_label": (
+                "out_of_scope_or_adversarial"
+                if row["category"] in {"out_of_scope", "adversarial"}
+                else "rest"
+            ),
+        }
+        for row in cases
+    ]
     summary = {
         "schema_version": "1.0.0",
         "source_hashes": {
             "cases_sha256": sha256_path(CASES_PATH),
             "passages_sha256": sha256_path(PASSAGES_PATH),
             "retrieval_sha256": sha256_path(RETRIEVAL_PATH),
+            "retrieval_diagnostics_sha256": sha256_path(
+                RETRIEVAL_DIAGNOSTICS_PATH
+            ),
         },
         "category_counts": dict(sorted(Counter(row["category"] for row in cases).items())),
         "author_confidence_counts": dict(
@@ -603,6 +670,16 @@ def main() -> None:
         "validation": validation,
         "question_lengths": write_length_audit(cases),
         "surface_classifier": cross_validated_naive_bayes(cases),
+        "surface_classifier_same_topic": cross_validated_naive_bayes(
+            same_topic_cases, labels=same_topic_labels
+        ),
+        "surface_classifier_out_of_scope_adversarial_vs_rest": (
+            cross_validated_naive_bayes(
+                different_topic_cases,
+                label_key="audit_label",
+                labels=["out_of_scope_or_adversarial", "rest"],
+            )
+        ),
         "length_only_classifier": cross_validated_length_rule(cases),
         "lexical_cues": write_lexical_cues(cases),
         "leading_phrases": write_leading_phrases(cases),
@@ -619,6 +696,12 @@ def main() -> None:
             {
                 "validation": validation["status"],
                 "surface_classifier_accuracy": summary["surface_classifier"]["accuracy"],
+                "same_topic_classifier_accuracy": summary[
+                    "surface_classifier_same_topic"
+                ]["accuracy"],
+                "out_of_scope_adversarial_vs_rest_accuracy": summary[
+                    "surface_classifier_out_of_scope_adversarial_vs_rest"
+                ]["accuracy"],
                 "length_only_accuracy": summary["length_only_classifier"]["accuracy"],
                 "retrieval_all_gold_rate": summary["retrieval_gold_coverage"]["all_answerable"]["all_gold_retrieved_rate"],
                 "audit_summary_sha256": sha256_path(SUMMARY_PATH),

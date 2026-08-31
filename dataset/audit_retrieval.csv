@@ -1,5 +1,6 @@
 case_id,category,gold_count,retrieved_gold_count,all_gold_retrieved,any_gold_retrieved,missing_gold_citations
 case_0001,answerable_clear,1,1,True,True,
+case_0003,answerable_clear,1,1,True,True,
 case_0004,answerable_clear,1,1,True,True,
 case_0006,answerable_clear,1,1,True,True,
 case_0009,answerable_clear,1,1,True,True,
@@ -8,6 +9,7 @@ case_0012,answerable_clear,1,1,True,True,
 case_0014,answerable_multihop,3,3,True,True,
 case_0016,answerable_multihop,2,2,True,True,
 case_0017,answerable_clear,1,1,True,True,
+case_0021,answerable_clear,1,1,True,True,
 case_0022,answerable_clear,1,1,True,True,
 case_0023,answerable_multihop,2,2,True,True,
 case_0024,answerable_clear,1,1,True,True,
@@ -22,6 +24,7 @@ case_0035,answerable_clear,1,1,True,True,
 case_0036,answerable_clear,1,1,True,True,
 case_0038,answerable_multihop,3,1,False,True,fwo_dispute_resolution-p0007-c002-c040c04c278e|fwo_dispute_resolution-p0008-c001-d2801a834664
 case_0041,answerable_clear,1,1,True,True,
+case_0042,answerable_clear,1,1,True,True,
 case_0043,answerable_clear,1,1,True,True,
 case_0044,answerable_multihop,2,2,True,True,
 case_0045,answerable_clear,1,1,True,True,
@@ -33,8 +36,10 @@ case_0051,answerable_clear,1,1,True,True,
 case_0054,answerable_multihop,2,1,False,True,asic_rg271-p0018-c002-ffd83db466b2
 case_0061,answerable_clear,1,1,True,True,
 case_0063,answerable_clear,1,1,True,True,
+case_0064,answerable_clear,1,1,True,True,
 case_0066,answerable_multihop,2,2,True,True,
 case_0072,answerable_clear,1,1,True,True,
+case_0074,answerable_clear,1,1,True,True,
 case_0077,answerable_clear,1,1,True,True,
 case_0079,answerable_clear,1,1,True,True,
 case_0080,answerable_multihop,2,1,False,True,asic_rg271-p0004-c001-fde204a5871a
@@ -55,11 +60,13 @@ case_0103,answerable_multihop,2,2,True,True,
 case_0104,answerable_multihop,2,2,True,True,
 case_0106,answerable_clear,1,1,True,True,
 case_0107,answerable_clear,1,1,True,True,
+case_0108,answerable_clear,1,1,True,True,
 case_0109,answerable_clear,1,1,True,True,
 case_0111,answerable_clear,1,1,True,True,
 case_0114,answerable_multihop,2,1,False,True,asic_rg271-p0021-c002-f2a3afc18de5
 case_0116,answerable_multihop,2,2,True,True,
 case_0118,answerable_clear,1,1,True,True,
+case_0124,answerable_clear,1,1,True,True,
 case_0127,answerable_clear,1,1,True,True,
 case_0128,answerable_clear,1,0,False,False,asic_rg271-p0001-c001-27fa42cfe818
 case_0129,answerable_clear,1,1,True,True,
@@ -91,6 +98,7 @@ case_0177,answerable_clear,1,1,True,True,
 case_0180,answerable_multihop,4,1,False,True,asic_rg271-p0046-c002-e0c5a767477d|asic_rg271-p0047-c001-f59e937ccb4c|fwo_dispute_resolution-p0005-c001-96e1de939bfe
 case_0181,answerable_multihop,2,1,False,True,asic_rg271-p0001-c001-27fa42cfe818
 case_0182,answerable_clear,1,1,True,True,
+case_0183,answerable_clear,1,1,True,True,
 case_0184,answerable_multihop,2,2,True,True,
 case_0185,answerable_clear,1,1,True,True,
 case_0186,answerable_multihop,3,1,False,True,asic_rg271-p0039-c001-6965df983e7f|fwo_dispute_resolution-p0010-c002-4f814531e440
@@ -110,6 +118,7 @@ case_0219,answerable_clear,1,0,False,False,asic_rg271-p0013-c001-a53d7d32bf80
 case_0222,answerable_clear,1,1,True,True,
 case_0223,answerable_clear,1,1,True,True,
 case_0224,answerable_multihop,2,2,True,True,
+case_0225,answerable_clear,1,1,True,True,
 case_0226,answerable_multihop,3,0,False,False,asic_rg271-p0021-c001-eedd18e219b1|fwo_dispute_resolution-p0004-c001-b24117433e9a|fwo_dispute_resolution-p0008-c002-dec9ca7c9c5d
 case_0227,answerable_clear,1,1,True,True,
 case_0229,answerable_clear,1,1,True,True,
@@ -124,6 +133,7 @@ case_0241,answerable_multihop,2,0,False,False,asic_rg271-p0010-c002-8727b7af0378
 case_0242,answerable_clear,1,1,True,True,
 case_0244,answerable_clear,1,1,True,True,
 case_0245,answerable_clear,1,1,True,True,
+case_0246,answerable_clear,1,0,False,False,asic_rg271-p0020-c002-86e3cf74ff52
 case_0247,answerable_clear,1,1,True,True,
 case_0248,answerable_clear,1,1,True,True,
 case_0250,answerable_clear,1,1,True,True,

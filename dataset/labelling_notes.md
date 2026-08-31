@@ -218,3 +218,125 @@ The principal labelling limitations are author-written cases, a single author
 and reviewer, no inter-rater agreement, one regulatory domain, three public
 documents, and category-associated vocabulary documented above. These
 limitations must remain visible in the final report.
+
+## Owner-requested Phase 2 correction audit - 2026-08-31
+
+This dated section supersedes the affected dispositions in the original
+borderline ledger above without deleting that audit trail. It was completed
+before Phase 3 and before any model call.
+
+### Multihop spot checks
+
+- `case_0014` remains `answerable_multihop`. Passage
+  `fwo_dispute_resolution-p0003-c001-1a4a5fb3c291` describes negotiation,
+  mediation and arbitration, while
+  `fwo_dispute_resolution-p0011-c001-229dc07ce14d` supplies conciliation and
+  its contrast with arbitration. The additional mediator detail is in
+  `fwo_dispute_resolution-p0010-c002-4f814531e440`. No one passage contains
+  the complete four-method comparison.
+- `case_0016` remains `answerable_multihop`. Passage
+  `asic_rg271-p0045-c001-5511043e4931` supplies the public-policy contents and
+  availability rule; `asic_rg271-p0039-c001-6965df983e7f` separately states
+  that the IDR process must be provided free of charge. No one passage
+  supports the complete requested answer.
+
+### Contradictory-case re-audit
+
+Every one of the original 30 rows in the borderline ledger was re-read
+against both passage IDs already named there. The following 19 cases retain
+`unanswerable_contradictory`; each remains tied to the two exact passage IDs
+in its ledger row, including explicit within-document scope conflicts:
+`case_0007`, `case_0010`, `case_0018`, `case_0029`, `case_0068`, `case_0075`,
+`case_0076`, `case_0083`, `case_0085`, `case_0113`, `case_0117`, `case_0119`,
+`case_0132`, `case_0179`, `case_0189`, `case_0262`, `case_0270`, `case_0285`,
+and `case_0291`.
+
+The other 11 dispositions were corrected as follows:
+
+- `case_0003` -> `answerable_clear`: one passage,
+  `fwo_dispute_resolution-p0003-c001-1a4a5fb3c291`, directly contrasts a
+  mediator helping parties agree with an arbitrator or court deciding.
+- `case_0021` -> `answerable_clear`: one passage,
+  `asic_rg271-p0028-c001-c4d0879b3776`, states both the urgent-credit direct
+  AFCA pathway and the death-benefit prerequisite.
+- `case_0042` -> `answerable_clear`: one overlapping passage,
+  `asic_rg271-p0033-c002-5f7f876bab63`, distinguishes a complainant pursuing
+  AFCA from a firm's consent-dependent direct referral.
+- `case_0064` -> `answerable_clear`: one overlapping passage,
+  `asic_rg271-p0014-c002-c83027a54f40`, contains both the controlled-channel
+  social-media rule and the third-party-channel exception.
+- `case_0074` -> `answerable_clear`: one passage,
+  `fwo_dispute_resolution-p0003-c001-1a4a5fb3c291`, contrasts mediated
+  agreement with binding arbitration or adjudication.
+- `case_0108` -> `answerable_clear`: one passage,
+  `asic_rg271-p0015-c001-29fdc2ba5f4c`, states both the bare-report exclusion
+  and the conditions that turn an unauthorised-transaction report into a
+  complaint.
+- `case_0124` -> `answerable_clear`: one table passage,
+  `asic_rg271-p0022-c001-c82f21d3ee0b`, relates the 28-day objection period to
+  the subsequent 90-day maximum.
+- `case_0183` -> `answerable_clear`: one table passage,
+  `asic_rg271-p0021-c002-f2a3afc18de5`, contains the scoped 30-day and 45-day
+  timeframes.
+- `case_0225` -> `answerable_clear`: one table passage,
+  `asic_rg271-p0008-c001-4a2206d2b3a8`, distinguishes an exempt SPFE's lack
+  of its own IDR duty from its servicing licensee's coverage duty.
+- `case_0246` -> `answerable_clear`: one overlapping passage,
+  `asic_rg271-p0020-c002-86e3cf74ff52`, contains both the supporting-
+  information requirement and the privacy or legislative limitation.
+- `case_0211` -> `unanswerable_missing`: passage
+  `asic_rg271-p0023-c001-94f83792660d` gives the complete conditions for a
+  valid delay notice, but the question omits whether complexity or
+  circumstances beyond the firm's control caused the delay. This is a
+  missing material fact, not a source conflict.
+
+The resulting distribution is 115 `answerable_clear`, 45
+`answerable_multihop`, 46 `unanswerable_missing`, 19
+`unanswerable_contradictory`, 45 `out_of_scope`, and 30 `adversarial`.
+
+### Retrieval diagnostic
+
+`dataset/retrieval_diagnostics.json` covers all 160 answerable cases. The
+frozen BM25 top-eight retrieved all gold passages for 127 cases (`full`), at
+least one but not all gold passages for 18 (`partial`), and no gold passage
+for 15 (`none`). These values are computed from the committed retrieval rows,
+not manually assigned.
+
+### Question-only leakage classifier breakdown
+
+The classifier remains a seeded, stratified five-fold multinomial naive Bayes
+model over question-text word unigrams and bigrams that occur in at least two
+training questions. The following matrices use rows as actual labels and
+columns as predicted labels.
+
+Same-topic three-way task (180 cases):
+
+| Actual / predicted | `answerable_clear` | `unanswerable_missing` | `unanswerable_contradictory` |
+| --- | ---: | ---: | ---: |
+| `answerable_clear` | 107 | 3 | 5 |
+| `unanswerable_missing` | 16 | 30 | 0 |
+| `unanswerable_contradictory` | 7 | 1 | 11 |
+
+Accuracy is `0.8222222222222222`, macro recall is
+`0.7205186880244089`, and the majority-class baseline is
+`0.6388888888888888`. The classifier therefore does distinguish these
+same-topic labels from question text alone, especially `answerable_clear`.
+This is material authoring-style or lexical leakage and remains a study
+limitation.
+
+Different-topic binary task (all 300 cases):
+
+| Actual / predicted | `out_of_scope_or_adversarial` | `rest` |
+| --- | ---: | ---: |
+| `out_of_scope_or_adversarial` | 38 | 37 |
+| `rest` | 13 | 212 |
+
+Accuracy is `0.8333333333333334`, macro recall is `0.7244444444444444`,
+and the majority-class baseline is `0.75`. Despite the higher raw accuracy,
+the classifier identifies only 38 of 75 out-of-scope or adversarial cases;
+the imbalance and strong `rest` recall account for much of the score.
+
+The replacement full six-way question-only classifier result is accuracy
+`0.64` and macro recall `0.5756589541486566`, against a majority-class
+baseline of `0.38333333333333336`. Exact matrices and source hashes are in
+`dataset/audit_summary.json`.

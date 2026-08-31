@@ -1,23 +1,23 @@
 {
   "author_confidence_counts": {
-    "high": 270,
-    "medium": 30
+    "high": 281,
+    "medium": 19
   },
   "category_counts": {
     "adversarial": 30,
-    "answerable_clear": 105,
+    "answerable_clear": 115,
     "answerable_multihop": 45,
     "out_of_scope": 45,
-    "unanswerable_contradictory": 30,
-    "unanswerable_missing": 45
+    "unanswerable_contradictory": 19,
+    "unanswerable_missing": 46
   },
   "leading_phrases": {
     "distinct_first_tokens": 51,
     "maximum_same_category_first_three_token_count": 4
   },
   "length_only_classifier": {
-    "accuracy": 0.3333333333333333,
-    "macro_recall": 0.2830687830687831,
+    "accuracy": 0.29333333333333333,
+    "macro_recall": 0.2887236206458174,
     "method": "stratified 5-fold nearest training-category median question word count",
     "seed": 20260831
   },
@@ -53,11 +53,11 @@
     },
     "answerable_clear": {
       "max_words": 24,
-      "mean_characters": 83.79047619047618,
-      "mean_words": 13.8,
+      "mean_characters": 84.65217391304348,
+      "mean_words": 13.930434782608696,
       "median_words": 13,
       "min_words": 7,
-      "n": 105,
+      "n": 115,
       "p25_words": 11,
       "p75_words": 16,
       "p95_words": 21
@@ -85,42 +85,42 @@
       "p95_words": 15
     },
     "unanswerable_contradictory": {
-      "max_words": 22,
-      "mean_characters": 99.26666666666667,
-      "mean_words": 16.066666666666666,
-      "median_words": 15,
-      "min_words": 11,
-      "n": 30,
+      "max_words": 20,
+      "mean_characters": 100.84210526315789,
+      "mean_words": 16.210526315789473,
+      "median_words": 16,
+      "min_words": 13,
+      "n": 19,
       "p25_words": 14,
       "p75_words": 19,
-      "p95_words": 21
+      "p95_words": 20
     },
     "unanswerable_missing": {
-      "max_words": 20,
-      "mean_characters": 94.35555555555555,
-      "mean_words": 15.133333333333333,
+      "max_words": 21,
+      "mean_characters": 95.02173913043478,
+      "mean_words": 15.26086956521739,
       "median_words": 15,
       "min_words": 11,
-      "n": 45,
+      "n": 46,
       "p25_words": 14,
-      "p75_words": 16,
+      "p75_words": 17,
       "p95_words": 19
     }
   },
   "retrieval_gold_coverage": {
     "all_answerable": {
-      "all_gold_retrieved_count": 118,
-      "all_gold_retrieved_rate": 0.7866666666666666,
-      "any_gold_retrieved_count": 136,
-      "any_gold_retrieved_rate": 0.9066666666666666,
-      "n": 150
+      "all_gold_retrieved_count": 127,
+      "all_gold_retrieved_rate": 0.79375,
+      "any_gold_retrieved_count": 145,
+      "any_gold_retrieved_rate": 0.90625,
+      "n": 160
     },
     "answerable_clear": {
-      "all_gold_retrieved_count": 96,
-      "all_gold_retrieved_rate": 0.9142857142857143,
-      "any_gold_retrieved_count": 96,
-      "any_gold_retrieved_rate": 0.9142857142857143,
-      "n": 105
+      "all_gold_retrieved_count": 105,
+      "all_gold_retrieved_rate": 0.9130434782608695,
+      "any_gold_retrieved_count": 105,
+      "any_gold_retrieved_rate": 0.9130434782608695,
+      "n": 115
     },
     "answerable_multihop": {
       "all_gold_retrieved_count": 22,
@@ -159,6 +159,7 @@
       "case_0239",
       "case_0240",
       "case_0241",
+      "case_0246",
       "case_0253",
       "case_0257",
       "case_0259"
@@ -166,64 +167,123 @@
   },
   "schema_version": "1.0.0",
   "source_hashes": {
-    "cases_sha256": "462705db5e62be9b0eb70a4a99172d4c50332f43e1c69081442bce22081ace28",
+    "cases_sha256": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
     "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
+    "retrieval_diagnostics_sha256": "c899cd2d483e26daec65ce0d6c265d8c7e72c70f4d27406710a50f81b50a0e7c",
     "retrieval_sha256": "8447926d08e906f245a695f9d0b9bf3536e59ba55fa70a1caf10fd6d37a293de"
   },
   "surface_classifier": {
-    "accuracy": 0.69,
+    "accuracy": 0.64,
     "confusion": {
       "adversarial": {
-        "adversarial": 19,
-        "answerable_clear": 5,
-        "answerable_multihop": 4,
+        "adversarial": 20,
+        "answerable_clear": 6,
+        "answerable_multihop": 2,
         "out_of_scope": 0,
-        "unanswerable_contradictory": 1,
-        "unanswerable_missing": 1
+        "unanswerable_contradictory": 0,
+        "unanswerable_missing": 2
       },
       "answerable_clear": {
-        "adversarial": 2,
-        "answerable_clear": 86,
-        "answerable_multihop": 12,
-        "out_of_scope": 1,
-        "unanswerable_contradictory": 1,
-        "unanswerable_missing": 3
+        "adversarial": 1,
+        "answerable_clear": 89,
+        "answerable_multihop": 17,
+        "out_of_scope": 3,
+        "unanswerable_contradictory": 3,
+        "unanswerable_missing": 2
       },
       "answerable_multihop": {
-        "adversarial": 2,
-        "answerable_clear": 24,
-        "answerable_multihop": 18,
+        "adversarial": 0,
+        "answerable_clear": 28,
+        "answerable_multihop": 17,
         "out_of_scope": 0,
-        "unanswerable_contradictory": 1,
+        "unanswerable_contradictory": 0,
         "unanswerable_missing": 0
       },
       "out_of_scope": {
         "adversarial": 0,
-        "answerable_clear": 5,
-        "answerable_multihop": 2,
-        "out_of_scope": 34,
+        "answerable_clear": 9,
+        "answerable_multihop": 0,
+        "out_of_scope": 32,
         "unanswerable_contradictory": 0,
         "unanswerable_missing": 4
       },
       "unanswerable_contradictory": {
         "adversarial": 0,
-        "answerable_clear": 3,
-        "answerable_multihop": 4,
-        "out_of_scope": 0,
-        "unanswerable_contradictory": 23,
-        "unanswerable_missing": 0
+        "answerable_clear": 9,
+        "answerable_multihop": 2,
+        "out_of_scope": 1,
+        "unanswerable_contradictory": 6,
+        "unanswerable_missing": 1
       },
       "unanswerable_missing": {
         "adversarial": 1,
-        "answerable_clear": 12,
+        "answerable_clear": 13,
         "answerable_multihop": 4,
-        "out_of_scope": 1,
+        "out_of_scope": 0,
         "unanswerable_contradictory": 0,
-        "unanswerable_missing": 27
+        "unanswerable_missing": 28
       }
     },
-    "macro_recall": 0.6624338624338625,
-    "majority_class_baseline_accuracy": 0.35,
+    "labels": [
+      "adversarial",
+      "answerable_clear",
+      "answerable_multihop",
+      "out_of_scope",
+      "unanswerable_contradictory",
+      "unanswerable_missing"
+    ],
+    "macro_recall": 0.5756589541486566,
+    "majority_class_baseline_accuracy": 0.38333333333333336,
+    "method": "stratified 5-fold multinomial naive Bayes over word unigrams and bigrams appearing in at least two training questions",
+    "seed": 20260831
+  },
+  "surface_classifier_out_of_scope_adversarial_vs_rest": {
+    "accuracy": 0.8333333333333334,
+    "confusion": {
+      "out_of_scope_or_adversarial": {
+        "out_of_scope_or_adversarial": 38,
+        "rest": 37
+      },
+      "rest": {
+        "out_of_scope_or_adversarial": 13,
+        "rest": 212
+      }
+    },
+    "labels": [
+      "out_of_scope_or_adversarial",
+      "rest"
+    ],
+    "macro_recall": 0.7244444444444444,
+    "majority_class_baseline_accuracy": 0.75,
+    "method": "stratified 5-fold multinomial naive Bayes over word unigrams and bigrams appearing in at least two training questions",
+    "seed": 20260831
+  },
+  "surface_classifier_same_topic": {
+    "accuracy": 0.8222222222222222,
+    "confusion": {
+      "answerable_clear": {
+        "answerable_clear": 107,
+        "unanswerable_contradictory": 5,
+        "unanswerable_missing": 3
+      },
+      "unanswerable_contradictory": {
+        "answerable_clear": 7,
+        "unanswerable_contradictory": 11,
+        "unanswerable_missing": 1
+      },
+      "unanswerable_missing": {
+        "answerable_clear": 16,
+        "unanswerable_contradictory": 0,
+        "unanswerable_missing": 30
+      }
+    },
+    "labels": [
+      "answerable_clear",
+      "unanswerable_missing",
+      "unanswerable_contradictory"
+    ],
+    "macro_recall": 0.7205186880244089,
+    "majority_class_baseline_accuracy": 0.6388888888888888,
     "method": "stratified 5-fold multinomial naive Bayes over word unigrams and bigrams appearing in at least two training questions",
     "seed": 20260831
   },
@@ -231,15 +291,16 @@
     "checks": {
       "answerable_clear_has_one_gold_passage": true,
       "answerable_multihop_has_at_least_two_gold_passages": true,
-      "borderline_ledger_matches_medium_contradictory_cases": true,
       "borderline_ledger_passages_exist": true,
       "case_count": 300,
       "case_ids_unique_and_contiguous": true,
+      "current_medium_contradictory_cases_present_in_borderline_ledger": true,
       "exact_schema": true,
       "gold_behaviour_consistent": true,
       "gold_citations_exist": true,
       "manifest_hashes_match": true,
       "questions_unique_after_whitespace_case_normalisation": true,
+      "retrieval_diagnostics_match_gold_overlap": true,
       "retrieval_has_eight_unique_ordered_passages_per_case": true
     },
     "status": "PASS"

@@ -63,7 +63,7 @@ case_0017,answerable_clear,case_0022,answerable_clear,0.3333333333333333
 case_0017,answerable_clear,case_0140,answerable_clear,0.3333333333333333
 case_0023,answerable_multihop,case_0274,answerable_clear,0.3333333333333333
 case_0025,answerable_clear,case_0114,answerable_multihop,0.3333333333333333
-case_0029,unanswerable_contradictory,case_0108,unanswerable_contradictory,0.3333333333333333
+case_0029,unanswerable_contradictory,case_0108,answerable_clear,0.3333333333333333
 case_0032,answerable_clear,case_0079,answerable_clear,0.3333333333333333
 case_0032,answerable_clear,case_0219,answerable_clear,0.3333333333333333
 case_0041,answerable_clear,case_0281,answerable_multihop,0.3333333333333333
@@ -78,9 +78,9 @@ case_0145,answerable_multihop,case_0227,answerable_clear,0.3333333333333333
 case_0147,answerable_clear,case_0253,answerable_clear,0.3333333333333333
 case_0161,answerable_clear,case_0233,answerable_clear,0.3333333333333333
 case_0224,answerable_multihop,case_0264,answerable_multihop,0.3235294117647059
-case_0132,unanswerable_contradictory,case_0183,unanswerable_contradictory,0.3225806451612903
+case_0132,unanswerable_contradictory,case_0183,answerable_clear,0.3225806451612903
 case_0039,unanswerable_missing,case_0110,adversarial,0.32142857142857145
-case_0083,unanswerable_contradictory,case_0183,unanswerable_contradictory,0.32142857142857145
+case_0083,unanswerable_contradictory,case_0183,answerable_clear,0.32142857142857145
 case_0098,answerable_multihop,case_0277,answerable_clear,0.32142857142857145
 case_0065,adversarial,case_0173,answerable_clear,0.32
 case_0154,answerable_clear,case_0186,answerable_multihop,0.32
@@ -98,4 +98,4 @@ case_0066,answerable_multihop,case_0080,answerable_multihop,0.3125
 case_0093,answerable_clear,case_0109,answerable_clear,0.3125
 case_0034,answerable_clear,case_0158,answerable_multihop,0.3103448275862069
 case_0022,answerable_clear,case_0093,answerable_clear,0.3076923076923077
-case_0064,unanswerable_contradictory,case_0224,answerable_multihop,0.3076923076923077
+case_0064,answerable_clear,case_0224,answerable_multihop,0.3076923076923077

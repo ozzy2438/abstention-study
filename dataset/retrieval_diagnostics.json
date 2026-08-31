@@ -1,0 +1,482 @@
+{
+  "case_0001": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0003": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0004": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0006": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0009": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0011": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0012": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0014": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0016": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0017": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0021": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0022": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0023": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0024": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0025": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0026": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0027": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0028": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0031": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0032": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0034": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0035": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0036": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0038": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0041": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0042": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0043": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0044": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0045": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0046": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0047": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0049": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0050": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0051": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0054": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0061": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0063": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0064": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0066": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0072": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0074": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0077": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0079": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0080": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0084": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0087": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0088": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0089": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0090": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0091": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0092": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0093": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0095": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0096": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0098": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0099": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0100": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0103": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0104": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0106": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0107": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0108": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0109": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0111": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0114": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0116": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0118": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0124": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0127": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0128": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0129": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0138": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0139": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0140": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0142": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0143": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0144": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0145": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0147": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0148": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0151": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0153": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0154": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0157": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0158": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0159": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0160": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0161": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0163": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0167": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0169": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0171": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0173": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0174": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0175": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0177": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0180": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0181": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0182": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0183": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0184": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0185": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0186": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0187": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0192": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0194": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0195": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0196": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0198": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0201": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0204": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0209": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0216": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0217": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0218": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0219": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0222": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0223": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0224": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0225": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0226": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0227": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0229": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0231": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0232": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0233": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0234": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0237": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0239": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0240": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0241": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0242": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0244": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0245": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0246": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0247": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0248": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0250": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0252": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0253": {
+    "bm25_top8_gold_hit": "none"
+  },
+  "case_0256": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0257": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0259": {
+    "bm25_top8_gold_hit": "partial"
+  },
+  "case_0264": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0269": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0272": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0274": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0275": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0276": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0277": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0278": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0279": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0281": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0282": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0284": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0286": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0290": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0295": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0299": {
+    "bm25_top8_gold_hit": "full"
+  },
+  "case_0300": {
+    "bm25_top8_gold_hit": "full"
+  }
+}
