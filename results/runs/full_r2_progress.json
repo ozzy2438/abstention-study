@@ -1,0 +1,20 @@
+{
+  "definition": "A fallback trigger is a raw API envelope whose call_role is fallback. The denominator is completed escalation-strategy rows.",
+  "emitted_checkpoints": [
+    {
+      "checkpoint_percent": 25,
+      "completed_fraction": 0.25,
+      "completed_row_target": 675,
+      "completed_rows": 675,
+      "escalation_rows_completed": 75,
+      "escalation_trigger_rate": 0.4666666666666667,
+      "expected_rows": 2700,
+      "fallback_triggers": 35,
+      "known_cumulative_spend_usd": "9.502562910000",
+      "unknown_actual_cost_seen": false
+    }
+  ],
+  "plan_identity_sha256": "e955599b66a105192dfdeeef184e970e64c0f2b2d01092b226e8ce583d81b21f",
+  "schema_version": "1.0.0",
+  "scope": "full_r2"
+}
