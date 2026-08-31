@@ -1057,14 +1057,15 @@ class ProgressReporter:
             (75, math.ceil(expected_rows * 0.75)),
         ]
         self.emitted_targets: set[int] = set()
+        self.checkpoint_states: dict[int, dict[str, Any]] = {}
         if self.progress_path.exists():
             previous = json.loads(self.progress_path.read_text(encoding="utf-8"))
             if previous.get("plan_identity_sha256") != self.plan_identity_sha256:
                 raise ValueError(f"Progress identity differs: {self.progress_path}")
-            self.emitted_targets = {
-                int(item["completed_row_target"])
-                for item in previous.get("emitted_checkpoints", [])
-            }
+            for item in previous.get("emitted_checkpoints", []):
+                target = int(item["completed_row_target"])
+                self.emitted_targets.add(target)
+                self.checkpoint_states[target] = dict(item)
 
     def _state(self, percent: int, target: int) -> dict[str, Any]:
         trigger_rate = (
@@ -1087,7 +1088,7 @@ class ProgressReporter:
 
     def _write(self) -> None:
         states = [
-            self._state(percent, target)
+            self.checkpoint_states[target]
             for percent, target in self.targets
             if target in self.emitted_targets
         ]
@@ -1110,6 +1111,7 @@ class ProgressReporter:
             if self.completed_rows >= target and target not in self.emitted_targets:
                 state = self._state(percent, target)
                 self.emitted_targets.add(target)
+                self.checkpoint_states[target] = state
                 self._write()
                 print(
                     json.dumps(

@@ -260,6 +260,14 @@ class ProgressCheckpointTests(unittest.TestCase):
             )
             saved = json.loads(progress_path.read_text(encoding="utf-8"))
             self.assertEqual(len(saved["emitted_checkpoints"]), 3)
+            self.assertEqual(
+                [item["completed_rows"] for item in saved["emitted_checkpoints"]],
+                [2, 4, 6],
+            )
+            self.assertEqual(
+                [item["completed_fraction"] for item in saved["emitted_checkpoints"]],
+                [0.25, 0.5, 0.75],
+            )
         finally:
             progress_path.unlink(missing_ok=True)
 

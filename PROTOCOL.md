@@ -989,3 +989,29 @@ must restart from zero completed rows under a new execution revision, with
 all known prior provider spend carried forward in the phase budget ledger. No
 partial V2 row may be combined with a later restart, and no Phase 5 analysis
 may begin before that restart completes.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Immutable checkpoint snapshots
+
+**Type:** Harness operational-safeguard correction. It does not change the
+task, corpus, dataset, labels, prompts, output contract, confidence,
+strategies, scoring, metrics, model snapshots, price table, or approved
+hard-budget cap.
+
+**Reason:** During execution revision V3, the terminal emitted correct 25%,
+50% and 75% checkpoint events, but the persisted progress file rebuilt every
+previous checkpoint from mutable current counters whenever a later checkpoint
+was written. Consequently, the durable file incorrectly made all three
+records look like the final emitted checkpoint state.
+
+**Correction:** A checkpoint now persists the exact immutable state captured
+when its threshold is first crossed. Later progress writes preserve those
+snapshots verbatim. A test verifies the saved 25%, 50% and 75% rows retain
+their distinct completed-row counts and fractions.
+
+**Impact and restart decision:** V3 raw envelopes, partial result rows and
+the malformed progress file are retained as operational evidence and marked
+superseded. They are not evaluation results. After provider credit is
+restored, the full 3x3 matrix must restart from zero completed rows under a
+new execution revision, carrying all known prior provider spend in the phase
+budget ledger. No V3 row may be combined with the restart, and no Phase 5
+analysis may begin before that restart completes.
