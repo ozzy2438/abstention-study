@@ -1,7 +1,7 @@
 {
   "checks": [
     {
-      "checked_at_utc": "2026-08-31T03:40:15.382Z",
+      "checked_at_utc": "2026-08-31T03:43:57.546Z",
       "http_status": 200,
       "requested_model": "gpt-5.4-nano-2026-03-17",
       "response_body_base64": "ewogICJpZCI6ICJncHQtNS40LW5hbm8tMjAyNi0wMy0xNyIsCiAgIm9iamVjdCI6ICJtb2RlbCIsCiAgImNyZWF0ZWQiOiAxNzczNDUwODM3LAogICJvd25lZF9ieSI6ICJzeXN0ZW0iLAogICJzaHV0ZG93bl9kYXRlIjogbnVsbAp9",
@@ -12,7 +12,7 @@
       "tier": "cheap"
     },
     {
-      "checked_at_utc": "2026-08-31T03:40:16.493Z",
+      "checked_at_utc": "2026-08-31T03:43:58.082Z",
       "http_status": 200,
       "requested_model": "gpt-5.4-mini-2026-03-17",
       "response_body_base64": "ewogICJpZCI6ICJncHQtNS40LW1pbmktMjAyNi0wMy0xNyIsCiAgIm9iamVjdCI6ICJtb2RlbCIsCiAgImNyZWF0ZWQiOiAxNzczNDUxMDc2LAogICJvd25lZF9ieSI6ICJzeXN0ZW0iLAogICJzaHV0ZG93bl9kYXRlIjogbnVsbAp9",
@@ -23,7 +23,7 @@
       "tier": "standard"
     },
     {
-      "checked_at_utc": "2026-08-31T03:40:16.922Z",
+      "checked_at_utc": "2026-08-31T03:43:59.911Z",
       "http_status": 200,
       "requested_model": "gpt-5.4-2026-03-05",
       "response_body_base64": "ewogICJpZCI6ICJncHQtNS40LTIwMjYtMDMtMDUiLAogICJvYmplY3QiOiAibW9kZWwiLAogICJjcmVhdGVkIjogMTc3MjY1NDA2MiwKICAib3duZWRfYnkiOiAic3lzdGVtIiwKICAic2h1dGRvd25fZGF0ZSI6IG51bGwKfQ==",

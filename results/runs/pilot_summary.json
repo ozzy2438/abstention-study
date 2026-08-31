@@ -1,0 +1,69 @@
+{
+  "actual_total_cost_usd": "0.815539420000",
+  "completed_at_utc": "2026-08-31T03:49:19.050Z",
+  "completed_rows": 180,
+  "configurations": {
+    "capable__escalation": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.122600070000",
+      "run_path": "results/runs/pilot__capable__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__self_check": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.276706500000",
+      "run_path": "results/runs/pilot__capable__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__single_pass": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.202312500000",
+      "run_path": "results/runs/pilot__capable__single_pass.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__escalation": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.014611080000",
+      "run_path": "results/runs/pilot__cheap__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__self_check": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.021119150000",
+      "run_path": "results/runs/pilot__cheap__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__single_pass": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.015480850000",
+      "run_path": "results/runs/pilot__cheap__single_pass.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__escalation": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.038221570000",
+      "run_path": "results/runs/pilot__standard__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__self_check": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.069580950000",
+      "run_path": "results/runs/pilot__standard__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__single_pass": {
+      "completed_cases": 20,
+      "known_cost_usd": "0.054906750000",
+      "run_path": "results/runs/pilot__standard__single_pass.csv",
+      "unknown_cost_rows": 0
+    }
+  },
+  "expected_rows": 180,
+  "known_cost_usd": "0.815539420000",
+  "plan_identity_sha256": "734b63366243a1741fff31e5ff96a6d5e978e9deb042a17070b5571484032a47",
+  "schema_version": "1.0.0",
+  "scope": "pilot",
+  "started_at_utc": "2026-08-31T03:44:00.523Z",
+  "unknown_cost_rows": 0,
+  "wall_clock_ms_this_invocation": 318506
+}
