@@ -1,0 +1,914 @@
+{
+  "all_matrix": {
+    "cost_projection_usd": {
+      "bootstrap_p05_all_fresh": "14.885442375000",
+      "bootstrap_p05_cache_inclusive": "11.845224470500",
+      "bootstrap_p95_all_fresh": "15.108430315000",
+      "bootstrap_p95_cache_inclusive": "12.066902349000",
+      "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+        "11.845224470500",
+        "15.108430315000"
+      ],
+      "point_estimate_all_fresh": "14.995598442852",
+      "point_estimate_cache_inclusive": "11.953916888566"
+    },
+    "fallback_trigger_projection": {
+      "bootstrap_p05_calls": 488,
+      "bootstrap_p95_calls": 518
+    },
+    "final_ESCALATE_label_projection": {
+      "bootstrap_p05_rows": 95,
+      "bootstrap_p95_rows": 125
+    }
+  },
+  "configurations": {
+    "capable__escalation": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.010061550000",
+          "pilot_mean_billed_cost_usd": "0.009554670000",
+          "projected_fallback_calls": "30.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.200000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.003197610000",
+          "pilot_mean_billed_cost_usd": "0.002690730000",
+          "projected_fallback_calls": "23.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.571428571429",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.006922914285",
+          "pilot_mean_billed_cost_usd": "0.006416034285",
+          "projected_fallback_calls": "25.714285714286",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.009217800000",
+          "pilot_mean_billed_cost_usd": "0.008710920000",
+          "projected_fallback_calls": "45.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000650800000",
+          "pilot_mean_billed_cost_usd": "0.000328240000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.009631800000",
+          "pilot_mean_billed_cost_usd": "0.009124920000",
+          "projected_fallback_calls": "46.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "1.753274380000",
+        "bootstrap_p05_cache_inclusive": "1.604712460000",
+        "bootstrap_p95_all_fresh": "1.954802007500",
+        "bootstrap_p95_cache_inclusive": "1.806240087500",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "1.604712460000",
+          "1.954802007500"
+        ],
+        "point_estimate_all_fresh": "1.851331792857",
+        "point_estimate_cache_inclusive": "1.702769872857"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 161,
+        "bootstrap_p95_calls": 179,
+        "point_estimate_calls": "169.714285714286"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 0,
+        "bootstrap_p95_rows": 0,
+        "point_estimate_rows": "0.000000000000"
+      },
+      "pilot_run_csv": "results/runs/pilot__capable__escalation.csv",
+      "pilot_run_csv_sha256": "b20e77791ff115eb25dd2ac18b6e0db749b2b1e9edc08a2750e724090d7745d0"
+    },
+    "capable__self_check": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.018772500000",
+          "pilot_mean_billed_cost_usd": "0.012436500000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.021736500000",
+          "pilot_mean_billed_cost_usd": "0.015400500000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.142857142857",
+          "pilot_mean_all_fresh_cost_usd": "0.021282500000",
+          "pilot_mean_billed_cost_usd": "0.014946500000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "6.428571428571"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.017210000000",
+          "pilot_mean_billed_cost_usd": "0.010874000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.017567500000",
+          "pilot_mean_billed_cost_usd": "0.013535500000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.017976666666",
+          "pilot_mean_billed_cost_usd": "0.011640666666",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "5.925411625000",
+        "bootstrap_p05_cache_inclusive": "4.068387625000",
+        "bootstrap_p95_all_fresh": "5.986144125000",
+        "bootstrap_p95_cache_inclusive": "4.129120125000",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "4.068387625000",
+          "5.986144125000"
+        ],
+        "point_estimate_all_fresh": "5.955744166666",
+        "point_estimate_cache_inclusive": "4.098720166666"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 0,
+        "bootstrap_p95_calls": 0,
+        "point_estimate_calls": "0.000000000000"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 3,
+        "bootstrap_p95_rows": 10,
+        "point_estimate_rows": "6.428571428571"
+      },
+      "pilot_run_csv": "results/runs/pilot__capable__self_check.csv",
+      "pilot_run_csv_sha256": "9e0923e19f2e05954ef30e7ea91660f8a11f6becac0d9d9fff8c1a361c91d9dd"
+    },
+    "capable__single_pass": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.009391250000",
+          "pilot_mean_billed_cost_usd": "0.009391250000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.010977000000",
+          "pilot_mean_billed_cost_usd": "0.010977000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.010821428571",
+          "pilot_mean_billed_cost_usd": "0.010821428571",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.008610000000",
+          "pilot_mean_billed_cost_usd": "0.008610000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.008695000000",
+          "pilot_mean_billed_cost_usd": "0.008695000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.008993333333",
+          "pilot_mean_billed_cost_usd": "0.008993333333",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "2.977974500000",
+        "bootstrap_p05_cache_inclusive": "2.977974500000",
+        "bootstrap_p95_all_fresh": "3.016964500000",
+        "bootstrap_p95_cache_inclusive": "3.016964500000",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "2.977974500000",
+          "3.016964500000"
+        ],
+        "point_estimate_all_fresh": "2.997405119047",
+        "point_estimate_cache_inclusive": "2.997405119047"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 0,
+        "bootstrap_p95_calls": 0,
+        "point_estimate_calls": "0.000000000000"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 0,
+        "bootstrap_p95_rows": 0,
+        "point_estimate_rows": "0.000000000000"
+      },
+      "pilot_run_csv": "results/runs/pilot__capable__single_pass.csv",
+      "pilot_run_csv_sha256": "4ac958cd884caa6b3c1049bbdec46592613ed6c16fd9a97aa226a67734c4cad6"
+    },
+    "cheap__escalation": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001499000000",
+          "pilot_mean_billed_cost_usd": "0.000992120000",
+          "projected_fallback_calls": "30.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.200000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000973220000",
+          "pilot_mean_billed_cost_usd": "0.000567716000",
+          "projected_fallback_calls": "23.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.428571428571",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001140242857",
+          "pilot_mean_billed_cost_usd": "0.000705774285",
+          "projected_fallback_calls": "19.285714285714",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001374000000",
+          "pilot_mean_billed_cost_usd": "0.000867120000",
+          "projected_fallback_calls": "45.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000650800000",
+          "pilot_mean_billed_cost_usd": "0.000328240000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001435333333",
+          "pilot_mean_billed_cost_usd": "0.000928453333",
+          "projected_fallback_calls": "46.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "0.342213687500",
+        "bootstrap_p05_cache_inclusive": "0.207864367500",
+        "bootstrap_p95_all_fresh": "0.355282767500",
+        "bootstrap_p95_cache_inclusive": "0.221916941000",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "0.207864367500",
+          "0.355282767500"
+        ],
+        "point_estimate_all_fresh": "0.348421761904",
+        "point_estimate_cache_inclusive": "0.214776596190"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 155,
+        "bootstrap_p95_calls": 173,
+        "point_estimate_calls": "163.285714285714"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 0,
+        "bootstrap_p95_rows": 0,
+        "point_estimate_rows": "0.000000000000"
+      },
+      "pilot_run_csv": "results/runs/pilot__cheap__escalation.csv",
+      "pilot_run_csv_sha256": "8fcb4662d209672a563df2a040b8f2c195c111ec048e71c608704c0b42f3aee8"
+    },
+    "cheap__self_check": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001504800000",
+          "pilot_mean_billed_cost_usd": "0.001251360000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001610140000",
+          "pilot_mean_billed_cost_usd": "0.001103260000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001587778571",
+          "pilot_mean_billed_cost_usd": "0.001080898571",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001379800000",
+          "pilot_mean_billed_cost_usd": "0.000872920000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001307800000",
+          "pilot_mean_billed_cost_usd": "0.000985240000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001441133333",
+          "pilot_mean_billed_cost_usd": "0.000934253333",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "0.452081402500",
+        "bootstrap_p05_cache_inclusive": "0.310323123000",
+        "bootstrap_p95_all_fresh": "0.458114582500",
+        "bootstrap_p95_cache_inclusive": "0.317785185500",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "0.310323123000",
+          "0.458114582500"
+        ],
+        "point_estimate_all_fresh": "0.454991469047",
+        "point_estimate_cache_inclusive": "0.314032749047"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 0,
+        "bootstrap_p95_calls": 0,
+        "point_estimate_calls": "0.000000000000"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 0,
+        "bootstrap_p95_rows": 0,
+        "point_estimate_rows": "0.000000000000"
+      },
+      "pilot_run_csv": "results/runs/pilot__cheap__self_check.csv",
+      "pilot_run_csv_sha256": "8c5cc7e2f429e49a668ce6f6e55cad153a401c40b78b7aedfe389d4e5add8cce"
+    },
+    "cheap__single_pass": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000752800000",
+          "pilot_mean_billed_cost_usd": "0.000752800000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000813360000",
+          "pilot_mean_billed_cost_usd": "0.000813360000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000816307142",
+          "pilot_mean_billed_cost_usd": "0.000816307142",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000690300000",
+          "pilot_mean_billed_cost_usd": "0.000690300000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000650800000",
+          "pilot_mean_billed_cost_usd": "0.000650800000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000720966666",
+          "pilot_mean_billed_cost_usd": "0.000720966666",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "0.227852727500",
+        "bootstrap_p05_cache_inclusive": "0.227852727500",
+        "bootstrap_p95_all_fresh": "0.231089250000",
+        "bootstrap_p95_cache_inclusive": "0.231089250000",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "0.227852727500",
+          "0.231089250000"
+        ],
+        "point_estimate_all_fresh": "0.229447388094",
+        "point_estimate_cache_inclusive": "0.229447388094"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 0,
+        "bootstrap_p95_calls": 0,
+        "point_estimate_calls": "0.000000000000"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 0,
+        "bootstrap_p95_rows": 0,
+        "point_estimate_rows": "0.000000000000"
+      },
+      "pilot_run_csv": "results/runs/pilot__cheap__single_pass.csv",
+      "pilot_run_csv_sha256": "465ec4ac70ee51313e34e728e6c45d3fd1358c2a58189dd2b1a0bf60f384ed82"
+    },
+    "standard__escalation": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.003545425000",
+          "pilot_mean_billed_cost_usd": "0.003038545000",
+          "projected_fallback_calls": "30.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.200000000000",
+          "pilot_final_ESCALATE_rate": "0.200000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.001401710000",
+          "pilot_mean_billed_cost_usd": "0.000894830000",
+          "projected_fallback_calls": "23.000000000000",
+          "projected_final_ESCALATE_rows": "23.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.571428571429",
+          "pilot_final_ESCALATE_rate": "0.285714285714",
+          "pilot_mean_all_fresh_cost_usd": "0.002392128571",
+          "pilot_mean_billed_cost_usd": "0.001885248571",
+          "projected_fallback_calls": "25.714285714286",
+          "projected_final_ESCALATE_rows": "12.857142857143"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.003248550000",
+          "pilot_mean_billed_cost_usd": "0.002741670000",
+          "projected_fallback_calls": "45.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.000650800000",
+          "pilot_mean_billed_cost_usd": "0.000328240000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "1.000000000000",
+          "pilot_final_ESCALATE_rate": "0.333333333333",
+          "pilot_mean_all_fresh_cost_usd": "0.003394216666",
+          "pilot_mean_billed_cost_usd": "0.002887336666",
+          "projected_fallback_calls": "46.000000000000",
+          "projected_final_ESCALATE_rows": "15.333333333333"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "0.665250677500",
+        "bootstrap_p05_cache_inclusive": "0.516688757500",
+        "bootstrap_p95_all_fresh": "0.714555925000",
+        "bootstrap_p95_cache_inclusive": "0.565994005000",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "0.516688757500",
+          "0.714555925000"
+        ],
+        "point_estimate_all_fresh": "0.689889102380",
+        "point_estimate_cache_inclusive": "0.541327182380"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 161,
+        "bootstrap_p95_calls": 178,
+        "point_estimate_calls": "169.714285714286"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 41,
+        "bootstrap_p95_rows": 61,
+        "point_estimate_rows": "51.190476190476"
+      },
+      "pilot_run_csv": "results/runs/pilot__standard__escalation.csv",
+      "pilot_run_csv_sha256": "b635f2a7eacd0b9158731d2a0360efa197a275d3bc1bc6189c9b5d942ac65c4b"
+    },
+    "standard__self_check": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.005645250000",
+          "pilot_mean_billed_cost_usd": "0.003398850000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.200000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.005679150000",
+          "pilot_mean_billed_cost_usd": "0.003570990000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "23.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.005491714285",
+          "pilot_mean_billed_cost_usd": "0.003664971428",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.005190000000",
+          "pilot_mean_billed_cost_usd": "0.003116400000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.004729500000",
+          "pilot_mean_billed_cost_usd": "0.003174300000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.005420000000",
+          "pilot_mean_billed_cost_usd": "0.003288800000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "1.631411737500",
+        "bootstrap_p05_cache_inclusive": "1.019736637500",
+        "bootstrap_p95_all_fresh": "1.653146287500",
+        "bootstrap_p95_cache_inclusive": "1.039488337500",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "1.019736637500",
+          "1.653146287500"
+        ],
+        "point_estimate_all_fresh": "1.642317392857",
+        "point_estimate_cache_inclusive": "1.029387564285"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 0,
+        "bootstrap_p95_calls": 0,
+        "point_estimate_calls": "0.000000000000"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 16,
+        "bootstrap_p95_rows": 30,
+        "point_estimate_rows": "23.000000000000"
+      },
+      "pilot_run_csv": "results/runs/pilot__standard__self_check.csv",
+      "pilot_run_csv_sha256": "3d294d31517ee30829ef8a81915583316723bd277ee0ce722bbf8721765599ca"
+    },
+    "standard__single_pass": {
+      "category_strata": {
+        "adversarial": {
+          "full_cases": 30,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.002817375000",
+          "pilot_mean_billed_cost_usd": "0.002817375000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "answerable_clear": {
+          "full_cases": 115,
+          "pilot_cases": 5,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.200000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.002886300000",
+          "pilot_mean_billed_cost_usd": "0.002886300000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "23.000000000000"
+        },
+        "answerable_multihop": {
+          "full_cases": 45,
+          "pilot_cases": 7,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.142857142857",
+          "pilot_mean_all_fresh_cost_usd": "0.002736000000",
+          "pilot_mean_billed_cost_usd": "0.002736000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "6.428571428571"
+        },
+        "out_of_scope": {
+          "full_cases": 45,
+          "pilot_cases": 2,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.002583000000",
+          "pilot_mean_billed_cost_usd": "0.002583000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_contradictory": {
+          "full_cases": 19,
+          "pilot_cases": 1,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.002428500000",
+          "pilot_mean_billed_cost_usd": "0.002428500000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        },
+        "unanswerable_missing": {
+          "full_cases": 46,
+          "pilot_cases": 3,
+          "pilot_fallback_trigger_rate": "0.000000000000",
+          "pilot_final_ESCALATE_rate": "0.000000000000",
+          "pilot_mean_all_fresh_cost_usd": "0.002698000000",
+          "pilot_mean_billed_cost_usd": "0.002698000000",
+          "projected_fallback_calls": "0.000000000000",
+          "projected_final_ESCALATE_rows": "0.000000000000"
+        }
+      },
+      "cost_projection_usd": {
+        "bootstrap_p05_all_fresh": "0.820504462500",
+        "bootstrap_p05_cache_inclusive": "0.820504462500",
+        "bootstrap_p95_all_fresh": "0.831578250000",
+        "bootstrap_p95_cache_inclusive": "0.831578250000",
+        "cache_sensitivity_envelope_p05_billed_to_p95_fresh": [
+          "0.820504462500",
+          "0.831578250000"
+        ],
+        "point_estimate_all_fresh": "0.826050250000",
+        "point_estimate_cache_inclusive": "0.826050250000"
+      },
+      "fallback_trigger_projection": {
+        "bootstrap_p05_calls": 0,
+        "bootstrap_p95_calls": 0,
+        "point_estimate_calls": "0.000000000000"
+      },
+      "final_ESCALATE_label_projection": {
+        "bootstrap_p05_rows": 22,
+        "bootstrap_p95_rows": 38,
+        "point_estimate_rows": "29.428571428571"
+      },
+      "pilot_run_csv": "results/runs/pilot__standard__single_pass.csv",
+      "pilot_run_csv_sha256": "fe7662dda655011016a5a41e8559db214000e4a2a555449311ff90d0276e4ab3"
+    }
+  },
+  "conservative_preflight_maximum": {
+    "configurations": {
+      "capable__escalation": {
+        "case_count": 300,
+        "estimated_input_tokens": 2087592,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "8.656864200000"
+      },
+      "capable__self_check": {
+        "case_count": 300,
+        "estimated_input_tokens": 2448792,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "16.921980000000"
+      },
+      "capable__single_pass": {
+        "case_count": 300,
+        "estimated_input_tokens": 1048746,
+        "maximum_calls": 300,
+        "maximum_output_tokens": 360000,
+        "projected_max_cost_usd": "8.021865000000"
+      },
+      "cheap__escalation": {
+        "case_count": 300,
+        "estimated_input_tokens": 2087592,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "1.317518400000"
+      },
+      "cheap__self_check": {
+        "case_count": 300,
+        "estimated_input_tokens": 2448792,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "1.389758400000"
+      },
+      "cheap__single_pass": {
+        "case_count": 300,
+        "estimated_input_tokens": 1048746,
+        "maximum_calls": 300,
+        "maximum_output_tokens": 360000,
+        "projected_max_cost_usd": "0.659749200000"
+      },
+      "standard__escalation": {
+        "case_count": 300,
+        "estimated_input_tokens": 2087592,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "3.058883700000"
+      },
+      "standard__self_check": {
+        "case_count": 300,
+        "estimated_input_tokens": 2448792,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "5.076594000000"
+      },
+      "standard__single_pass": {
+        "case_count": 300,
+        "estimated_input_tokens": 1048746,
+        "maximum_calls": 300,
+        "maximum_output_tokens": 360000,
+        "projected_max_cost_usd": "2.406559500000"
+      }
+    },
+    "maximum_calls": 4500,
+    "projected_max_cost_usd": "47.509772400000"
+  },
+  "created_at_utc": "2026-08-31T04:24:47.973Z",
+  "method": {
+    "cache_sensitivity_note": "Cache-inclusive values preserve observed provider cache discounts. All-fresh values reprice the same raw calls with cached input tokens set to zero. The envelope is a cache-sensitivity range, not a confidence interval for future model behaviour.",
+    "fallback_definition": "A fallback trigger is a second strategy call with call_role=fallback; it is distinct from a final output label of ESCALATE.",
+    "full_category_counts_fixed": {
+      "adversarial": 30,
+      "answerable_clear": 115,
+      "answerable_multihop": 45,
+      "out_of_scope": 45,
+      "unanswerable_contradictory": 19,
+      "unanswerable_missing": 46
+    },
+    "iterations": 5000,
+    "pilot_category_counts": {
+      "adversarial": 2,
+      "answerable_clear": 5,
+      "answerable_multihop": 7,
+      "out_of_scope": 2,
+      "unanswerable_contradictory": 1,
+      "unanswerable_missing": 3
+    },
+    "pilot_proportionally_stratified": false,
+    "pilot_selection_note": "The frozen pilot was a deterministic uniform 20-case sample, not a category-stratified quota sample; its category counts are therefore used only as within-category empirical observations.",
+    "seed": 20260831,
+    "type": "category-stratified empirical bootstrap"
+  },
+  "schema_version": "1.0.0"
+}

@@ -113,6 +113,8 @@ RESULT_FIELDS = [
     "correct",
     "citation_valid",
     "input_tokens",
+    "fresh_input_tokens",
+    "cached_input_tokens",
     "output_tokens",
     "cost_usd",
     "latency_ms",
@@ -199,6 +201,24 @@ def append_csv_row(path: Path, row: dict[str, Any]) -> None:
         writer.writerow(row)
         handle.flush()
         os.fsync(handle.fileno())
+
+
+def atomic_write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
+    """Replace a run CSV only after a complete raw-evidence rescore succeeds."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
+    with temporary.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=RESULT_FIELDS, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(rows)
+        handle.flush()
+        os.fsync(handle.fileno())
+    os.replace(temporary, path)
+    directory_fd = os.open(path.parent, os.O_RDONLY)
+    try:
+        os.fsync(directory_fd)
+    finally:
+        os.close(directory_fd)
 
 
 def decimal_text(value: Decimal) -> str:
@@ -359,13 +379,19 @@ class TokenEstimator:
             config["token_estimator"]["assistant_priming_tokens"]
         )
         self.schema_tokens = len(self.encoding.encode(canonical_json(RESPONSE_FORMAT)))
+        self._message_count_cache: dict[str, int] = {}
 
     def count_messages(self, messages: list[dict[str, str]]) -> int:
+        cache_key = canonical_json(messages)
+        cached = self._message_count_cache.get(cache_key)
+        if cached is not None:
+            return cached
         total = self.assistant_priming_tokens + self.schema_tokens
         for message in messages:
             total += self.tokens_per_message
             total += len(self.encoding.encode(message["role"]))
             total += len(self.encoding.encode(message["content"]))
+        self._message_count_cache[cache_key] = total
         return total
 
 
@@ -485,6 +511,8 @@ class CallResult:
     parse_error: str | None
     raw_paths: list[str]
     input_tokens: int | None
+    fresh_input_tokens: int | None
+    cached_input_tokens: int | None
     output_tokens: int | None
     cost: Decimal | None
     budget_guard_cost: Decimal
@@ -492,6 +520,125 @@ class CallResult:
     fingerprints: list[str]
     finish_reasons: list[str]
     error_state: str | None
+
+
+def call_result_from_envelopes(
+    call_role: str,
+    model_tier: str,
+    model: ModelTier,
+    envelopes: list[tuple[Path, dict[str, Any]]],
+) -> CallResult:
+    """Reconstruct a call result solely from durable raw API envelopes."""
+    if not envelopes:
+        raise ValueError("Cannot construct a call result without raw envelopes")
+    raw_paths = [relative_path(path) for path, _ in envelopes]
+    all_usage_known = all(isinstance(item.get("usage"), dict) for _, item in envelopes)
+    input_tokens = None
+    fresh_input_tokens = None
+    cached_input_tokens = None
+    output_tokens = None
+    if all_usage_known:
+        try:
+            prompt_values = [int(item["usage"]["prompt_tokens"]) for _, item in envelopes]
+            completion_values = [
+                int(item["usage"]["completion_tokens"]) for _, item in envelopes
+            ]
+            cached_values: list[int] = []
+            for _, item in envelopes:
+                details = item["usage"].get("prompt_tokens_details")
+                cached_value = (
+                    details.get("cached_tokens") if isinstance(details, dict) else None
+                )
+                if not isinstance(cached_value, int):
+                    raise ValueError("cached input token count is unavailable")
+                cached_values.append(cached_value)
+            input_tokens = sum(prompt_values)
+            output_tokens = sum(completion_values)
+            cached_input_tokens = sum(cached_values)
+            if cached_input_tokens < 0 or cached_input_tokens > input_tokens:
+                raise ValueError("cached input token count is outside prompt-token bounds")
+            fresh_input_tokens = input_tokens - cached_input_tokens
+        except (KeyError, TypeError, ValueError):
+            # Preserve total API usage when it is available, but do not invent a
+            # fresh/cache split when the provider did not return one.
+            try:
+                input_tokens = sum(
+                    int(item["usage"]["prompt_tokens"]) for _, item in envelopes
+                )
+                output_tokens = sum(
+                    int(item["usage"]["completion_tokens"]) for _, item in envelopes
+                )
+            except (KeyError, TypeError, ValueError):
+                input_tokens = None
+                output_tokens = None
+            fresh_input_tokens = None
+            cached_input_tokens = None
+    all_costs_known = all(item.get("cost_usd") is not None for _, item in envelopes)
+    total_cost = None
+    if all_costs_known:
+        total_cost = sum(
+            (Decimal(item["cost_usd"]) for _, item in envelopes), Decimal(0)
+        )
+    guard_cost = sum(
+        (Decimal(item["budget_guard_cost_usd"]) for _, item in envelopes),
+        Decimal(0),
+    )
+    actual_models = [
+        str(item["returned_model"])
+        for _, item in envelopes
+        if item.get("returned_model")
+    ]
+    fingerprints = [
+        str(item["system_fingerprint"])
+        for _, item in envelopes
+        if item.get("system_fingerprint")
+    ]
+    finish_reasons = [
+        str(item["finish_reason"])
+        for _, item in envelopes
+        if item.get("finish_reason")
+    ]
+    final = envelopes[-1][1]
+    response_content: str | None = None
+    parsed: ParsedOutput | None = None
+    parse_error: str | None = None
+    error_state: str | None = None
+    if final.get("http_status") == 200:
+        try:
+            response = json.loads(final["response_body_raw"])
+            response_content = response["choices"][0]["message"]["content"]
+            if not isinstance(response_content, str):
+                response_content = None
+                parse_error = "invalid_response:content_not_string"
+            else:
+                parsed, parse_error = parse_model_content(response_content)
+        except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
+            parse_error = f"invalid_response:{type(exc).__name__}"
+        if final.get("returned_model") != model.model_version:
+            parsed = None
+            parse_error = "model_version_mismatch"
+        error_state = parse_error
+    else:
+        error_state = final.get("transport_error") or f"http_{final.get('http_status')}"
+    return CallResult(
+        call_role=call_role,
+        requested_tier=model_tier,
+        requested_model=model.model_version,
+        response_content=response_content,
+        parsed=parsed,
+        parse_error=parse_error,
+        raw_paths=raw_paths,
+        input_tokens=input_tokens,
+        fresh_input_tokens=fresh_input_tokens,
+        cached_input_tokens=cached_input_tokens,
+        output_tokens=output_tokens,
+        cost=total_cost,
+        budget_guard_cost=guard_cost,
+        actual_models=actual_models,
+        fingerprints=fingerprints,
+        finish_reasons=finish_reasons,
+        error_state=error_state,
+    )
 
 
 class Runtime:
@@ -689,8 +836,10 @@ class Runtime:
         if status == 200 and returned_model == model.model_version and isinstance(usage, dict):
             prompt_tokens = usage.get("prompt_tokens")
             completion_tokens = usage.get("completion_tokens")
-            details = usage.get("prompt_tokens_details") or {}
-            cached_tokens = details.get("cached_tokens", 0)
+            details = usage.get("prompt_tokens_details")
+            cached_tokens = (
+                details.get("cached_tokens") if isinstance(details, dict) else None
+            )
             if all(
                 isinstance(value, int)
                 for value in (prompt_tokens, completion_tokens, cached_tokens)
@@ -776,78 +925,11 @@ class Runtime:
         model: ModelTier,
         envelopes: list[tuple[Path, dict[str, Any]]],
     ) -> CallResult:
-        raw_paths = [relative_path(path) for path, _ in envelopes]
-        all_usage_known = all(isinstance(item.get("usage"), dict) for _, item in envelopes)
-        input_tokens = None
-        output_tokens = None
-        if all_usage_known:
-            input_tokens = sum(int(item["usage"]["prompt_tokens"]) for _, item in envelopes)
-            output_tokens = sum(
-                int(item["usage"]["completion_tokens"]) for _, item in envelopes
-            )
-        all_costs_known = all(item.get("cost_usd") is not None for _, item in envelopes)
-        total_cost = None
-        if all_costs_known:
-            total_cost = sum(
-                (Decimal(item["cost_usd"]) for _, item in envelopes), Decimal(0)
-            )
-        guard_cost = sum(
-            (Decimal(item["budget_guard_cost_usd"]) for _, item in envelopes),
-            Decimal(0),
-        )
-        actual_models = [
-            str(item["returned_model"])
-            for _, item in envelopes
-            if item.get("returned_model")
-        ]
-        fingerprints = [
-            str(item["system_fingerprint"])
-            for _, item in envelopes
-            if item.get("system_fingerprint")
-        ]
-        finish_reasons = [
-            str(item["finish_reason"])
-            for _, item in envelopes
-            if item.get("finish_reason")
-        ]
-        final = envelopes[-1][1]
-        response_content: str | None = None
-        parsed: ParsedOutput | None = None
-        parse_error: str | None = None
-        error_state: str | None = None
-        if final.get("http_status") == 200:
-            try:
-                response = json.loads(final["response_body_raw"])
-                response_content = response["choices"][0]["message"]["content"]
-                if not isinstance(response_content, str):
-                    response_content = None
-                    parse_error = "invalid_response:content_not_string"
-                else:
-                    parsed, parse_error = parse_model_content(response_content)
-            except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
-                parse_error = f"invalid_response:{type(exc).__name__}"
-            if final.get("returned_model") != model.model_version:
-                parsed = None
-                parse_error = "model_version_mismatch"
-            error_state = parse_error
-        else:
-            error_state = final.get("transport_error") or f"http_{final.get('http_status')}"
-        return CallResult(
-            call_role=call_role,
-            requested_tier=model_tier,
-            requested_model=model.model_version,
-            response_content=response_content,
-            parsed=parsed,
-            parse_error=parse_error,
-            raw_paths=raw_paths,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-            cost=total_cost,
-            budget_guard_cost=guard_cost,
-            actual_models=actual_models,
-            fingerprints=fingerprints,
-            finish_reasons=finish_reasons,
-            error_state=error_state,
+        return call_result_from_envelopes(
+            call_role,
+            model_tier,
+            model,
+            envelopes,
         )
 
 
@@ -1048,17 +1130,37 @@ def ensure_run_manifest(
 
 def combine_calls(
     calls: list[CallResult],
-) -> tuple[int | None, int | None, Decimal | None, Decimal]:
+) -> tuple[
+    int | None,
+    int | None,
+    int | None,
+    int | None,
+    Decimal | None,
+    Decimal,
+]:
     input_tokens = None
+    fresh_input_tokens = None
+    cached_input_tokens = None
     output_tokens = None
     if all(call.input_tokens is not None for call in calls):
         input_tokens = sum(int(call.input_tokens) for call in calls)
         output_tokens = sum(int(call.output_tokens) for call in calls)
+    if all(call.fresh_input_tokens is not None for call in calls):
+        fresh_input_tokens = sum(int(call.fresh_input_tokens) for call in calls)
+    if all(call.cached_input_tokens is not None for call in calls):
+        cached_input_tokens = sum(int(call.cached_input_tokens) for call in calls)
     total_cost = None
     if all(call.cost is not None for call in calls):
         total_cost = sum((call.cost for call in calls if call.cost is not None), Decimal(0))
     guard = sum((call.budget_guard_cost for call in calls), Decimal(0))
-    return input_tokens, output_tokens, total_cost, guard
+    return (
+        input_tokens,
+        fresh_input_tokens,
+        cached_input_tokens,
+        output_tokens,
+        total_cost,
+        guard,
+    )
 
 
 def build_result_row(
@@ -1073,6 +1175,7 @@ def build_result_row(
     artifacts: dict[str, Any],
     factory: PromptFactory,
     config: dict[str, Any],
+    timestamp: str | None = None,
 ) -> dict[str, Any]:
     parsed = final_call.parsed
     retrieved_ids = [
@@ -1087,7 +1190,14 @@ def build_result_row(
         if parsed is not None and parsed.output_type == "ANSWER" and correct is None
         else "deterministic"
     )
-    input_tokens, output_tokens, total_cost, guard = combine_calls(calls)
+    (
+        input_tokens,
+        fresh_input_tokens,
+        cached_input_tokens,
+        output_tokens,
+        total_cost,
+        guard,
+    ) = combine_calls(calls)
     raw_paths = [path for call in calls for path in call.raw_paths]
     requested_models = [call.requested_model for call in calls]
     actual_models = [model for call in calls for model in call.actual_models]
@@ -1109,10 +1219,16 @@ def build_result_row(
         "correct": csv_boolean(correct),
         "citation_valid": csv_boolean(citation_valid),
         "input_tokens": input_tokens if input_tokens is not None else "",
+        "fresh_input_tokens": (
+            fresh_input_tokens if fresh_input_tokens is not None else ""
+        ),
+        "cached_input_tokens": (
+            cached_input_tokens if cached_input_tokens is not None else ""
+        ),
         "output_tokens": output_tokens if output_tokens is not None else "",
         "cost_usd": decimal_text(total_cost) if total_cost is not None else "",
         "latency_ms": latency_ms,
-        "timestamp": utc_now(),
+        "timestamp": timestamp or utc_now(),
         "raw_response_path": raw_paths[-1] if raw_paths else "",
         "run_id": run_id,
         "prompt_sha256": factory.prompt_hash(strategy),
@@ -1132,6 +1248,184 @@ def build_result_row(
         "price_table_version": price_table["price_table_version"],
         "price_table_sha256": sha256_path(PRICE_TABLE_PATH),
     }
+
+
+def raw_envelopes_for_call(
+    run_id: str, case_id: str, call_index: int
+) -> list[tuple[Path, dict[str, Any]]]:
+    """Load one durable call sequence in attempt order without contacting the API."""
+    directory = RESULTS_RAW_DIR / run_id / case_id
+    paths = sorted(directory.glob(f"call-{call_index:02d}-attempt-*.json"))
+    envelopes = [
+        (path, json.loads(path.read_text(encoding="utf-8"))) for path in paths
+    ]
+    if not envelopes:
+        raise ValueError(
+            f"Missing raw evidence for run={run_id} case={case_id} call={call_index}"
+        )
+    for path, envelope in envelopes:
+        if envelope.get("run_id") != run_id or envelope.get("case_id") != case_id:
+            raise ValueError(f"Raw envelope identity mismatch: {path}")
+        if envelope.get("call_index") != call_index:
+            raise ValueError(f"Raw envelope call index mismatch: {path}")
+    return envelopes
+
+
+def reconstructed_calls_from_raw(
+    *,
+    case_id: str,
+    tier: str,
+    strategy: str,
+    run_id: str,
+    models: dict[str, ModelTier],
+) -> tuple[list[CallResult], CallResult]:
+    """Recover a strategy's final call and all billable calls from raw evidence."""
+    primary_tier = "cheap" if strategy == "escalation" else tier
+    primary_envelopes = raw_envelopes_for_call(run_id, case_id, 1)
+    primary = call_result_from_envelopes(
+        "primary", primary_tier, models[primary_tier], primary_envelopes
+    )
+    calls = [primary]
+
+    if strategy == "single_pass":
+        return calls, primary
+
+    if strategy == "self_check":
+        critic_envelopes = raw_envelopes_for_call(run_id, case_id, 2)
+        critic = call_result_from_envelopes("critic", tier, models[tier], critic_envelopes)
+        calls.append(critic)
+        return calls, critic
+
+    if strategy != "escalation":
+        raise ValueError(f"Unknown strategy for raw reconstruction: {strategy}")
+
+    fallback_directory = RESULTS_RAW_DIR / run_id / case_id
+    if not list(fallback_directory.glob("call-02-attempt-*.json")):
+        return calls, primary
+    fallback_envelopes = raw_envelopes_for_call(run_id, case_id, 2)
+    fallback = call_result_from_envelopes("fallback", tier, models[tier], fallback_envelopes)
+    calls.append(fallback)
+    return calls, fallback
+
+
+def rescore_rows_from_raw(
+    *,
+    scope: str,
+    selected_tiers: tuple[str, ...],
+    selected_strategies: tuple[str, ...],
+    artifacts: dict[str, Any],
+    factory: PromptFactory,
+    config: dict[str, Any],
+    models: dict[str, ModelTier],
+    plan: dict[str, Any],
+) -> dict[str, Any]:
+    """Backfill additive result fields by reconstructing complete rows from raw files.
+
+    The existing timestamp and end-to-end latency are retained because they are
+    measurements of the historical invocation, not values recoverable exactly
+    from individual HTTP envelopes. All semantic, token, cost, and raw-path
+    fields are reconstructed and must match the pre-rescore CSV.
+    """
+    audit_configurations: dict[str, Any] = {}
+    total_rows = 0
+    total_raw_files = 0
+    immutable_fields = [
+        field
+        for field in RESULT_FIELDS
+        if field not in {"fresh_input_tokens", "cached_input_tokens"}
+    ]
+    for tier in selected_tiers:
+        for strategy in selected_strategies:
+            prompt_hash = factory.prompt_hash(strategy)
+            run_id = run_id_for(
+                scope,
+                tier,
+                strategy,
+                artifacts["dataset_sha256"],
+                prompt_hash,
+            )
+            ensure_run_manifest(scope, tier, strategy, run_id, plan)
+            path = RESULTS_RUNS_DIR / f"{scope}__{tier}__{strategy}.csv"
+            if not path.exists():
+                raise ValueError(f"Cannot rescore a missing run CSV: {path}")
+            with path.open(encoding="utf-8", newline="") as handle:
+                previous_rows = list(csv.DictReader(handle))
+            previous_by_case = {row["case_id"]: row for row in previous_rows}
+            if len(previous_by_case) != len(previous_rows):
+                raise ValueError(f"Duplicate case IDs in run CSV: {path}")
+            if set(previous_by_case) != {case["case_id"] for case in artifacts["cases"]}:
+                raise ValueError(
+                    f"Rescore requires a completed scope; run CSV is incomplete: {path}"
+                )
+
+            before_sha256 = sha256_path(path)
+            rebuilt_rows: list[dict[str, Any]] = []
+            for case in artifacts["cases"]:
+                previous = previous_by_case[case["case_id"]]
+                try:
+                    latency_ms = int(previous["latency_ms"])
+                except (KeyError, TypeError, ValueError) as exc:
+                    raise ValueError(
+                        f"Historical latency is unavailable for {path}:{case['case_id']}"
+                    ) from exc
+                calls, final_call = reconstructed_calls_from_raw(
+                    case_id=case["case_id"],
+                    tier=tier,
+                    strategy=strategy,
+                    run_id=run_id,
+                    models=models,
+                )
+                rebuilt = build_result_row(
+                    case=case,
+                    tier=tier,
+                    strategy=strategy,
+                    run_id=run_id,
+                    calls=calls,
+                    final_call=final_call,
+                    latency_ms=latency_ms,
+                    timestamp=previous.get("timestamp") or None,
+                    artifacts=artifacts,
+                    factory=factory,
+                    config=config,
+                )
+                mismatch = [
+                    field
+                    for field in immutable_fields
+                    if previous.get(field, "") != str(rebuilt[field])
+                ]
+                if mismatch:
+                    raise ValueError(
+                        "Raw-evidence rescore changed existing result values for "
+                        f"{path}:{case['case_id']}: {', '.join(mismatch)}"
+                    )
+                rebuilt_rows.append(rebuilt)
+                total_raw_files += len(calls[0].raw_paths) + sum(
+                    len(call.raw_paths) for call in calls[1:]
+                )
+            atomic_write_csv(path, rebuilt_rows)
+            audit_configurations[f"{tier}__{strategy}"] = {
+                "run_path": relative_path(path),
+                "previous_csv_sha256": before_sha256,
+                "rescored_csv_sha256": sha256_path(path),
+                "row_count": len(rebuilt_rows),
+                "semantic_and_existing_fields_unchanged": True,
+            }
+            total_rows += len(rebuilt_rows)
+
+    audit = {
+        "schema_version": "1.0.0",
+        "scope": scope,
+        "created_at_utc": utc_now(),
+        "method": "reconstructed completed result rows from committed raw API envelopes; no API calls",
+        "additive_fields": ["fresh_input_tokens", "cached_input_tokens"],
+        "historical_fields_retained": ["timestamp", "latency_ms"],
+        "row_count": total_rows,
+        "raw_envelope_references": total_raw_files,
+        "configurations": audit_configurations,
+    }
+    audit_path = RESULTS_RUNS_DIR / f"{scope}_rescore.json"
+    atomic_write_json(audit_path, audit)
+    return {"audit": audit, "audit_path": audit_path}
 
 
 def write_summary(
@@ -1193,6 +1487,14 @@ def parse_args() -> argparse.Namespace:
         description="Run the frozen 3x3 abstention-study matrix"
     )
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--rescore",
+        action="store_true",
+        help=(
+            "rebuild completed result rows from stored raw API envelopes without "
+            "making API calls"
+        ),
+    )
     parser.add_argument("--scope", choices=("pilot", "full"), default="pilot")
     parser.add_argument(
         "--allow-full-run",
@@ -1218,6 +1520,8 @@ def main() -> None:
     args = parse_args()
     if args.scope == "full" and not args.allow_full_run:
         raise SystemExit("Full runs remain gated; pass --allow-full-run only after approval")
+    if args.rescore and args.dry_run:
+        raise SystemExit("--rescore and --dry-run cannot be combined")
     if args.offline_dry_run and not args.dry_run:
         raise SystemExit("--offline-dry-run requires --dry-run")
     try:
@@ -1292,6 +1596,34 @@ def main() -> None:
         ),
         flush=True,
     )
+
+    if args.rescore:
+        outcome = rescore_rows_from_raw(
+            scope=args.scope,
+            selected_tiers=selected_tiers,
+            selected_strategies=selected_strategies,
+            artifacts=artifacts,
+            factory=factory,
+            config=config,
+            models=models,
+            plan=plan,
+        )
+        print(
+            json.dumps(
+                {
+                    "event": "raw_rescore_complete",
+                    "api_calls": 0,
+                    "row_count": outcome["audit"]["row_count"],
+                    "raw_envelope_references": outcome["audit"][
+                        "raw_envelope_references"
+                    ],
+                    "audit_path": relative_path(outcome["audit_path"]),
+                },
+                sort_keys=True,
+            ),
+            flush=True,
+        )
+        return
 
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:

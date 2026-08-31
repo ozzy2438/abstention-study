@@ -1,0 +1,81 @@
+{
+  "additive_fields": [
+    "fresh_input_tokens",
+    "cached_input_tokens"
+  ],
+  "configurations": {
+    "capable__escalation": {
+      "previous_csv_sha256": "0f929dcaac84f01ef37bf2eb9ee7c2a01e2518ac2f9243f5ea69340484676b11",
+      "rescored_csv_sha256": "b20e77791ff115eb25dd2ac18b6e0db749b2b1e9edc08a2750e724090d7745d0",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__capable__escalation.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "capable__self_check": {
+      "previous_csv_sha256": "253fd5de9a28e853df92b32025a1fd451d988e1c4c0b55e9a844ca5bc2d16004",
+      "rescored_csv_sha256": "9e0923e19f2e05954ef30e7ea91660f8a11f6becac0d9d9fff8c1a361c91d9dd",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__capable__self_check.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "capable__single_pass": {
+      "previous_csv_sha256": "7e4e28e0093c36bcd909fe70019c84f74361888ebb18ee26ba6c1f7b8104330d",
+      "rescored_csv_sha256": "4ac958cd884caa6b3c1049bbdec46592613ed6c16fd9a97aa226a67734c4cad6",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__capable__single_pass.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "cheap__escalation": {
+      "previous_csv_sha256": "4751560018d206dd4fcb8ba128c078e536a787e51d2dd79cf46f55e0dad34c0f",
+      "rescored_csv_sha256": "8fcb4662d209672a563df2a040b8f2c195c111ec048e71c608704c0b42f3aee8",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__cheap__escalation.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "cheap__self_check": {
+      "previous_csv_sha256": "2357943470929474e8d7afe33bd4552a123da0303d23177f91542fabf9ace109",
+      "rescored_csv_sha256": "8c5cc7e2f429e49a668ce6f6e55cad153a401c40b78b7aedfe389d4e5add8cce",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__cheap__self_check.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "cheap__single_pass": {
+      "previous_csv_sha256": "9d727675d168d599933e2adfa2f1b2fb9aaa9a54cf9eca37880e61e6625453b8",
+      "rescored_csv_sha256": "465ec4ac70ee51313e34e728e6c45d3fd1358c2a58189dd2b1a0bf60f384ed82",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__cheap__single_pass.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "standard__escalation": {
+      "previous_csv_sha256": "2db1733b85c315c63a1856ddae6871cdc2bed6f2de831ccce8dc93e1873955ef",
+      "rescored_csv_sha256": "b635f2a7eacd0b9158731d2a0360efa197a275d3bc1bc6189c9b5d942ac65c4b",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__standard__escalation.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "standard__self_check": {
+      "previous_csv_sha256": "3bced07da5bdfb74f1832fa9cfef6620d59778fa7993ff3ecb420f48bf2d2630",
+      "rescored_csv_sha256": "3d294d31517ee30829ef8a81915583316723bd277ee0ce722bbf8721765599ca",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__standard__self_check.csv",
+      "semantic_and_existing_fields_unchanged": true
+    },
+    "standard__single_pass": {
+      "previous_csv_sha256": "3e3e0539f76698f16f5e541cdedfd190090f22280007bc0181709cfc898f99f0",
+      "rescored_csv_sha256": "fe7662dda655011016a5a41e8559db214000e4a2a555449311ff90d0276e4ab3",
+      "row_count": 20,
+      "run_path": "results/runs/pilot__standard__single_pass.csv",
+      "semantic_and_existing_fields_unchanged": true
+    }
+  },
+  "created_at_utc": "2026-08-31T04:17:51.206Z",
+  "historical_fields_retained": [
+    "timestamp",
+    "latency_ms"
+  ],
+  "method": "reconstructed completed result rows from committed raw API envelopes; no API calls",
+  "raw_envelope_references": 275,
+  "row_count": 180,
+  "schema_version": "1.0.0",
+  "scope": "pilot"
+}

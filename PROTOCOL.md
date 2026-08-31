@@ -858,3 +858,35 @@ operation or the local pre-call token-count implementation.
 
 **Impact and restart decision:** This addendum was written before prompt
 freeze and before any inference call. No run requires a restart.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Cached-token observability fields
+
+**Type:** Additive result-schema observability record. It does not change the
+task, labels, output contract, confidence, prompts, strategies, scoring,
+metrics, price table, or any previously recorded result value.
+
+**Reason:** Pilot review identified two otherwise identical nano calls whose
+provider-reported cost differed because one request received a prompt-cache
+discount. The original row schema retained total `input_tokens` and
+`cost_usd`, but did not expose the provider's cache split needed to audit that
+difference across strategies.
+
+Every result row now additionally records:
+
+- `cached_input_tokens`: the sum of the API usage field
+  `prompt_tokens_details.cached_tokens` over all calls used for that row; and
+- `fresh_input_tokens`: `input_tokens - cached_input_tokens`, when the API
+  returned a complete integer cache split for every call in the row.
+
+If the provider does not return a complete cache split, both new fields are
+blank rather than inferred; total input tokens and provider-billed `cost_usd`
+remain as recorded. Historical result rows are rebuilt only from their
+committed raw API envelopes with the harness `--rescore` command. Historical
+timestamp and end-to-end latency remain the original measurements; all
+semantic, total-token, cost, and raw-path values must match before replacement.
+
+**Impact and restart decision:** This is an additive audit field requested
+after the pilot. It is not a change to a frozen evaluation definition and does
+not require model re-calls. The complete pilot matrix is reconstructed from raw
+evidence so that every pilot CSV has the same schema; no result is selectively
+patched.
