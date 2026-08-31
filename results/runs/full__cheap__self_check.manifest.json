@@ -1,0 +1,39 @@
+{
+  "case_count": 300,
+  "model_tier": "cheap",
+  "model_version": "gpt-5.4-nano-2026-03-17",
+  "plan_identity_sha256": "c348fc455e540dd2d60ac653a65bb4049ad24821970491239e081421ba80c75a",
+  "price_table": {
+    "currency": "USD",
+    "models": {
+      "gpt-5.4-2026-03-05": {
+        "cached_input_per_1m_tokens": 0.25,
+        "input_per_1m_tokens": 2.5,
+        "output_per_1m_tokens": 15.0,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-5.4"
+      },
+      "gpt-5.4-mini-2026-03-17": {
+        "cached_input_per_1m_tokens": 0.075,
+        "input_per_1m_tokens": 0.75,
+        "output_per_1m_tokens": 4.5,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini"
+      },
+      "gpt-5.4-nano-2026-03-17": {
+        "cached_input_per_1m_tokens": 0.02,
+        "input_per_1m_tokens": 0.2,
+        "output_per_1m_tokens": 1.25,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano"
+      }
+    },
+    "price_table_version": "openai-standard-2026-08-31",
+    "retrieved_at_utc": "2026-08-31T01:48:57Z",
+    "schema_version": "1.0.0",
+    "unit": "per_1m_tokens"
+  },
+  "prompt_sha256": "af282e540fce4e9e9e354ee5fddfd367ffbe050c134287a35f29653f7d8a5adc",
+  "prompt_version": "base-v1.0.0+critic-v1.0.0",
+  "run_id": "full_v1__cheap__self_check__1b1581710af2__af282e540fce",
+  "schema_version": "1.0.0",
+  "scope": "full",
+  "strategy": "self_check"
+}

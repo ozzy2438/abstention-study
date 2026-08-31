@@ -933,3 +933,32 @@ finish within the cap.
 **Impact and restart decision:** The pilot had 275 raw envelopes, all with
 `attempt=1`; no pilot cost or result is affected. This clarification is made
 before Phase 4 inference. It does not require a rerun.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Phase 4 token-guard correction and restart
+
+**Type:** Harness operational-safeguard correction. It does not change the
+task, corpus, dataset, labels, prompts, output contract, confidence,
+strategies, scoring, metrics, model snapshots, or price table.
+
+**Reason:** During the first full-matrix invocation, the per-attempt budget
+guard converted the serialized UTF-8 request byte length directly into an
+input-token quantity. That is not the frozen local token-estimation method and
+made the guard materially more conservative than the registered preflight.
+The invocation stopped safely before an additional call, despite its durable
+provider-usage evidence reporting a known actual spend below the selected cap.
+
+**Correction:** Each new attempt's maximum charge is calculated from the
+frozen local token estimator defined in the chunking-and-harness addendum,
+with the registered full output cap and the registered price table. The guard
+continues to run before every attempt, including retries. A restarted
+execution may carry forward the known provider-billed spend of a superseded
+execution as an explicit prior-spend ledger entry, so that it remains within
+the owner-approved phase budget. The prior spend is stored in the new plan and
+summary; raw envelopes are never overwritten.
+
+**Impact and restart decision:** The partial V1 full execution is retained as
+raw operational evidence and is marked superseded. Because the fault affects
+runtime continuation, the full 3x3 matrix must restart as a new execution
+revision from zero completed rows; no V1 result row may be reused or patched
+into the restarted matrix. The correction and restart are made before any
+Phase 5 analysis.

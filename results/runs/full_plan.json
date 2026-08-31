@@ -1,0 +1,135 @@
+{
+  "case_count": 300,
+  "config_sha256": "3c4e562699e6ffac55832bacd59cde5fd17e38f2ebbd1d83f88de9e3826c3601",
+  "corpus_manifest_sha256": "a21a88481f955ea9cfc84c014e0af771b4f5ceca19b1cf470cfc35a19c747920",
+  "cost_projection": {
+    "configurations": {
+      "capable__escalation": {
+        "case_count": 300,
+        "estimated_input_tokens": 2087592,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "8.656864200000"
+      },
+      "capable__self_check": {
+        "case_count": 300,
+        "estimated_input_tokens": 2448792,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "16.921980000000"
+      },
+      "capable__single_pass": {
+        "case_count": 300,
+        "estimated_input_tokens": 1048746,
+        "maximum_calls": 300,
+        "maximum_output_tokens": 360000,
+        "projected_max_cost_usd": "8.021865000000"
+      },
+      "cheap__escalation": {
+        "case_count": 300,
+        "estimated_input_tokens": 2087592,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "1.317518400000"
+      },
+      "cheap__self_check": {
+        "case_count": 300,
+        "estimated_input_tokens": 2448792,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "1.389758400000"
+      },
+      "cheap__single_pass": {
+        "case_count": 300,
+        "estimated_input_tokens": 1048746,
+        "maximum_calls": 300,
+        "maximum_output_tokens": 360000,
+        "projected_max_cost_usd": "0.659749200000"
+      },
+      "standard__escalation": {
+        "case_count": 300,
+        "estimated_input_tokens": 2087592,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "3.058883700000"
+      },
+      "standard__self_check": {
+        "case_count": 300,
+        "estimated_input_tokens": 2448792,
+        "maximum_calls": 600,
+        "maximum_output_tokens": 720000,
+        "projected_max_cost_usd": "5.076594000000"
+      },
+      "standard__single_pass": {
+        "case_count": 300,
+        "estimated_input_tokens": 1048746,
+        "maximum_calls": 300,
+        "maximum_output_tokens": 360000,
+        "projected_max_cost_usd": "2.406559500000"
+      }
+    },
+    "maximum_calls": 4500,
+    "projected_max_cost_usd": "47.509772400000"
+  },
+  "created_at_utc": "2026-08-31T05:15:24.576Z",
+  "dataset_sha256": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
+  "hard_budget_cap_usd": "70.000000000000",
+  "models": {
+    "capable": "gpt-5.4-2026-03-05",
+    "cheap": "gpt-5.4-nano-2026-03-17",
+    "standard": "gpt-5.4-mini-2026-03-17"
+  },
+  "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
+  "plan_identity_sha256": "c348fc455e540dd2d60ac653a65bb4049ad24821970491239e081421ba80c75a",
+  "price_table": {
+    "currency": "USD",
+    "models": {
+      "gpt-5.4-2026-03-05": {
+        "cached_input_per_1m_tokens": 0.25,
+        "input_per_1m_tokens": 2.5,
+        "output_per_1m_tokens": 15.0,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-5.4"
+      },
+      "gpt-5.4-mini-2026-03-17": {
+        "cached_input_per_1m_tokens": 0.075,
+        "input_per_1m_tokens": 0.75,
+        "output_per_1m_tokens": 4.5,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-5.4-mini"
+      },
+      "gpt-5.4-nano-2026-03-17": {
+        "cached_input_per_1m_tokens": 0.02,
+        "input_per_1m_tokens": 0.2,
+        "output_per_1m_tokens": 1.25,
+        "source_url": "https://developers.openai.com/api/docs/models/gpt-5.4-nano"
+      }
+    },
+    "price_table_version": "openai-standard-2026-08-31",
+    "retrieved_at_utc": "2026-08-31T01:48:57Z",
+    "schema_version": "1.0.0",
+    "unit": "per_1m_tokens"
+  },
+  "price_table_sha256": "217b709f860486e367878551c3e5034b05d84ed7ee4ed18267746dcc30f4aa9b",
+  "prompts": {
+    "escalation": {
+      "prompt_sha256": "9d564a17727a9a389e6f0e3ef8d9395ac7376e1a033f078f37abdc7ae3cef915",
+      "prompt_version": "base-v1.0.0+fallback-v1.0.0"
+    },
+    "self_check": {
+      "prompt_sha256": "af282e540fce4e9e9e354ee5fddfd367ffbe050c134287a35f29653f7d8a5adc",
+      "prompt_version": "base-v1.0.0+critic-v1.0.0"
+    },
+    "single_pass": {
+      "prompt_sha256": "beec0d744d65db701dfb3b68082ee0ef86e7e10486f05e8b39a1ebf178c22eda",
+      "prompt_version": "base-v1.0.0"
+    }
+  },
+  "retrieval_sha256": "8447926d08e906f245a695f9d0b9bf3536e59ba55fa70a1caf10fd6d37a293de",
+  "schema_version": "1.0.0",
+  "scope": "full",
+  "scope_selection_sha256": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
+  "strategies": [
+    "single_pass",
+    "self_check",
+    "escalation"
+  ]
+}

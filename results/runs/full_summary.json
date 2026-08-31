@@ -1,0 +1,69 @@
+{
+  "actual_total_cost_usd": "8.913206300000",
+  "completed_at_utc": "2026-08-31T06:22:39.589Z",
+  "completed_rows": 2293,
+  "configurations": {
+    "capable__escalation": {
+      "completed_cases": 0,
+      "known_cost_usd": "0.000000000000",
+      "run_path": "results/runs/full__capable__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__self_check": {
+      "completed_cases": 193,
+      "known_cost_usd": "2.717591000000",
+      "run_path": "results/runs/full__capable__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__single_pass": {
+      "completed_cases": 300,
+      "known_cost_usd": "2.999655000000",
+      "run_path": "results/runs/full__capable__single_pass.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__escalation": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.190889820000",
+      "run_path": "results/runs/full__cheap__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__self_check": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.312717250000",
+      "run_path": "results/runs/full__cheap__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__single_pass": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.231219140000",
+      "run_path": "results/runs/full__cheap__single_pass.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__escalation": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.545851440000",
+      "run_path": "results/runs/full__standard__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__self_check": {
+      "completed_cases": 300,
+      "known_cost_usd": "1.088117850000",
+      "run_path": "results/runs/full__standard__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__single_pass": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.827164800000",
+      "run_path": "results/runs/full__standard__single_pass.csv",
+      "unknown_cost_rows": 0
+    }
+  },
+  "expected_rows": 2700,
+  "known_cost_usd": "8.913206300000",
+  "plan_identity_sha256": "c348fc455e540dd2d60ac653a65bb4049ad24821970491239e081421ba80c75a",
+  "schema_version": "1.0.0",
+  "scope": "full",
+  "started_at_utc": "2026-08-31T05:15:26.362Z",
+  "unknown_cost_rows": 0,
+  "wall_clock_ms_this_invocation": 4033094
+}

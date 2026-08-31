@@ -695,14 +695,11 @@ class Runtime:
     def _request_guard_cost(
         self,
         model: ModelTier,
-        request_body: dict[str, Any],
         estimated_input_tokens: int,
     ) -> Decimal:
-        request_bytes = len(canonical_json(request_body).encode("utf-8"))
-        conservative_input = max(estimated_input_tokens, request_bytes + 1024)
         return cost_usd(
             model,
-            conservative_input,
+            estimated_input_tokens,
             int(self.config["max_completion_tokens"]),
         )
 
@@ -720,9 +717,7 @@ class Runtime:
             self.config, model.model_version, messages
         )
         estimated_input = self.estimator.count_messages(messages)
-        maximum_guard = self._request_guard_cost(
-            model, request_body, estimated_input
-        )
+        maximum_guard = self._request_guard_cost(model, estimated_input)
         existing = self._existing_envelopes(case["case_id"], call_index)
         if existing:
             last = existing[-1][1]
@@ -1172,7 +1167,9 @@ def validate_model_access(
 def plan_identity(
     *,
     scope: str,
+    execution_label: str,
     budget_cap: Decimal,
+    prior_known_spend: Decimal,
     artifacts: dict[str, Any],
     factory: PromptFactory,
     projection: dict[str, Any],
@@ -1181,6 +1178,7 @@ def plan_identity(
     return {
         "schema_version": "1.0.0",
         "scope": scope,
+        "execution_label": execution_label,
         "case_count": len(artifacts["cases"]),
         "scope_selection_sha256": artifacts["scope_selection_sha256"],
         "dataset_sha256": artifacts["dataset_sha256"],
@@ -1194,6 +1192,7 @@ def plan_identity(
         "models": MODEL_BY_TIER,
         "strategies": list(STRATEGY_ORDER),
         "hard_budget_cap_usd": decimal_text(budget_cap),
+        "prior_known_spend_usd": decimal_text(prior_known_spend),
         "cost_projection": projection,
     }
 
@@ -1549,6 +1548,7 @@ def write_summary(
     plan: dict[str, Any],
     started_at: str,
     wall_clock_ms: int,
+    prior_known_spend: Decimal = Decimal(0),
 ) -> dict[str, Any]:
     by_config: dict[str, Any] = {}
     known_total = Decimal(0)
@@ -1590,6 +1590,13 @@ def write_summary(
         "actual_total_cost_usd": (
             decimal_text(known_total) if unknown_cost_rows == 0 else None
         ),
+        "prior_known_spend_usd": decimal_text(prior_known_spend),
+        "phase_known_cost_usd": decimal_text(known_total + prior_known_spend),
+        "phase_actual_total_cost_usd": (
+            decimal_text(known_total + prior_known_spend)
+            if unknown_cost_rows == 0
+            else None
+        ),
         "unknown_cost_rows": unknown_cost_rows,
         "configurations": by_config,
     }
@@ -1621,6 +1628,23 @@ def parse_args() -> argparse.Namespace:
         required=True,
         help="hard USD guard cap across all selected configurations",
     )
+    parser.add_argument(
+        "--run-revision",
+        type=int,
+        default=1,
+        help=(
+            "execution-artifact revision; use a new positive revision only when "
+            "a full matrix must restart after a documented harness correction"
+        ),
+    )
+    parser.add_argument(
+        "--prior-known-spend-usd",
+        default="0",
+        help=(
+            "known actual USD spend from a documented earlier, superseded "
+            "execution that must count against this hard cap"
+        ),
+    )
     parser.add_argument("--tier", choices=TIER_ORDER, action="append")
     parser.add_argument("--strategy", choices=STRATEGY_ORDER, action="append")
     parser.add_argument(
@@ -1645,6 +1669,17 @@ def main() -> None:
         raise SystemExit("--budget-usd must be a decimal number") from exc
     if budget_cap <= 0:
         raise SystemExit("--budget-usd must be positive")
+    if args.run_revision <= 0:
+        raise SystemExit("--run-revision must be a positive integer")
+    try:
+        prior_known_spend = Decimal(args.prior_known_spend_usd)
+    except Exception as exc:
+        raise SystemExit("--prior-known-spend-usd must be a decimal number") from exc
+    if prior_known_spend < 0:
+        raise SystemExit("--prior-known-spend-usd must not be negative")
+    artifact_scope = (
+        args.scope if args.run_revision == 1 else f"{args.scope}_r{args.run_revision}"
+    )
 
     selected_tiers = tuple(args.tier or TIER_ORDER)
     selected_strategies = tuple(args.strategy or STRATEGY_ORDER)
@@ -1676,16 +1711,19 @@ def main() -> None:
         ),
         Decimal(0),
     )
-    if selected_projection_cost > budget_cap:
+    if selected_projection_cost + prior_known_spend > budget_cap:
         raise SystemExit(
-            "Projected maximum cost exceeds the hard budget cap: "
+            "Projected maximum cost plus prior known spend exceeds the hard budget cap: "
             f"projection={decimal_text(selected_projection_cost)} "
+            f"prior_known_spend={decimal_text(prior_known_spend)} "
             f"cap={decimal_text(budget_cap)}"
         )
-    plan_path = RESULTS_RUNS_DIR / f"{args.scope}_plan.json"
+    plan_path = RESULTS_RUNS_DIR / f"{artifact_scope}_plan.json"
     identity = plan_identity(
         scope=args.scope,
+        execution_label=artifact_scope,
         budget_cap=budget_cap,
+        prior_known_spend=prior_known_spend,
         artifacts=artifacts,
         factory=factory,
         projection=full_projection,
@@ -1696,6 +1734,7 @@ def main() -> None:
             {
                 "event": "cost_projection",
                 "scope": args.scope,
+                "execution_label": artifact_scope,
                 "selected_configurations": sorted(selected_keys),
                 "selected_projected_max_cost_usd": decimal_text(
                     selected_projection_cost
@@ -1704,6 +1743,10 @@ def main() -> None:
                     "projected_max_cost_usd"
                 ],
                 "hard_budget_cap_usd": decimal_text(budget_cap),
+                "prior_known_spend_usd": decimal_text(prior_known_spend),
+                "projected_phase_max_cost_usd": decimal_text(
+                    selected_projection_cost + prior_known_spend
+                ),
                 "maximum_calls_all_matrix": full_projection["maximum_calls"],
                 "plan_path": relative_path(plan_path),
             },
@@ -1714,7 +1757,7 @@ def main() -> None:
 
     if args.rescore:
         outcome = rescore_rows_from_raw(
-            scope=args.scope,
+            scope=artifact_scope,
             selected_tiers=selected_tiers,
             selected_strategies=selected_strategies,
             artifacts=artifacts,
@@ -1743,7 +1786,7 @@ def main() -> None:
     api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         raise SystemExit("OPENAI_API_KEY is required for model access validation")
-    availability_path = RESULTS_RUNS_DIR / f"{args.scope}_model_availability.json"
+    availability_path = RESULTS_RUNS_DIR / f"{artifact_scope}_model_availability.json"
     if not args.offline_dry_run:
         validate_model_access(api_key, config, availability_path)
         print(
@@ -1774,7 +1817,7 @@ def main() -> None:
 
     run_ids = [
         run_id_for(
-            args.scope,
+            artifact_scope,
             tier,
             strategy,
             artifacts["dataset_sha256"],
@@ -1786,8 +1829,8 @@ def main() -> None:
     initial_guard, initial_known, initial_unknown = existing_budget_state(run_ids)
     budget = Budget(
         budget_cap,
-        initial_guard_spend=initial_guard,
-        initial_known_actual=initial_known,
+        initial_guard_spend=initial_guard + prior_known_spend,
+        initial_known_actual=initial_known + prior_known_spend,
         unknown_actual=initial_unknown,
     )
     if budget.guard_spend > budget.cap:
@@ -1800,13 +1843,13 @@ def main() -> None:
     for tier in selected_tiers:
         for strategy in selected_strategies:
             run_id = run_id_for(
-                args.scope,
+                artifact_scope,
                 tier,
                 strategy,
                 artifacts["dataset_sha256"],
                 factory.prompt_hash(strategy),
             )
-            run_path = RESULTS_RUNS_DIR / f"{args.scope}__{tier}__{strategy}.csv"
+            run_path = RESULTS_RUNS_DIR / f"{artifact_scope}__{tier}__{strategy}.csv"
             completed = load_existing_rows(run_path, run_id)
             key = f"{tier}__{strategy}"
             completed_by_configuration[key] = completed
@@ -1820,7 +1863,7 @@ def main() -> None:
     progress_reporter: ProgressReporter | None = None
     if args.scope == "full":
         progress_reporter = ProgressReporter(
-            scope=args.scope,
+            scope=artifact_scope,
             plan_identity_sha256=plan["plan_identity_sha256"],
             expected_rows=(
                 len(artifacts["cases"])
@@ -1841,14 +1884,14 @@ def main() -> None:
             for strategy in selected_strategies:
                 prompt_hash = factory.prompt_hash(strategy)
                 run_id = run_id_for(
-                    args.scope,
+                    artifact_scope,
                     tier,
                     strategy,
                     artifacts["dataset_sha256"],
                     prompt_hash,
                 )
-                ensure_run_manifest(args.scope, tier, strategy, run_id, plan)
-                run_path = RESULTS_RUNS_DIR / f"{args.scope}__{tier}__{strategy}.csv"
+                ensure_run_manifest(artifact_scope, tier, strategy, run_id, plan)
+                run_path = RESULTS_RUNS_DIR / f"{artifact_scope}__{tier}__{strategy}.csv"
                 completed = completed_by_configuration[f"{tier}__{strategy}"]
                 print(
                     json.dumps(
@@ -1922,10 +1965,11 @@ def main() -> None:
     except BudgetExceeded as exc:
         wall_clock_ms = int(round((time.perf_counter() - invocation_started) * 1000))
         summary = write_summary(
-            scope=args.scope,
+            scope=artifact_scope,
             plan=plan,
             started_at=invocation_started_at,
             wall_clock_ms=wall_clock_ms,
+            prior_known_spend=prior_known_spend,
         )
         print(
             json.dumps(
@@ -1937,7 +1981,7 @@ def main() -> None:
                     "known_cost_usd": summary["known_cost_usd"],
                     "unknown_cost_rows": summary["unknown_cost_rows"],
                     "summary_path": relative_path(
-                        RESULTS_RUNS_DIR / f"{args.scope}_summary.json"
+                        RESULTS_RUNS_DIR / f"{artifact_scope}_summary.json"
                     ),
                 },
                 sort_keys=True,
@@ -1948,10 +1992,11 @@ def main() -> None:
 
     wall_clock_ms = int(round((time.perf_counter() - invocation_started) * 1000))
     summary = write_summary(
-        scope=args.scope,
+        scope=artifact_scope,
         plan=plan,
         started_at=invocation_started_at,
         wall_clock_ms=wall_clock_ms,
+        prior_known_spend=prior_known_spend,
     )
     print(
         json.dumps(
@@ -1964,7 +2009,7 @@ def main() -> None:
                 "unknown_cost_rows": summary["unknown_cost_rows"],
                 "wall_clock_ms_this_invocation": wall_clock_ms,
                 "summary_path": relative_path(
-                    RESULTS_RUNS_DIR / f"{args.scope}_summary.json"
+                    RESULTS_RUNS_DIR / f"{artifact_scope}_summary.json"
                 ),
             },
             sort_keys=True,

@@ -12,6 +12,7 @@ from harness.run import (
     REPO_ROOT,
     Budget,
     ProgressReporter,
+    Runtime,
     call_result_from_envelopes,
     redact_secret_material,
 )
@@ -100,6 +101,19 @@ class CostTests(unittest.TestCase):
         self.assertEqual(result.cached_input_tokens, 2816)
         self.assertEqual(result.fresh_input_tokens, 536)
         self.assertEqual(result.output_tokens, 76)
+
+    def test_budget_guard_uses_frozen_token_estimate(self) -> None:
+        config = json.loads((REPO_ROOT / "harness" / "config.json").read_text())
+        model = load_model_tiers()["cheap"]
+        runtime = object.__new__(Runtime)
+        runtime.config = config
+
+        guard = runtime._request_guard_cost(model, 3_352)
+
+        self.assertEqual(
+            guard,
+            cost_usd(model, 3_352, int(config["max_completion_tokens"])),
+        )
 
 
 class MetricTests(unittest.TestCase):

@@ -1,0 +1,38 @@
+{
+  "checks": [
+    {
+      "checked_at_utc": "2026-08-31T05:15:24.581Z",
+      "http_status": 200,
+      "requested_model": "gpt-5.4-nano-2026-03-17",
+      "response_body_base64": "ewogICJpZCI6ICJncHQtNS40LW5hbm8tMjAyNi0wMy0xNyIsCiAgIm9iamVjdCI6ICJtb2RlbCIsCiAgImNyZWF0ZWQiOiAxNzczNDUwODM3LAogICJvd25lZF9ieSI6ICJzeXN0ZW0iLAogICJzaHV0ZG93bl9kYXRlIjogbnVsbAp9",
+      "response_body_raw": "{\n  \"id\": \"gpt-5.4-nano-2026-03-17\",\n  \"object\": \"model\",\n  \"created\": 1773450837,\n  \"owned_by\": \"system\",\n  \"shutdown_date\": null\n}",
+      "response_body_sha256": "c8d3bd79170c8cc5e702a5215c6b062d2550071ef73812ceb14ff336c1091d9d",
+      "response_redacted": false,
+      "returned_id": "gpt-5.4-nano-2026-03-17",
+      "tier": "cheap"
+    },
+    {
+      "checked_at_utc": "2026-08-31T05:15:25.257Z",
+      "http_status": 200,
+      "requested_model": "gpt-5.4-mini-2026-03-17",
+      "response_body_base64": "ewogICJpZCI6ICJncHQtNS40LW1pbmktMjAyNi0wMy0xNyIsCiAgIm9iamVjdCI6ICJtb2RlbCIsCiAgImNyZWF0ZWQiOiAxNzczNDUxMDc2LAogICJvd25lZF9ieSI6ICJzeXN0ZW0iLAogICJzaHV0ZG93bl9kYXRlIjogbnVsbAp9",
+      "response_body_raw": "{\n  \"id\": \"gpt-5.4-mini-2026-03-17\",\n  \"object\": \"model\",\n  \"created\": 1773451076,\n  \"owned_by\": \"system\",\n  \"shutdown_date\": null\n}",
+      "response_body_sha256": "e532e3addcb3ce62cbb0206836c57a099b11dcc3e4c27975b0d9f1d796bde7dc",
+      "response_redacted": false,
+      "returned_id": "gpt-5.4-mini-2026-03-17",
+      "tier": "standard"
+    },
+    {
+      "checked_at_utc": "2026-08-31T05:15:25.905Z",
+      "http_status": 200,
+      "requested_model": "gpt-5.4-2026-03-05",
+      "response_body_base64": "ewogICJpZCI6ICJncHQtNS40LTIwMjYtMDMtMDUiLAogICJvYmplY3QiOiAibW9kZWwiLAogICJjcmVhdGVkIjogMTc3MjY1NDA2MiwKICAib3duZWRfYnkiOiAic3lzdGVtIiwKICAic2h1dGRvd25fZGF0ZSI6IG51bGwKfQ==",
+      "response_body_raw": "{\n  \"id\": \"gpt-5.4-2026-03-05\",\n  \"object\": \"model\",\n  \"created\": 1772654062,\n  \"owned_by\": \"system\",\n  \"shutdown_date\": null\n}",
+      "response_body_sha256": "4af4c16839ea8f685638fee7293257528eb73a774d0d4748c87e990e855c433c",
+      "response_redacted": false,
+      "returned_id": "gpt-5.4-2026-03-05",
+      "tier": "capable"
+    }
+  ],
+  "schema_version": "1.0.0"
+}

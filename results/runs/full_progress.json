@@ -1,0 +1,44 @@
+{
+  "definition": "A fallback trigger is a raw API envelope whose call_role is fallback. The denominator is completed escalation-strategy rows.",
+  "emitted_checkpoints": [
+    {
+      "checkpoint_percent": 25,
+      "completed_fraction": 0.75,
+      "completed_row_target": 675,
+      "completed_rows": 2025,
+      "escalation_rows_completed": 600,
+      "escalation_trigger_rate": 0.5016666666666667,
+      "expected_rows": 2700,
+      "fallback_triggers": 301,
+      "known_cumulative_spend_usd": "5.444320300000",
+      "unknown_actual_cost_seen": false
+    },
+    {
+      "checkpoint_percent": 50,
+      "completed_fraction": 0.75,
+      "completed_row_target": 1350,
+      "completed_rows": 2025,
+      "escalation_rows_completed": 600,
+      "escalation_trigger_rate": 0.5016666666666667,
+      "expected_rows": 2700,
+      "fallback_triggers": 301,
+      "known_cumulative_spend_usd": "5.444320300000",
+      "unknown_actual_cost_seen": false
+    },
+    {
+      "checkpoint_percent": 75,
+      "completed_fraction": 0.75,
+      "completed_row_target": 2025,
+      "completed_rows": 2025,
+      "escalation_rows_completed": 600,
+      "escalation_trigger_rate": 0.5016666666666667,
+      "expected_rows": 2700,
+      "fallback_triggers": 301,
+      "known_cumulative_spend_usd": "5.444320300000",
+      "unknown_actual_cost_seen": false
+    }
+  ],
+  "plan_identity_sha256": "c348fc455e540dd2d60ac653a65bb4049ad24821970491239e081421ba80c75a",
+  "schema_version": "1.0.0",
+  "scope": "full"
+}
