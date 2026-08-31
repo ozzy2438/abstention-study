@@ -1,0 +1,239 @@
+{
+  "capable_escalation_only": {
+    "category_projection": {
+      "adversarial": {
+        "fallback_usage_proxy": {
+          "observations": 2,
+          "source": "observed capable-tier pilot fallbacks"
+        },
+        "full_rows": 30,
+        "observed_primary_rows": 60,
+        "observed_trigger_rate": "0.683333333333",
+        "projected_fallback_calls": "20.500000000000"
+      },
+      "answerable_clear": {
+        "fallback_usage_proxy": {
+          "observations": 1,
+          "source": "observed capable-tier pilot fallbacks"
+        },
+        "full_rows": 115,
+        "observed_primary_rows": 230,
+        "observed_trigger_rate": "0.117391304348",
+        "projected_fallback_calls": "13.500000000000"
+      },
+      "answerable_multihop": {
+        "fallback_usage_proxy": {
+          "observations": 4,
+          "source": "observed capable-tier pilot fallbacks"
+        },
+        "full_rows": 45,
+        "observed_primary_rows": 90,
+        "observed_trigger_rate": "0.400000000000",
+        "projected_fallback_calls": "18.000000000000"
+      },
+      "out_of_scope": {
+        "fallback_usage_proxy": {
+          "observations": 2,
+          "source": "observed capable-tier pilot fallbacks"
+        },
+        "full_rows": 45,
+        "observed_primary_rows": 90,
+        "observed_trigger_rate": "1.000000000000",
+        "projected_fallback_calls": "45.000000000000"
+      },
+      "unanswerable_contradictory": {
+        "fallback_usage_proxy": {
+          "observations": 13,
+          "reason": "no capable-tier pilot fallback was observed for this category",
+          "source": "observed standard-tier full fallbacks repriced at capable rates"
+        },
+        "full_rows": 19,
+        "observed_primary_rows": 38,
+        "observed_trigger_rate": "0.710526315789",
+        "projected_fallback_calls": "13.500000000000"
+      },
+      "unanswerable_missing": {
+        "fallback_usage_proxy": {
+          "observations": 3,
+          "source": "observed capable-tier pilot fallbacks"
+        },
+        "full_rows": 46,
+        "observed_primary_rows": 92,
+        "observed_trigger_rate": "0.989130434783",
+        "projected_fallback_calls": "45.500000000000"
+      }
+    },
+    "cost_projection": {
+      "bootstrap_p05_all_fresh_usd": "1.590584125000",
+      "bootstrap_p05_cache_inclusive_usd": "1.494870613000",
+      "bootstrap_p95_all_fresh_usd": "1.796216062500",
+      "bootstrap_p95_cache_inclusive_usd": "1.701186258000",
+      "observed_cache_point_estimate_usd": "1.598665996281",
+      "planning_point_estimate_usd_all_fresh": "1.693636876281",
+      "range_usd_p05_cache_to_p95_all_fresh": [
+        "1.494870613000",
+        "1.796216062500"
+      ]
+    },
+    "fallback_projection": {
+      "bootstrap_p05_calls": 146,
+      "bootstrap_p95_calls": 166,
+      "point_estimate_calls": "156.000000000000",
+      "point_estimate_rate": "0.520000000000"
+    },
+    "rows": 300
+  },
+  "capable_escalation_plus_remaining_self_check": {
+    "cost_projection": {
+      "bootstrap_p05_all_fresh_usd": "3.042386330000",
+      "bootstrap_p05_cache_inclusive_usd": "2.515733237000",
+      "bootstrap_p95_all_fresh_usd": "3.256458707500",
+      "bootstrap_p95_cache_inclusive_usd": "2.734182917000",
+      "observed_cache_point_estimate_usd": "2.624012342358",
+      "planning_point_estimate_usd_all_fresh": "3.148995260860",
+      "range_usd_p05_cache_to_p95_all_fresh": [
+        "2.515733237000",
+        "3.256458707500"
+      ]
+    },
+    "rows": 373
+  },
+  "created_at_utc": "2026-08-31T10:55:01.879Z",
+  "inputs": {
+    "dataset/cases.jsonl": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
+    "results/runs/full_r3__capable__self_check.csv": "bce63e1a88d9bdda795c1d1a49cfaf81a3780778921b52bda1983bfdca34e69c",
+    "results/runs/full_r3__cheap__escalation.csv": "10ea04c9ade6c69433ce59e2192e1ab2417a02e7b2eef28f82b3cfa7928d92fc",
+    "results/runs/full_r3__standard__escalation.csv": "9392bc1c98775ae1e3eb730e1396c6922c572382ba17573b55d70f13aa0ebe82",
+    "results/runs/pilot__capable__escalation.csv": "b20e77791ff115eb25dd2ac18b6e0db749b2b1e9edc08a2750e724090d7745d0"
+  },
+  "limitations": [
+    "The capable pilot observed no contradictory-category fallback; that category uses full-run standard fallback token usage repriced at capable rates.",
+    "The range combines empirical sampling uncertainty with a cache sensitivity envelope; it is not a provider billing guarantee.",
+    "Retries, pricing changes, and provider-side behaviour changes are excluded."
+  ],
+  "method": {
+    "api_calls": 0,
+    "full_category_counts_fixed": {
+      "adversarial": 30,
+      "answerable_clear": 115,
+      "answerable_multihop": 45,
+      "out_of_scope": 45,
+      "unanswerable_contradictory": 19,
+      "unanswerable_missing": 46
+    },
+    "iterations": 5000,
+    "planning_point_definition": "category-stratified all-fresh point estimate because future cache discounts are not guaranteed",
+    "pricing_formula": "((fresh_input * input_rate) + (cached_input * cached_rate) + (output * output_rate)) / 1,000,000",
+    "range_definition": "bootstrap p05 with observed cache splits through bootstrap p95 with all input repriced as fresh",
+    "retry_treatment": "successful first attempt only; retry spend excluded",
+    "seed": 20260831,
+    "type": "category-stratified empirical bootstrap"
+  },
+  "observed_escalation_trigger_rates": {
+    "cheap": {
+      "adversarial": {
+        "rate": "0.666666666667",
+        "rows": 30,
+        "triggered": 20
+      },
+      "answerable_clear": {
+        "rate": "0.113043478261",
+        "rows": 115,
+        "triggered": 13
+      },
+      "answerable_multihop": {
+        "rate": "0.400000000000",
+        "rows": 45,
+        "triggered": 18
+      },
+      "out_of_scope": {
+        "rate": "1.000000000000",
+        "rows": 45,
+        "triggered": 45
+      },
+      "unanswerable_contradictory": {
+        "rate": "0.736842105263",
+        "rows": 19,
+        "triggered": 14
+      },
+      "unanswerable_missing": {
+        "rate": "0.978260869565",
+        "rows": 46,
+        "triggered": 45
+      }
+    },
+    "standard": {
+      "adversarial": {
+        "rate": "0.700000000000",
+        "rows": 30,
+        "triggered": 21
+      },
+      "answerable_clear": {
+        "rate": "0.121739130435",
+        "rows": 115,
+        "triggered": 14
+      },
+      "answerable_multihop": {
+        "rate": "0.400000000000",
+        "rows": 45,
+        "triggered": 18
+      },
+      "out_of_scope": {
+        "rate": "1.000000000000",
+        "rows": 45,
+        "triggered": 45
+      },
+      "unanswerable_contradictory": {
+        "rate": "0.684210526316",
+        "rows": 19,
+        "triggered": 13
+      },
+      "unanswerable_missing": {
+        "rate": "1.000000000000",
+        "rows": 46,
+        "triggered": 46
+      }
+    }
+  },
+  "pricing": {
+    "capable": {
+      "cached_input_per_1m": "0.25",
+      "input_per_1m": "2.5",
+      "model": "gpt-5.4-2026-03-05",
+      "output_per_1m": "15.0"
+    },
+    "cheap": {
+      "cached_input_per_1m": "0.02",
+      "input_per_1m": "0.2",
+      "model": "gpt-5.4-nano-2026-03-17",
+      "output_per_1m": "1.25"
+    },
+    "price_table_sha256": "217b709f860486e367878551c3e5034b05d84ed7ee4ed18267746dcc30f4aa9b"
+  },
+  "remaining_capable_self_check": {
+    "category_counts_fixed": {
+      "adversarial": 6,
+      "answerable_clear": 27,
+      "answerable_multihop": 11,
+      "out_of_scope": 15,
+      "unanswerable_contradictory": 4,
+      "unanswerable_missing": 10
+    },
+    "cost_projection": {
+      "bootstrap_p05_all_fresh_usd": "1.427900500000",
+      "bootstrap_p05_cache_inclusive_usd": "0.990142550000",
+      "bootstrap_p95_all_fresh_usd": "1.482212750000",
+      "bootstrap_p95_cache_inclusive_usd": "1.062037500000",
+      "observed_cache_point_estimate_usd": "1.025346346077",
+      "planning_point_estimate_usd_all_fresh": "1.455358384579",
+      "range_usd_p05_cache_to_p95_all_fresh": [
+        "0.990142550000",
+        "1.482212750000"
+      ]
+    },
+    "first_case": "case_0228",
+    "last_case": "case_0300",
+    "rows": 73
+  },
+  "schema_version": "1.0.0"
+}
