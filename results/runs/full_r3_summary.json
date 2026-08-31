@@ -1,0 +1,72 @@
+{
+  "actual_total_cost_usd": "9.390678550000",
+  "completed_at_utc": "2026-08-31T08:27:23.374Z",
+  "completed_rows": 2327,
+  "configurations": {
+    "capable__escalation": {
+      "completed_cases": 0,
+      "known_cost_usd": "0.000000000000",
+      "run_path": "results/runs/full_r3__capable__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__self_check": {
+      "completed_cases": 227,
+      "known_cost_usd": "3.207327000000",
+      "run_path": "results/runs/full_r3__capable__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__single_pass": {
+      "completed_cases": 300,
+      "known_cost_usd": "2.894634000000",
+      "run_path": "results/runs/full_r3__capable__single_pass.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__escalation": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.200435910000",
+      "run_path": "results/runs/full_r3__cheap__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__self_check": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.313859620000",
+      "run_path": "results/runs/full_r3__cheap__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "cheap__single_pass": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.231926640000",
+      "run_path": "results/runs/full_r3__cheap__single_pass.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__escalation": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.611840880000",
+      "run_path": "results/runs/full_r3__standard__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__self_check": {
+      "completed_cases": 300,
+      "known_cost_usd": "1.101784200000",
+      "run_path": "results/runs/full_r3__standard__self_check.csv",
+      "unknown_cost_rows": 0
+    },
+    "standard__single_pass": {
+      "completed_cases": 300,
+      "known_cost_usd": "0.828870300000",
+      "run_path": "results/runs/full_r3__standard__single_pass.csv",
+      "unknown_cost_rows": 0
+    }
+  },
+  "expected_rows": 2700,
+  "known_cost_usd": "9.390678550000",
+  "phase_actual_total_cost_usd": "19.869177760000",
+  "phase_known_cost_usd": "19.869177760000",
+  "plan_identity_sha256": "e46a55ca9bbb9793e21a2bd60c0516bbd01db855cb551f50456d8ae9836970cd",
+  "prior_known_spend_usd": "10.478499210000",
+  "schema_version": "1.0.0",
+  "scope": "full_r3",
+  "started_at_utc": "2026-08-31T07:19:14.797Z",
+  "unknown_cost_rows": 0,
+  "wall_clock_ms_this_invocation": 4088468
+}
