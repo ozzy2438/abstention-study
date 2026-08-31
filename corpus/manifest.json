@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "corpus_status": "frozen",
+  "retrieval_date": "2026-08-31",
+  "retrieved_at_utc": "2026-08-31T00:22:32Z",
+  "hash_algorithm": "sha256",
+  "documents": [
+    {
+      "doc_id": "asic_rg271",
+      "title": "Regulatory Guide RG 271 Internal dispute resolution",
+      "publisher": "Australian Securities and Investments Commission",
+      "source_url": "https://download.asic.gov.au/media/3olo5aq5/rg271-published-2-september-2021.pdf",
+      "resolved_url": "https://download.asic.gov.au/media/3olo5aq5/rg271-published-2-september-2021.pdf",
+      "local_path": "corpus/asic_rg271_internal_dispute_resolution_2021.pdf",
+      "media_type": "application/pdf",
+      "byte_count": 717088,
+      "page_count": 57,
+      "sha256": "a3ab42a235957b53f67e37558558b67b93b46d57fb05146dac021b7c3d658b58",
+      "http_last_modified": "Mon, 19 Jun 2023 15:39:17 GMT",
+      "http_etag": "\"1f90d6d7c682104e4389d7c0d0ac504b\""
+    },
+    {
+      "doc_id": "fwo_nes",
+      "title": "Introduction to the National Employment Standards fact sheet",
+      "publisher": "Fair Work Ombudsman",
+      "source_url": "https://www.fairwork.gov.au/sites/default/files/migration/723/Introduction-to-the-national-employment-standards.pdf",
+      "resolved_url": "https://www.fairwork.gov.au/sites/default/files/migration/723/Introduction-to-the-national-employment-standards.pdf",
+      "local_path": "corpus/fwo_introduction_national_employment_standards.pdf",
+      "media_type": "application/pdf",
+      "byte_count": 299514,
+      "page_count": 2,
+      "sha256": "f085407b319728f1e67ebd053d1ec3c227be921aaefd866a29b2640dab7dbcd3",
+      "http_last_modified": "Mon, 03 Mar 2025 22:26:12 GMT",
+      "http_etag": "\"67c62c84-491fa\""
+    },
+    {
+      "doc_id": "fwo_dispute_resolution",
+      "title": "Effective dispute resolution best practice guide",
+      "publisher": "Fair Work Ombudsman",
+      "source_url": "https://www.fairwork.gov.au/sites/default/files/2025-04/effective-dispute-resolution-best-practice-guide.pdf",
+      "resolved_url": "https://www.fairwork.gov.au/sites/default/files/2025-04/effective-dispute-resolution-best-practice-guide.pdf",
+      "local_path": "corpus/fwo_effective_dispute_resolution_best_practice_guide.pdf",
+      "media_type": "application/pdf",
+      "byte_count": 697282,
+      "page_count": 13,
+      "sha256": "05aacd9bb334b333162497d1cf0cf988193449dc286a3e5ec25a3fa8d2c1fe13",
+      "http_last_modified": "Thu, 14 Aug 2025 00:57:02 GMT",
+      "http_etag": "\"689d345e-aa3c2\""
+    }
+  ]
+}
