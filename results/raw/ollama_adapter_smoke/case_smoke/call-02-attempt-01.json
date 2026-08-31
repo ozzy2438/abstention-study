@@ -1,0 +1,100 @@
+{
+  "attempt": 1,
+  "budget_guard_cost_usd": "0.000000000000",
+  "call_index": 2,
+  "call_role": "critic",
+  "case_id": "case_smoke",
+  "configured_tier": "cheap",
+  "cost_basis": "local_ollama_no_api_charge",
+  "cost_usd": "0.000000000000",
+  "finish_reason": "stop",
+  "http_status": 200,
+  "latency_ms": 30952,
+  "price_table_sha256": null,
+  "price_table_version": null,
+  "provider": "ollama",
+  "provider_error_code": null,
+  "request": {
+    "body": {
+      "format": {
+        "additionalProperties": false,
+        "properties": {
+          "answer_text": {
+            "type": "string"
+          },
+          "citations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "confidence": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "number"
+          },
+          "output_type": {
+            "enum": [
+              "ANSWER",
+              "ABSTAIN",
+              "ESCALATE"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "output_type",
+          "answer_text",
+          "citations",
+          "confidence"
+        ],
+        "type": "object"
+      },
+      "messages": [
+        {
+          "content": "Return exactly this JSON and nothing else: {\"output_type\":\"ANSWER\",\"answer_text\":\"SMOKE_OK\",\"citations\":[\"smoke\"],\"confidence\":0.1}",
+          "role": "system"
+        },
+        {
+          "content": "Return the JSON now.",
+          "role": "user"
+        }
+      ],
+      "model": "qwen3:8b",
+      "options": {
+        "num_predict": 64,
+        "seed": 20260831,
+        "temperature": 0,
+        "top_p": 1
+      },
+      "stream": false,
+      "think": false
+    },
+    "body_canonical_json": "{\"format\":{\"additionalProperties\":false,\"properties\":{\"answer_text\":{\"type\":\"string\"},\"citations\":{\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"confidence\":{\"maximum\":1,\"minimum\":0,\"type\":\"number\"},\"output_type\":{\"enum\":[\"ANSWER\",\"ABSTAIN\",\"ESCALATE\"],\"type\":\"string\"}},\"required\":[\"output_type\",\"answer_text\",\"citations\",\"confidence\"],\"type\":\"object\"},\"messages\":[{\"content\":\"Return exactly this JSON and nothing else: {\\\"output_type\\\":\\\"ANSWER\\\",\\\"answer_text\\\":\\\"SMOKE_OK\\\",\\\"citations\\\":[\\\"smoke\\\"],\\\"confidence\\\":0.1}\",\"role\":\"system\"},{\"content\":\"Return the JSON now.\",\"role\":\"user\"}],\"model\":\"qwen3:8b\",\"options\":{\"num_predict\":64,\"seed\":20260831,\"temperature\":0,\"top_p\":1},\"stream\":false,\"think\":false}",
+    "body_sha256": "129288fe02c1b21b30873d6d93dc6e96f4731913bd296877c470228d5c6a0a72",
+    "method": "POST",
+    "url": "http://localhost:11434/api/chat"
+  },
+  "request_started_at": "2026-08-31T09:09:24.724Z",
+  "requested_model": "qwen3:8b",
+  "response_body_base64": "eyJtb2RlbCI6InF3ZW4zOjhiIiwiY3JlYXRlZF9hdCI6IjIwMjYtMDgtMzFUMDk6MDk6NTUuNTk2Mjk1WiIsIm1lc3NhZ2UiOnsicm9sZSI6ImFzc2lzdGFudCIsImNvbnRlbnQiOiJ7XCJhbnN3ZXJfdGV4dFwiOlwiU01PS0VfT0tcIixcImNpdGF0aW9uc1wiOltcInNtb2tlXCJdLFwiY29uZmlkZW5jZVwiOjAuMSxcIm91dHB1dF90eXBlXCI6XCJBTlNXRVJcIn0ifSwiZG9uZSI6dHJ1ZSwiZG9uZV9yZWFzb24iOiJzdG9wIiwidG90YWxfZHVyYXRpb24iOjMwNzg1Mzc5NTg0LCJsb2FkX2R1cmF0aW9uIjoyMTg1MDIyNzgzNCwicHJvbXB0X2V2YWxfY291bnQiOjYxLCJwcm9tcHRfZXZhbF9kdXJhdGlvbiI6MTMyMDIxMTAwMCwiZXZhbF9jb3VudCI6MjgsImV2YWxfZHVyYXRpb24iOjc0OTcwODMwMDB9",
+  "response_body_raw": "{\"model\":\"qwen3:8b\",\"created_at\":\"2026-08-31T09:09:55.596295Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"answer_text\\\":\\\"SMOKE_OK\\\",\\\"citations\\\":[\\\"smoke\\\"],\\\"confidence\\\":0.1,\\\"output_type\\\":\\\"ANSWER\\\"}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":30785379584,\"load_duration\":21850227834,\"prompt_eval_count\":61,\"prompt_eval_duration\":1320211000,\"eval_count\":28,\"eval_duration\":7497083000}",
+  "response_body_sha256": "8f55d3191bc40ead5bfc4bd0b06c5b7355c08a07e68c866ee64875961ec42fe2",
+  "response_headers": {
+    "date": "Mon, 31 Aug 2026 09:09:55 GMT"
+  },
+  "response_received_at": "2026-08-31T09:09:55.700Z",
+  "retryable": false,
+  "returned_model": "qwen3:8b",
+  "run_id": "ollama_adapter_smoke",
+  "schema_version": "1.0.0",
+  "strategy": "self_check",
+  "system_fingerprint": null,
+  "transport_error": null,
+  "usage": {
+    "completion_tokens": 28,
+    "prompt_tokens": 61,
+    "total_tokens": 89,
+    "usage_source": "ollama_prompt_eval_count_and_eval_count"
+  }
+}

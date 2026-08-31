@@ -14,7 +14,9 @@ from harness.run import (
     ProviderCreditExhausted,
     ProgressReporter,
     Runtime,
+    build_ollama_request_body,
     call_result_from_envelopes,
+    provider_for_call_role,
     provider_error_code,
     redact_secret_material,
 )
@@ -221,6 +223,23 @@ class StrategyTests(unittest.TestCase):
         self.assertEqual(runtime.invoke.call_count, 2)
         self.assertEqual(calls, [primary, critic])
         self.assertIs(final, critic)
+
+
+class ProviderRoutingTests(unittest.TestCase):
+    def test_only_critic_is_routed_to_local_ollama(self) -> None:
+        config = json.loads((REPO_ROOT / "harness" / "config.json").read_text())
+        self.assertEqual(provider_for_call_role(config, "critic"), "ollama")
+        self.assertEqual(provider_for_call_role(config, "primary"), "openai")
+        self.assertEqual(provider_for_call_role(config, "fallback"), "openai")
+
+    def test_ollama_request_adapts_developer_role_and_model(self) -> None:
+        config = json.loads((REPO_ROOT / "harness" / "config.json").read_text())
+        body = build_ollama_request_body(
+            config, [{"role": "developer", "content": "system"}]
+        )
+        self.assertEqual(body["model"], "qwen3:8b")
+        self.assertEqual(body["messages"][0]["role"], "system")
+        self.assertEqual(body["think"], False)
 
 
 class ProgressCheckpointTests(unittest.TestCase):

@@ -1,0 +1,70 @@
+{
+  "checked_at_utc": "2026-08-31T09:11:44.924Z",
+  "contract_valid": true,
+  "endpoint": "http://localhost:11434/api/chat",
+  "error": null,
+  "http_status": 200,
+  "latency_ms": 9506,
+  "model": "qwen3:8b",
+  "provider": "ollama",
+  "request_body": {
+    "format": {
+      "additionalProperties": false,
+      "properties": {
+        "answer_text": {
+          "type": "string"
+        },
+        "citations": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "output_type": {
+          "enum": [
+            "ANSWER",
+            "ABSTAIN",
+            "ESCALATE"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "output_type",
+        "answer_text",
+        "citations",
+        "confidence"
+      ],
+      "type": "object"
+    },
+    "messages": [
+      {
+        "content": "Return exactly this JSON object and nothing else: {\"output_type\":\"ANSWER\",\"answer_text\":\"SMOKE_OK\",\"citations\":[\"smoke\"],\"confidence\":0.1}",
+        "role": "system"
+      },
+      {
+        "content": "Smoke-test the local provider.",
+        "role": "user"
+      }
+    ],
+    "model": "qwen3:8b",
+    "options": {
+      "num_predict": 1200,
+      "seed": 20260831,
+      "temperature": 0,
+      "top_p": 1
+    },
+    "stream": false,
+    "think": false
+  },
+  "request_body_sha256": "56d30fc3c57a6de8a6bfcbbfb952cfd894acf904be89bf238eafbffbc7a7e9e8",
+  "response_body_raw": "{\"model\":\"qwen3:8b\",\"created_at\":\"2026-08-31T09:11:44.913424Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"answer_text\\\":\\\"SMOKE_OK\\\",\\\"citations\\\":[\\\"smoke\\\"],\\\"confidence\\\":0.1,\\\"output_type\\\":\\\"ANSWER\\\"}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":9309432583,\"load_duration\":86369917,\"prompt_eval_count\":63,\"prompt_eval_duration\":1386063000,\"eval_count\":28,\"eval_duration\":7719977000}",
+  "response_body_sha256": "16042a2ba626f5e4155436d3f4d8a2debffe3706a2e2614c2a820cb57f58515a",
+  "response_content": "{\"answer_text\":\"SMOKE_OK\",\"citations\":[\"smoke\"],\"confidence\":0.1,\"output_type\":\"ANSWER\"}",
+  "schema_version": "1.0.0"
+}

@@ -100,6 +100,16 @@ RESPONSE_FORMAT = {
     },
 }
 
+SUPPORTED_PROVIDERS = {"openai", "ollama"}
+
+
+def provider_for_call_role(config: dict[str, Any], call_role: str) -> str:
+    """Resolve the provider without changing the strategy's logical call plan."""
+    provider = config.get("provider_by_call_role", {}).get(call_role, "openai")
+    if provider not in SUPPORTED_PROVIDERS:
+        raise ValueError(f"Unsupported provider for {call_role}: {provider}")
+    return provider
+
 RESULT_FIELDS = [
     "case_id",
     "model_tier",
@@ -428,6 +438,33 @@ def build_request_body(
     }
 
 
+def build_ollama_request_body(
+    config: dict[str, Any], messages: list[dict[str, str]]
+) -> dict[str, Any]:
+    """Adapt the frozen prompt and response contract to Ollama's chat API."""
+    ollama_config = config["ollama"]
+    normalized_messages = [
+        {
+            "role": "system" if message["role"] == "developer" else message["role"],
+            "content": message["content"],
+        }
+        for message in messages
+    ]
+    return {
+        "model": ollama_config["model"],
+        "messages": normalized_messages,
+        "format": RESPONSE_SCHEMA,
+        "stream": False,
+        "think": bool(ollama_config.get("think", False)),
+        "options": {
+            "temperature": config["temperature"],
+            "top_p": config["top_p"],
+            "seed": config["seed"],
+            "num_predict": config["max_completion_tokens"],
+        },
+    }
+
+
 def project_matrix(
     cases: list[dict[str, Any]],
     factory: PromptFactory,
@@ -458,7 +495,8 @@ def project_matrix(
                     )
                     input_tokens += first_count + critic_count
                     cost += cost_usd(models[tier], first_count, output_cap)
-                    cost += cost_usd(models[tier], critic_count, output_cap)
+                    if provider_for_call_role(config, "critic") == "openai":
+                        cost += cost_usd(models[tier], critic_count, output_cap)
                     calls += 2
                 else:
                     primary_count = estimator.count_messages(factory.base_messages(case))
@@ -621,7 +659,10 @@ def call_result_from_envelopes(
     if final.get("http_status") == 200:
         try:
             response = json.loads(final["response_body_raw"])
-            response_content = response["choices"][0]["message"]["content"]
+            if final.get("provider", "openai") == "ollama":
+                response_content = response["message"]["content"]
+            else:
+                response_content = response["choices"][0]["message"]["content"]
             if not isinstance(response_content, str):
                 response_content = None
                 parse_error = "invalid_response:content_not_string"
@@ -629,7 +670,8 @@ def call_result_from_envelopes(
                 parsed, parse_error = parse_model_content(response_content)
         except (KeyError, IndexError, TypeError, json.JSONDecodeError) as exc:
             parse_error = f"invalid_response:{type(exc).__name__}"
-        if final.get("returned_model") != model.model_version:
+        expected_model = str(final.get("requested_model") or model.model_version)
+        if final.get("returned_model") != expected_model:
             parsed = None
             parse_error = "model_version_mismatch"
         error_state = parse_error
@@ -638,7 +680,7 @@ def call_result_from_envelopes(
     return CallResult(
         call_role=call_role,
         requested_tier=model_tier,
-        requested_model=model.model_version,
+        requested_model=str(final.get("requested_model") or model.model_version),
         response_content=response_content,
         parsed=parsed,
         parse_error=parse_error,
@@ -710,7 +752,10 @@ class Runtime:
         self,
         model: ModelTier,
         estimated_input_tokens: int,
+        provider: str = "openai",
     ) -> Decimal:
+        if provider == "ollama":
+            return Decimal(0)
         return cost_usd(
             model,
             estimated_input_tokens,
@@ -727,14 +772,36 @@ class Runtime:
         messages: list[dict[str, str]],
     ) -> CallResult:
         model = self.models[model_tier]
-        request_body = build_request_body(
-            self.config, model.model_version, messages
+        provider = provider_for_call_role(self.config, call_role)
+        requested_model = (
+            model.model_version
+            if provider == "openai"
+            else str(self.config["ollama"]["model"])
+        )
+        request_body = (
+            build_request_body(self.config, requested_model, messages)
+            if provider == "openai"
+            else build_ollama_request_body(self.config, messages)
         )
         estimated_input = self.estimator.count_messages(messages)
-        maximum_guard = self._request_guard_cost(model, estimated_input)
+        maximum_guard = self._request_guard_cost(
+            model, estimated_input, provider
+        )
         existing = self._existing_envelopes(case["case_id"], call_index)
         if existing:
             last = existing[-1][1]
+            existing_provider = last.get("provider", "openai")
+            if (
+                existing_provider != provider
+                or (
+                    last.get("requested_model") is not None
+                    and last.get("requested_model") != requested_model
+                )
+            ):
+                raise RuntimeError(
+                    "Existing raw evidence uses a different provider/model; "
+                    "use a new run revision rather than mixing providers"
+                )
             if last.get("provider_error_code") == "credit_balance_exhausted":
                 raise ProviderCreditExhausted(
                     "provider reported credit_balance_exhausted; no further "
@@ -762,6 +829,8 @@ class Runtime:
                 request_body=request_body,
                 path=path,
                 maximum_guard=maximum_guard,
+                provider=provider,
+                requested_model=requested_model,
             )
             actual = (
                 Decimal(envelope["cost_usd"])
@@ -799,7 +868,21 @@ class Runtime:
         request_body: dict[str, Any],
         path: Path,
         maximum_guard: Decimal,
+        provider: str = "openai",
+        requested_model: str | None = None,
     ) -> dict[str, Any]:
+        if provider == "ollama":
+            return self._perform_ollama_attempt(
+                case=case,
+                model=model,
+                call_role=call_role,
+                call_index=call_index,
+                attempt=attempt,
+                request_body=request_body,
+                path=path,
+                maximum_guard=maximum_guard,
+                requested_model=requested_model or str(self.config["ollama"]["model"]),
+            )
         url = self.config["api_base_url"].rstrip("/") + "/chat/completions"
         request_bytes = canonical_json(request_body).encode("utf-8")
         request = urllib.request.Request(
@@ -920,6 +1003,131 @@ class Runtime:
             "price_table_sha256": sha256_path(PRICE_TABLE_PATH),
             "cost_usd": decimal_text(computed_cost) if computed_cost is not None else None,
             "budget_guard_cost_usd": decimal_text(guard_charge),
+        }
+        atomic_write_json(path, envelope)
+        return envelope
+
+    def _perform_ollama_attempt(
+        self,
+        *,
+        case: dict[str, Any],
+        model: ModelTier,
+        call_role: str,
+        call_index: int,
+        attempt: int,
+        request_body: dict[str, Any],
+        path: Path,
+        maximum_guard: Decimal,
+        requested_model: str,
+    ) -> dict[str, Any]:
+        """Call local Ollama for the recurring critic/check only.
+
+        The full response is persisted in the same raw-envelope format before
+        the strategy parses it. Local inference has no provider-billed USD
+        amount, so successful and failed Ollama attempts record zero API cost.
+        """
+        url = self.config["ollama"]["api_base_url"].rstrip("/") + "/api/chat"
+        request_bytes = canonical_json(request_body).encode("utf-8")
+        request = urllib.request.Request(
+            url,
+            data=request_bytes,
+            method="POST",
+            headers={
+                "Content-Type": "application/json",
+                "User-Agent": "abstention-study-harness/1.0.0",
+            },
+        )
+        started_at = utc_now()
+        started = time.perf_counter()
+        status: int | None = None
+        response_bytes = b""
+        response_headers: dict[str, str] = {}
+        transport_error: str | None = None
+        try:
+            with urllib.request.urlopen(
+                request, timeout=float(self.config["api_timeout_seconds"])
+            ) as response:
+                status = int(response.status)
+                response_bytes = response.read()
+                response_headers = self._safe_headers(response.headers)
+        except urllib.error.HTTPError as exc:
+            status = int(exc.code)
+            response_bytes = exc.read()
+            response_headers = self._safe_headers(exc.headers)
+        except (urllib.error.URLError, TimeoutError, socket.timeout, OSError) as exc:
+            transport_error = f"{type(exc).__name__}:{exc}"
+        latency_ms = int(round((time.perf_counter() - started) * 1000))
+        received_at = utc_now()
+
+        response_text = response_bytes.decode("utf-8", errors="replace")
+        response_json: dict[str, Any] | None = None
+        try:
+            parsed_json = json.loads(response_text) if response_bytes else None
+            if isinstance(parsed_json, dict):
+                response_json = parsed_json
+        except json.JSONDecodeError:
+            response_json = None
+
+        error_code = None
+        if response_json and isinstance(response_json.get("error"), str):
+            error_code = "ollama_error"
+        returned_model = response_json.get("model") if response_json else None
+        usage: dict[str, Any] | None = None
+        if response_json:
+            prompt_tokens = response_json.get("prompt_eval_count")
+            completion_tokens = response_json.get("eval_count")
+            if isinstance(prompt_tokens, int) and isinstance(completion_tokens, int):
+                usage = {
+                    "prompt_tokens": prompt_tokens,
+                    "completion_tokens": completion_tokens,
+                    "total_tokens": prompt_tokens + completion_tokens,
+                    "usage_source": "ollama_prompt_eval_count_and_eval_count",
+                }
+        finish_reason = response_json.get("done_reason") if response_json else None
+        retryable_statuses = set(self.config["retry"]["retryable_http_statuses"])
+        retryable = (
+            (transport_error is not None or status in retryable_statuses)
+            and error_code
+            not in set(self.config["retry"].get("non_retryable_error_codes", []))
+        )
+        envelope = {
+            "schema_version": "1.0.0",
+            "provider": "ollama",
+            "cost_basis": "local_ollama_no_api_charge",
+            "run_id": self.run_id,
+            "case_id": case["case_id"],
+            "configured_tier": self.configured_tier,
+            "strategy": self.strategy,
+            "call_role": call_role,
+            "call_index": call_index,
+            "attempt": attempt,
+            "request": {
+                "method": "POST",
+                "url": url,
+                "body": request_body,
+                "body_canonical_json": request_bytes.decode("utf-8"),
+                "body_sha256": sha256_bytes(request_bytes),
+            },
+            "request_started_at": started_at,
+            "response_received_at": received_at,
+            "latency_ms": latency_ms,
+            "http_status": status,
+            "response_headers": response_headers,
+            "response_body_raw": response_text,
+            "response_body_base64": base64.b64encode(response_bytes).decode("ascii"),
+            "response_body_sha256": sha256_bytes(response_bytes),
+            "transport_error": transport_error,
+            "provider_error_code": error_code,
+            "retryable": retryable,
+            "requested_model": requested_model,
+            "returned_model": returned_model,
+            "system_fingerprint": None,
+            "usage": usage,
+            "finish_reason": finish_reason,
+            "price_table_version": None,
+            "price_table_sha256": None,
+            "cost_usd": "0.000000000000",
+            "budget_guard_cost_usd": decimal_text(maximum_guard),
         }
         atomic_write_json(path, envelope)
         return envelope

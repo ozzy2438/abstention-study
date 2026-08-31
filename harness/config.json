@@ -2,6 +2,16 @@
   "api_base_url": "https://api.openai.com/v1",
   "api_timeout_seconds": 120,
   "escalation_threshold": 0.7,
+  "provider_by_call_role": {
+    "primary": "openai",
+    "critic": "ollama",
+    "fallback": "openai"
+  },
+  "ollama": {
+    "api_base_url": "http://localhost:11434",
+    "model": "qwen3:8b",
+    "think": false
+  },
   "max_completion_tokens": 1200,
   "reasoning_effort": "none",
   "retry": {

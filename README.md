@@ -9,6 +9,13 @@ The protocol was frozen before data construction. The standalone repository's
 first commit is the protocol freeze; the owner-provided provenance for the
 earlier nested-repository freeze is `2acebcef4...`.
 
+For local, repeated reviewer checks, the `self_check` critic uses Ollama
+(`qwen3:8b` at `http://localhost:11434`). Primary and escalation-fallback
+evaluation calls retain the registered OpenAI model-tier configuration.
+
+Verify the local provider with `python harness/ollama_smoke.py`; the complete
+raw smoke response is written to `results/runs/ollama_smoke.json`.
+
 ## Source-document distribution
 
 The three source PDF binaries are intentionally excluded from Git. ASIC

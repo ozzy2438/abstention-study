@@ -1015,3 +1015,24 @@ restored, the full 3x3 matrix must restart from zero completed rows under a
 new execution revision, carrying all known prior provider spend in the phase
 budget ledger. No V3 row may be combined with the restart, and no Phase 5
 analysis may begin before that restart completes.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Local Ollama reviewer routing
+
+**Type:** Provider-routing operational change requested by the study owner. It
+does not change the task, corpus, dataset, labels, prompts, output contract,
+confidence definition, logical strategy call counts, scoring, or metrics.
+
+**Correction:** The recurring `self_check` critic/reviewer call is sent to the
+local Ollama endpoint `http://localhost:11434` using model `qwen3:8b`. The
+prompt and structured response contract are adapted to Ollama's `/api/chat`
+request format, and the full raw response remains persisted before parsing.
+`single_pass` primary calls, `escalation` primary and fallback calls, and any
+future main/final evaluation calls continue to use the registered OpenAI model
+tiers. No OpenAI API key is sent to Ollama.
+
+**Cost and evidence treatment:** Ollama usage counts are recorded when the
+local response supplies them. Ollama attempts record
+`cost_basis=local_ollama_no_api_charge` and zero provider-billed USD cost;
+OpenAI pricing is not applied to those critic calls. Existing OpenAI raw
+evidence is never mixed with a new Ollama call sequence; a provider/model
+mismatch requires a new run revision.
