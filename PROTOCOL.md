@@ -913,3 +913,23 @@ checkpoint twice.
 **Impact and restart decision:** This is a reporting addition made before any
 Phase 4 inference. It does not alter any model input or result calculation and
 does not require a restart.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Preflight retry-scope clarification
+
+**Type:** Clarification of budget-projection terminology. It does not change
+the task, labels, prompts, strategies, scoring, metrics, price table, logical
+call plan, or the runtime hard-budget enforcement.
+
+**Reason:** During the owner-requested Phase 4 budget review, the label
+`projected_max_cost_usd` could be read as including every permitted retry. It
+does not: it is the maximum cost of the registered logical call path with one
+attempt per primary, critic, or fallback call, zero cached input, and the full
+output cap. The runtime `Budget.check` remains the actual hard cap: it runs
+before every API attempt, including retries, and halts before an attempt that
+would exceed the selected cap. Thus the preflight projection is a conservative
+successful-first-attempt estimate, not a guarantee that a retry storm will
+finish within the cap.
+
+**Impact and restart decision:** The pilot had 275 raw envelopes, all with
+`attempt=1`; no pilot cost or result is affected. This clarification is made
+before Phase 4 inference. It does not require a rerun.

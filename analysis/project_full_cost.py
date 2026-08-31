@@ -352,7 +352,10 @@ def main() -> None:
         },
         "conservative_preflight_maximum": conservative_projection,
         "conservative_preflight_assumptions": {
-            "classification": "conservative budget guard, not a realistic spend estimate",
+            "classification": (
+                "conservative successful-first-attempt budget projection, not a "
+                "realistic spend estimate or a retry-inclusive completion guarantee"
+            ),
             "pricing_formula": (
                 "cost_usd(model, input_tokens, output_tokens, cached_input_tokens=0) "
                 "= (input_tokens * input_per_1m_tokens + output_tokens * "
@@ -361,6 +364,10 @@ def main() -> None:
             "cached_input_tokens": 0,
             "output_tokens_per_call": int(artifacts["config"]["max_completion_tokens"]),
             "optional_calls": "every critic and every escalation fallback is charged",
+            "retry_attempts": (
+                "not included in this logical-call projection; the runtime hard cap "
+                "checks every retry attempt before it is sent"
+            ),
             "self_check_critic_input": (
                 "the registered critic prompt estimate plus a full 1,200-token primary "
                 "response reserve"

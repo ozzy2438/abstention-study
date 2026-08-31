@@ -871,7 +871,7 @@
   },
   "conservative_preflight_assumptions": {
     "cached_input_tokens": 0,
-    "classification": "conservative budget guard, not a realistic spend estimate",
+    "classification": "conservative successful-first-attempt budget projection, not a realistic spend estimate or a retry-inclusive completion guarantee",
     "escalation_model_assignment": {
       "capable__escalation": [
         "cheap",
@@ -910,6 +910,7 @@
       }
     },
     "pricing_formula": "cost_usd(model, input_tokens, output_tokens, cached_input_tokens=0) = (input_tokens * input_per_1m_tokens + output_tokens * output_per_1m_tokens) / 1_000_000",
+    "retry_attempts": "not included in this logical-call projection; the runtime hard cap checks every retry attempt before it is sent",
     "self_check_critic_input": "the registered critic prompt estimate plus a full 1,200-token primary response reserve"
   },
   "conservative_preflight_maximum": {
@@ -981,7 +982,7 @@
     "maximum_calls": 4500,
     "projected_max_cost_usd": "47.509772400000"
   },
-  "created_at_utc": "2026-08-31T05:05:41.180Z",
+  "created_at_utc": "2026-08-31T05:08:11.047Z",
   "escalation_trigger_projection": {
     "contradictory_single_case_sensitivity": {
       "if_all_three_cell_outcomes_flip": {
