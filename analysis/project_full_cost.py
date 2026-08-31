@@ -163,6 +163,7 @@ def bootstrap_configuration(
         point_final_escalate += target_count * final_escalate_sum / pilot_count
         category_summary[category] = {
             "pilot_cases": pilot_count,
+            "pilot_fallback_trigger_count": fallback_sum,
             "full_cases": target_count,
             "pilot_mean_billed_cost_usd": pico_text(billed_sum // pilot_count),
             "pilot_mean_all_fresh_cost_usd": pico_text(fresh_sum // pilot_count),
@@ -290,6 +291,37 @@ def main() -> None:
         decimal_to_pico(Decimal(item["cost_projection_usd"]["point_estimate_all_fresh"]))
         for item in configurations.values()
     )
+    escalation_keys = tuple(f"{tier}__escalation" for tier in TIERS)
+    escalation_row_count = len(artifacts["cases"]) * len(escalation_keys)
+    aggregate_fallback_calls = sum(
+        Decimal(configurations[key]["fallback_trigger_projection"]["point_estimate_calls"])
+        for key in escalation_keys
+    )
+    contradictory_full_cases = full_counts["unanswerable_contradictory"]
+    contradictory_flip_one_cell_calls = aggregate_fallback_calls + contradictory_full_cases
+    contradictory_flip_all_cells_calls = (
+        aggregate_fallback_calls
+        + contradictory_full_cases * len(escalation_keys)
+    )
+    per_category_escalation = {}
+    for category in CATEGORIES:
+        per_category_escalation[category] = {
+            "pilot_cases": pilot_counts[category],
+            "by_escalation_configuration": {
+                key: {
+                    "pilot_fallback_trigger_count": configurations[key][
+                        "category_strata"
+                    ][category]["pilot_fallback_trigger_count"],
+                    "pilot_fallback_trigger_rate": configurations[key][
+                        "category_strata"
+                    ][category]["pilot_fallback_trigger_rate"],
+                    "projected_fallback_calls": configurations[key][
+                        "category_strata"
+                    ][category]["projected_fallback_calls"],
+                }
+                for key in escalation_keys
+            },
+        }
     output = {
         "schema_version": "1.0.0",
         "created_at_utc": datetime.now(timezone.utc)
@@ -319,6 +351,63 @@ def main() -> None:
             ),
         },
         "conservative_preflight_maximum": conservative_projection,
+        "conservative_preflight_assumptions": {
+            "classification": "conservative budget guard, not a realistic spend estimate",
+            "pricing_formula": (
+                "cost_usd(model, input_tokens, output_tokens, cached_input_tokens=0) "
+                "= (input_tokens * input_per_1m_tokens + output_tokens * "
+                "output_per_1m_tokens) / 1_000_000"
+            ),
+            "cached_input_tokens": 0,
+            "output_tokens_per_call": int(artifacts["config"]["max_completion_tokens"]),
+            "optional_calls": "every critic and every escalation fallback is charged",
+            "self_check_critic_input": (
+                "the registered critic prompt estimate plus a full 1,200-token primary "
+                "response reserve"
+            ),
+            "escalation_model_assignment": {
+                "cheap__escalation": ["cheap", "cheap"],
+                "standard__escalation": ["cheap", "standard"],
+                "capable__escalation": ["cheap", "capable"],
+            },
+            "price_table_per_1m_tokens": {
+                tier: {
+                    "model_version": model.model_version,
+                    "input": str(model.input_per_1m_tokens),
+                    "cached_input": str(model.cached_input_per_1m_tokens),
+                    "output": str(model.output_per_1m_tokens),
+                }
+                for tier, model in models.items()
+            },
+            "maximum_calls_all_matrix": conservative_projection["maximum_calls"],
+        },
+        "escalation_trigger_projection": {
+            "definition": (
+                "A trigger is a raw API envelope with call_role=fallback; the denominator "
+                "is all 900 rows in the three escalation configurations."
+            ),
+            "escalation_row_denominator": escalation_row_count,
+            "point_estimate_fallback_calls": f"{aggregate_fallback_calls:.12f}",
+            "point_estimate_trigger_rate": f"{aggregate_fallback_calls / escalation_row_count:.12f}",
+            "per_category": per_category_escalation,
+            "contradictory_single_case_sensitivity": {
+                "warning": (
+                    "unanswerable_contradictory has one pilot case; its observed fallback "
+                    "count is 0/1 in each escalation configuration."
+                ),
+                "if_one_of_three_cell_outcomes_flips": {
+                    "incremental_fallback_calls": contradictory_full_cases,
+                    "trigger_rate_shift": f"{Decimal(contradictory_full_cases) / escalation_row_count:.12f}",
+                    "resulting_trigger_rate": f"{contradictory_flip_one_cell_calls / escalation_row_count:.12f}",
+                },
+                "if_all_three_cell_outcomes_flip": {
+                    "incremental_fallback_calls": contradictory_full_cases
+                    * len(escalation_keys),
+                    "trigger_rate_shift": f"{Decimal(contradictory_full_cases * len(escalation_keys)) / escalation_row_count:.12f}",
+                    "resulting_trigger_rate": f"{contradictory_flip_all_cells_calls / escalation_row_count:.12f}",
+                },
+            },
+        },
         "configurations": configurations,
         "all_matrix": {
             "cost_projection_usd": {

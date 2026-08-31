@@ -27,6 +27,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 2,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.010061550000",
@@ -37,6 +38,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 1,
           "pilot_fallback_trigger_rate": "0.200000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.003197610000",
@@ -47,6 +49,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 4,
           "pilot_fallback_trigger_rate": "0.571428571429",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.006922914285",
@@ -57,6 +60,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 2,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.009217800000",
@@ -67,6 +71,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000650800000",
@@ -77,6 +82,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 3,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.009631800000",
@@ -115,6 +121,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.018772500000",
@@ -125,6 +132,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.021736500000",
@@ -135,6 +143,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.142857142857",
           "pilot_mean_all_fresh_cost_usd": "0.021282500000",
@@ -145,6 +154,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.017210000000",
@@ -155,6 +165,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.017567500000",
@@ -165,6 +176,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.017976666666",
@@ -203,6 +215,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.009391250000",
@@ -213,6 +226,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.010977000000",
@@ -223,6 +237,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.010821428571",
@@ -233,6 +248,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.008610000000",
@@ -243,6 +259,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.008695000000",
@@ -253,6 +270,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.008993333333",
@@ -291,6 +309,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 2,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001499000000",
@@ -301,6 +320,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 1,
           "pilot_fallback_trigger_rate": "0.200000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000973220000",
@@ -311,6 +331,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 3,
           "pilot_fallback_trigger_rate": "0.428571428571",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001140242857",
@@ -321,6 +342,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 2,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001374000000",
@@ -331,6 +353,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000650800000",
@@ -341,6 +364,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 3,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001435333333",
@@ -379,6 +403,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001504800000",
@@ -389,6 +414,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001610140000",
@@ -399,6 +425,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001587778571",
@@ -409,6 +436,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001379800000",
@@ -419,6 +447,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001307800000",
@@ -429,6 +458,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001441133333",
@@ -467,6 +497,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000752800000",
@@ -477,6 +508,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000813360000",
@@ -487,6 +519,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000816307142",
@@ -497,6 +530,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000690300000",
@@ -507,6 +541,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000650800000",
@@ -517,6 +552,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000720966666",
@@ -555,6 +591,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 2,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.003545425000",
@@ -565,6 +602,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 1,
           "pilot_fallback_trigger_rate": "0.200000000000",
           "pilot_final_ESCALATE_rate": "0.200000000000",
           "pilot_mean_all_fresh_cost_usd": "0.001401710000",
@@ -575,6 +613,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 4,
           "pilot_fallback_trigger_rate": "0.571428571429",
           "pilot_final_ESCALATE_rate": "0.285714285714",
           "pilot_mean_all_fresh_cost_usd": "0.002392128571",
@@ -585,6 +624,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 2,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.003248550000",
@@ -595,6 +635,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.000650800000",
@@ -605,6 +646,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 3,
           "pilot_fallback_trigger_rate": "1.000000000000",
           "pilot_final_ESCALATE_rate": "0.333333333333",
           "pilot_mean_all_fresh_cost_usd": "0.003394216666",
@@ -643,6 +685,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.005645250000",
@@ -653,6 +696,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.200000000000",
           "pilot_mean_all_fresh_cost_usd": "0.005679150000",
@@ -663,6 +707,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.005491714285",
@@ -673,6 +718,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.005190000000",
@@ -683,6 +729,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.004729500000",
@@ -693,6 +740,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.005420000000",
@@ -731,6 +779,7 @@
         "adversarial": {
           "full_cases": 30,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.002817375000",
@@ -741,6 +790,7 @@
         "answerable_clear": {
           "full_cases": 115,
           "pilot_cases": 5,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.200000000000",
           "pilot_mean_all_fresh_cost_usd": "0.002886300000",
@@ -751,6 +801,7 @@
         "answerable_multihop": {
           "full_cases": 45,
           "pilot_cases": 7,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.142857142857",
           "pilot_mean_all_fresh_cost_usd": "0.002736000000",
@@ -761,6 +812,7 @@
         "out_of_scope": {
           "full_cases": 45,
           "pilot_cases": 2,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.002583000000",
@@ -771,6 +823,7 @@
         "unanswerable_contradictory": {
           "full_cases": 19,
           "pilot_cases": 1,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.002428500000",
@@ -781,6 +834,7 @@
         "unanswerable_missing": {
           "full_cases": 46,
           "pilot_cases": 3,
+          "pilot_fallback_trigger_count": 0,
           "pilot_fallback_trigger_rate": "0.000000000000",
           "pilot_final_ESCALATE_rate": "0.000000000000",
           "pilot_mean_all_fresh_cost_usd": "0.002698000000",
@@ -814,6 +868,49 @@
       "pilot_run_csv": "results/runs/pilot__standard__single_pass.csv",
       "pilot_run_csv_sha256": "fe7662dda655011016a5a41e8559db214000e4a2a555449311ff90d0276e4ab3"
     }
+  },
+  "conservative_preflight_assumptions": {
+    "cached_input_tokens": 0,
+    "classification": "conservative budget guard, not a realistic spend estimate",
+    "escalation_model_assignment": {
+      "capable__escalation": [
+        "cheap",
+        "capable"
+      ],
+      "cheap__escalation": [
+        "cheap",
+        "cheap"
+      ],
+      "standard__escalation": [
+        "cheap",
+        "standard"
+      ]
+    },
+    "maximum_calls_all_matrix": 4500,
+    "optional_calls": "every critic and every escalation fallback is charged",
+    "output_tokens_per_call": 1200,
+    "price_table_per_1m_tokens": {
+      "capable": {
+        "cached_input": "0.25",
+        "input": "2.5",
+        "model_version": "gpt-5.4-2026-03-05",
+        "output": "15.0"
+      },
+      "cheap": {
+        "cached_input": "0.02",
+        "input": "0.2",
+        "model_version": "gpt-5.4-nano-2026-03-17",
+        "output": "1.25"
+      },
+      "standard": {
+        "cached_input": "0.075",
+        "input": "0.75",
+        "model_version": "gpt-5.4-mini-2026-03-17",
+        "output": "4.5"
+      }
+    },
+    "pricing_formula": "cost_usd(model, input_tokens, output_tokens, cached_input_tokens=0) = (input_tokens * input_per_1m_tokens + output_tokens * output_per_1m_tokens) / 1_000_000",
+    "self_check_critic_input": "the registered critic prompt estimate plus a full 1,200-token primary response reserve"
   },
   "conservative_preflight_maximum": {
     "configurations": {
@@ -884,7 +981,148 @@
     "maximum_calls": 4500,
     "projected_max_cost_usd": "47.509772400000"
   },
-  "created_at_utc": "2026-08-31T04:24:47.973Z",
+  "created_at_utc": "2026-08-31T05:05:41.180Z",
+  "escalation_trigger_projection": {
+    "contradictory_single_case_sensitivity": {
+      "if_all_three_cell_outcomes_flip": {
+        "incremental_fallback_calls": 57,
+        "resulting_trigger_rate": "0.621904761905",
+        "trigger_rate_shift": "0.063333333333"
+      },
+      "if_one_of_three_cell_outcomes_flips": {
+        "incremental_fallback_calls": 19,
+        "resulting_trigger_rate": "0.579682539683",
+        "trigger_rate_shift": "0.021111111111"
+      },
+      "warning": "unanswerable_contradictory has one pilot case; its observed fallback count is 0/1 in each escalation configuration."
+    },
+    "definition": "A trigger is a raw API envelope with call_role=fallback; the denominator is all 900 rows in the three escalation configurations.",
+    "escalation_row_denominator": 900,
+    "per_category": {
+      "adversarial": {
+        "by_escalation_configuration": {
+          "capable__escalation": {
+            "pilot_fallback_trigger_count": 2,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "30.000000000000"
+          },
+          "cheap__escalation": {
+            "pilot_fallback_trigger_count": 2,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "30.000000000000"
+          },
+          "standard__escalation": {
+            "pilot_fallback_trigger_count": 2,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "30.000000000000"
+          }
+        },
+        "pilot_cases": 2
+      },
+      "answerable_clear": {
+        "by_escalation_configuration": {
+          "capable__escalation": {
+            "pilot_fallback_trigger_count": 1,
+            "pilot_fallback_trigger_rate": "0.200000000000",
+            "projected_fallback_calls": "23.000000000000"
+          },
+          "cheap__escalation": {
+            "pilot_fallback_trigger_count": 1,
+            "pilot_fallback_trigger_rate": "0.200000000000",
+            "projected_fallback_calls": "23.000000000000"
+          },
+          "standard__escalation": {
+            "pilot_fallback_trigger_count": 1,
+            "pilot_fallback_trigger_rate": "0.200000000000",
+            "projected_fallback_calls": "23.000000000000"
+          }
+        },
+        "pilot_cases": 5
+      },
+      "answerable_multihop": {
+        "by_escalation_configuration": {
+          "capable__escalation": {
+            "pilot_fallback_trigger_count": 4,
+            "pilot_fallback_trigger_rate": "0.571428571429",
+            "projected_fallback_calls": "25.714285714286"
+          },
+          "cheap__escalation": {
+            "pilot_fallback_trigger_count": 3,
+            "pilot_fallback_trigger_rate": "0.428571428571",
+            "projected_fallback_calls": "19.285714285714"
+          },
+          "standard__escalation": {
+            "pilot_fallback_trigger_count": 4,
+            "pilot_fallback_trigger_rate": "0.571428571429",
+            "projected_fallback_calls": "25.714285714286"
+          }
+        },
+        "pilot_cases": 7
+      },
+      "out_of_scope": {
+        "by_escalation_configuration": {
+          "capable__escalation": {
+            "pilot_fallback_trigger_count": 2,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "45.000000000000"
+          },
+          "cheap__escalation": {
+            "pilot_fallback_trigger_count": 2,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "45.000000000000"
+          },
+          "standard__escalation": {
+            "pilot_fallback_trigger_count": 2,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "45.000000000000"
+          }
+        },
+        "pilot_cases": 2
+      },
+      "unanswerable_contradictory": {
+        "by_escalation_configuration": {
+          "capable__escalation": {
+            "pilot_fallback_trigger_count": 0,
+            "pilot_fallback_trigger_rate": "0.000000000000",
+            "projected_fallback_calls": "0.000000000000"
+          },
+          "cheap__escalation": {
+            "pilot_fallback_trigger_count": 0,
+            "pilot_fallback_trigger_rate": "0.000000000000",
+            "projected_fallback_calls": "0.000000000000"
+          },
+          "standard__escalation": {
+            "pilot_fallback_trigger_count": 0,
+            "pilot_fallback_trigger_rate": "0.000000000000",
+            "projected_fallback_calls": "0.000000000000"
+          }
+        },
+        "pilot_cases": 1
+      },
+      "unanswerable_missing": {
+        "by_escalation_configuration": {
+          "capable__escalation": {
+            "pilot_fallback_trigger_count": 3,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "46.000000000000"
+          },
+          "cheap__escalation": {
+            "pilot_fallback_trigger_count": 3,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "46.000000000000"
+          },
+          "standard__escalation": {
+            "pilot_fallback_trigger_count": 3,
+            "pilot_fallback_trigger_rate": "1.000000000000",
+            "projected_fallback_calls": "46.000000000000"
+          }
+        },
+        "pilot_cases": 3
+      }
+    },
+    "point_estimate_fallback_calls": "502.714285714286",
+    "point_estimate_trigger_rate": "0.558571428571"
+  },
   "method": {
     "cache_sensitivity_note": "Cache-inclusive values preserve observed provider cache discounts. All-fresh values reprice the same raw calls with cached input tokens set to zero. The envelope is a cache-sensitivity range, not a confidence interval for future model behaviour.",
     "fallback_definition": "A fallback trigger is a second strategy call with call_role=fallback; it is distinct from a final output label of ESCALATE.",

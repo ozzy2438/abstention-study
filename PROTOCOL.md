@@ -890,3 +890,26 @@ after the pilot. It is not a change to a frozen evaluation definition and does
 not require model re-calls. The complete pilot matrix is reconstructed from raw
 evidence so that every pilot CSV has the same schema; no result is selectively
 patched.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Phase 4 progress checkpoints
+
+**Type:** Additive run-observability record. It does not change the task,
+labels, output contract, confidence, prompts, strategies, scoring, metrics,
+model tiers, price table, or budget guard.
+
+**Reason:** Before authorising the full run, the owner requested durable
+progress visibility for cumulative spend and escalation behaviour.
+
+For a full invocation, the harness emits and persists checkpoints when completed
+result rows first reach `ceil(0.25N)`, `ceil(0.50N)`, and `ceil(0.75N)`, where
+`N` is the selected matrix's expected result-row count. Each checkpoint reports
+the known cumulative actual USD spend from durable raw API envelopes, whether
+any actual cost is unknown, the number of completed escalation-strategy rows,
+the number of those rows with a raw envelope whose `call_role` is `fallback`,
+and their ratio. Checkpoints are written to `results/runs/full_progress.json`;
+on resumption the harness verifies plan identity and does not emit a completed
+checkpoint twice.
+
+**Impact and restart decision:** This is a reporting addition made before any
+Phase 4 inference. It does not alter any model input or result calculation and
+does not require a restart.

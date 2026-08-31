@@ -5,10 +5,16 @@ from decimal import Decimal
 import json
 from pathlib import Path
 from types import SimpleNamespace
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from harness.models import cost_usd, load_model_tiers
-from harness.run import REPO_ROOT, call_result_from_envelopes, redact_secret_material
+from harness.run import (
+    REPO_ROOT,
+    Budget,
+    ProgressReporter,
+    call_result_from_envelopes,
+    redact_secret_material,
+)
 from harness.strategies import self_check
 from harness.scoring import (
     compute_registered_metrics,
@@ -161,6 +167,47 @@ class StrategyTests(unittest.TestCase):
         self.assertEqual(runtime.invoke.call_count, 2)
         self.assertEqual(calls, [primary, critic])
         self.assertIs(final, critic)
+
+
+class ProgressCheckpointTests(unittest.TestCase):
+    def test_reports_25_50_75_percent_with_spend_and_trigger_rate(self) -> None:
+        progress_path = REPO_ROOT / "tmp" / "unit-full-progress.json"
+        progress_path.unlink(missing_ok=True)
+        try:
+            reporter = ProgressReporter(
+                scope="full",
+                plan_identity_sha256="plan",
+                expected_rows=8,
+                completed_rows=0,
+                escalation_rows=2,
+                fallback_triggers=1,
+                budget=Budget(
+                    Decimal("70"), initial_known_actual=Decimal("1.25")
+                ),
+                progress_path=progress_path,
+            )
+            with patch("builtins.print") as mocked_print:
+                for _ in range(6):
+                    reporter.record_row("single_pass", {})
+
+            emitted = [
+                json.loads(call.args[0])
+                for call in mocked_print.call_args_list
+                if call.args and isinstance(call.args[0], str)
+            ]
+            self.assertEqual(
+                [item["checkpoint_percent"] for item in emitted], [25, 50, 75]
+            )
+            self.assertTrue(
+                all(item["known_cumulative_spend_usd"] == "1.250000000000" for item in emitted)
+            )
+            self.assertTrue(
+                all(item["escalation_trigger_rate"] == 0.5 for item in emitted)
+            )
+            saved = json.loads(progress_path.read_text(encoding="utf-8"))
+            self.assertEqual(len(saved["emitted_checkpoints"]), 3)
+        finally:
+            progress_path.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

@@ -8,6 +8,7 @@ import base64
 import csv
 import hashlib
 import json
+import math
 import os
 import random
 import re
@@ -990,6 +991,120 @@ def existing_budget_state(run_ids: list[str]) -> tuple[Decimal, Decimal, bool]:
     return guard, known, unknown
 
 
+def row_has_fallback_trigger(row: dict[str, str]) -> bool:
+    """Identify a strategy fallback from durable raw evidence, not row shape."""
+    for raw_path_text in json.loads(row["raw_response_paths"]):
+        raw_path = REPO_ROOT / raw_path_text
+        envelope = json.loads(raw_path.read_text(encoding="utf-8"))
+        if envelope.get("call_role") == "fallback":
+            return True
+    return False
+
+
+class ProgressReporter:
+    """Persist and print the full-run 25/50/75 percent checkpoints."""
+
+    def __init__(
+        self,
+        *,
+        scope: str,
+        plan_identity_sha256: str,
+        expected_rows: int,
+        completed_rows: int,
+        escalation_rows: int,
+        fallback_triggers: int,
+        budget: Budget,
+        progress_path: Path | None = None,
+    ) -> None:
+        self.scope = scope
+        self.plan_identity_sha256 = plan_identity_sha256
+        self.expected_rows = expected_rows
+        self.completed_rows = completed_rows
+        self.escalation_rows = escalation_rows
+        self.fallback_triggers = fallback_triggers
+        self.budget = budget
+        self.progress_path = progress_path or RESULTS_RUNS_DIR / f"{scope}_progress.json"
+        self.targets = [
+            (25, math.ceil(expected_rows * 0.25)),
+            (50, math.ceil(expected_rows * 0.50)),
+            (75, math.ceil(expected_rows * 0.75)),
+        ]
+        self.emitted_targets: set[int] = set()
+        if self.progress_path.exists():
+            previous = json.loads(self.progress_path.read_text(encoding="utf-8"))
+            if previous.get("plan_identity_sha256") != self.plan_identity_sha256:
+                raise ValueError(f"Progress identity differs: {self.progress_path}")
+            self.emitted_targets = {
+                int(item["completed_row_target"])
+                for item in previous.get("emitted_checkpoints", [])
+            }
+
+    def _state(self, percent: int, target: int) -> dict[str, Any]:
+        trigger_rate = (
+            self.fallback_triggers / self.escalation_rows
+            if self.escalation_rows
+            else None
+        )
+        return {
+            "checkpoint_percent": percent,
+            "completed_row_target": target,
+            "completed_rows": self.completed_rows,
+            "expected_rows": self.expected_rows,
+            "completed_fraction": self.completed_rows / self.expected_rows,
+            "known_cumulative_spend_usd": decimal_text(self.budget.known_actual),
+            "unknown_actual_cost_seen": self.budget.unknown_actual,
+            "escalation_rows_completed": self.escalation_rows,
+            "fallback_triggers": self.fallback_triggers,
+            "escalation_trigger_rate": trigger_rate,
+        }
+
+    def _write(self) -> None:
+        states = [
+            self._state(percent, target)
+            for percent, target in self.targets
+            if target in self.emitted_targets
+        ]
+        atomic_write_json(
+            self.progress_path,
+            {
+                "schema_version": "1.0.0",
+                "scope": self.scope,
+                "plan_identity_sha256": self.plan_identity_sha256,
+                "definition": (
+                    "A fallback trigger is a raw API envelope whose call_role is "
+                    "fallback. The denominator is completed escalation-strategy rows."
+                ),
+                "emitted_checkpoints": states,
+            },
+        )
+
+    def emit_due(self) -> None:
+        for percent, target in self.targets:
+            if self.completed_rows >= target and target not in self.emitted_targets:
+                state = self._state(percent, target)
+                self.emitted_targets.add(target)
+                self._write()
+                print(
+                    json.dumps(
+                        {
+                            "event": "progress_checkpoint",
+                            **state,
+                            "progress_path": relative_path(self.progress_path),
+                        },
+                        sort_keys=True,
+                    ),
+                    flush=True,
+                )
+
+    def record_row(self, strategy: str, row: dict[str, str]) -> None:
+        self.completed_rows += 1
+        if strategy == "escalation":
+            self.escalation_rows += 1
+            if row_has_fallback_trigger(row):
+                self.fallback_triggers += 1
+        self.emit_due()
+
+
 def validate_model_access(
     api_key: str, config: dict[str, Any], output_path: Path
 ) -> None:
@@ -1678,6 +1793,47 @@ def main() -> None:
     if budget.guard_spend > budget.cap:
         raise SystemExit("Existing raw evidence already exceeds this budget cap")
 
+    completed_by_configuration: dict[str, dict[str, dict[str, str]]] = {}
+    initial_completed_rows = 0
+    initial_escalation_rows = 0
+    initial_fallback_triggers = 0
+    for tier in selected_tiers:
+        for strategy in selected_strategies:
+            run_id = run_id_for(
+                args.scope,
+                tier,
+                strategy,
+                artifacts["dataset_sha256"],
+                factory.prompt_hash(strategy),
+            )
+            run_path = RESULTS_RUNS_DIR / f"{args.scope}__{tier}__{strategy}.csv"
+            completed = load_existing_rows(run_path, run_id)
+            key = f"{tier}__{strategy}"
+            completed_by_configuration[key] = completed
+            initial_completed_rows += len(completed)
+            if strategy == "escalation":
+                initial_escalation_rows += len(completed)
+                initial_fallback_triggers += sum(
+                    row_has_fallback_trigger(row) for row in completed.values()
+                )
+
+    progress_reporter: ProgressReporter | None = None
+    if args.scope == "full":
+        progress_reporter = ProgressReporter(
+            scope=args.scope,
+            plan_identity_sha256=plan["plan_identity_sha256"],
+            expected_rows=(
+                len(artifacts["cases"])
+                * len(selected_tiers)
+                * len(selected_strategies)
+            ),
+            completed_rows=initial_completed_rows,
+            escalation_rows=initial_escalation_rows,
+            fallback_triggers=initial_fallback_triggers,
+            budget=budget,
+        )
+        progress_reporter.emit_due()
+
     invocation_started_at = utc_now()
     invocation_started = time.perf_counter()
     try:
@@ -1693,7 +1849,7 @@ def main() -> None:
                 )
                 ensure_run_manifest(args.scope, tier, strategy, run_id, plan)
                 run_path = RESULTS_RUNS_DIR / f"{args.scope}__{tier}__{strategy}.csv"
-                completed = load_existing_rows(run_path, run_id)
+                completed = completed_by_configuration[f"{tier}__{strategy}"]
                 print(
                     json.dumps(
                         {
@@ -1745,6 +1901,9 @@ def main() -> None:
                         config=config,
                     )
                     append_csv_row(run_path, row)
+                    completed[case["case_id"]] = row
+                    if progress_reporter is not None:
+                        progress_reporter.record_row(strategy, row)
                     print(
                         json.dumps(
                             {
