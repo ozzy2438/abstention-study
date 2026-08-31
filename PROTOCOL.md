@@ -825,3 +825,36 @@ The artifact is keyed by stable `case_id`, is computed only from committed
 gold citations and frozen retrieval rows, and is validated mechanically. It
 must be treated as a diagnostic stratum, not as an alternative correctness
 label.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Phase 3 pilot implementation addendum
+
+**Type:** Additive implementation record. Model tiers, strategies, prompts,
+task definitions, output rules, confidence, scoring, metrics, and the pilot
+size are unchanged.
+
+**Reason:** The frozen protocol fixes a seed-selected 20-case pilot and an
+exact-token cost projection but did not specify the deterministic selection
+operation or the local pre-call token-count implementation.
+
+- Pilot IDs are selected with
+  `random.Random(20260831).sample(sorted(all_case_ids), 20)` and then sorted by
+  `case_id` for execution. The frozen IDs are `case_0041`, `case_0044`,
+  `case_0079`, `case_0097`, `case_0103`, `case_0117`, `case_0135`,
+  `case_0137`, `case_0152`, `case_0163`, `case_0188`, `case_0209`,
+  `case_0216`, `case_0226`, `case_0233`, `case_0257`, `case_0263`,
+  `case_0264`, `case_0288`, and `case_0290`.
+- Local input-token estimates use `tiktoken==0.12.0` with `o200k_base`, three
+  framing tokens per chat message, three assistant-priming tokens, encoded
+  role and content strings, and the canonical structured-output schema. The
+  self-check projection additionally reserves the full registered 1,200-token
+  first response in the critic input. These are exact counts under the frozen
+  local estimator; provider-billed token counts and historical cost always use
+  the usage returned by the API, never the estimate.
+- The pre-run projection assumes every registered optional critic or fallback
+  call occurs and every call consumes the full 1,200-token output cap. It is a
+  conservative budget projection, not a measured cost result.
+- Model access is checked with the non-inference model metadata endpoint before
+  spending. A missing registered snapshot stops the pilot.
+
+**Impact and restart decision:** This addendum was written before prompt
+freeze and before any inference call. No run requires a restart.

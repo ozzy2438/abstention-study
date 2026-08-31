@@ -340,3 +340,27 @@ The replacement full six-way question-only classifier result is accuracy
 `0.64` and macro recall `0.5756589541486566`, against a majority-class
 baseline of `0.38333333333333336`. Exact matrices and source hashes are in
 `dataset/audit_summary.json`.
+
+### Same-topic leakage interpretation - 2026-08-31
+
+The `0.8222222222222222` same-topic result appears to be driven primarily by
+a repeatable authorial phrasing tic, not an inherent semantic property of all
+missing-detail questions. In the question-level cue audit, `many` occurs in
+11 of 46 `unanswerable_missing` questions and `percentage` occurs in five,
+matching repeated templates such as “how many”, “what percentage”, “which
+form”, and requests for exact rates, amounts, or deadlines. Missing evidence
+can be asked without those forms, and answerable regulatory questions can
+also naturally request numbers, so the strength and repetition of these cues
+reflect this single author's construction choices even though some semantic
+signal is unavoidable. Phase 6 must carry this finding into the report's
+limitations section explicitly; it must not be left only in the dataset notes.
+
+### Recategorized-clear gold integrity check - 2026-08-31
+
+The ten cases moved from `unanswerable_contradictory` to
+`answerable_clear`—`case_0003`, `case_0021`, `case_0042`, `case_0064`,
+`case_0074`, `case_0108`, `case_0124`, `case_0183`, `case_0225`, and
+`case_0246`—were checked mechanically and manually before Phase 3. Every case
+has a non-empty `gold_answer`, exactly one non-empty `gold_citations` entry,
+and that passage ID exists in `corpus/passages.jsonl`. No gold repair was
+required.

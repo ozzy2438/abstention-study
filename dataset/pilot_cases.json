@@ -1,0 +1,38 @@
+{
+  "case_ids": [
+    "case_0041",
+    "case_0044",
+    "case_0079",
+    "case_0097",
+    "case_0103",
+    "case_0117",
+    "case_0135",
+    "case_0137",
+    "case_0152",
+    "case_0163",
+    "case_0188",
+    "case_0209",
+    "case_0216",
+    "case_0226",
+    "case_0233",
+    "case_0257",
+    "case_0263",
+    "case_0264",
+    "case_0288",
+    "case_0290"
+  ],
+  "cases_sha256": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
+  "category_counts": {
+    "adversarial": 2,
+    "answerable_clear": 5,
+    "answerable_multihop": 7,
+    "out_of_scope": 2,
+    "unanswerable_contradictory": 1,
+    "unanswerable_missing": 3
+  },
+  "execution_order": "case_id ascending",
+  "sample_size": 20,
+  "schema_version": "1.0.0",
+  "seed": 20260831,
+  "selection": "random.Random(seed).sample(sorted(all_case_ids), 20)"
+}

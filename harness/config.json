@@ -1,0 +1,25 @@
+{
+  "api_base_url": "https://api.openai.com/v1",
+  "api_timeout_seconds": 120,
+  "escalation_threshold": 0.7,
+  "max_completion_tokens": 1200,
+  "reasoning_effort": "none",
+  "retry": {
+    "base_delay_seconds": 0.5,
+    "jitter_seconds": 0.25,
+    "max_attempts": 3,
+    "max_delay_seconds": 8.0,
+    "retryable_http_statuses": [408, 409, 429, 500, 502, 503, 504]
+  },
+  "schema_version": "1.0.0",
+  "seed": 20260831,
+  "service_tier": "default",
+  "temperature": 0,
+  "token_estimator": {
+    "assistant_priming_tokens": 3,
+    "encoding": "o200k_base",
+    "tokens_per_message": 3,
+    "tiktoken_version": "0.12.0"
+  },
+  "top_p": 1
+}
