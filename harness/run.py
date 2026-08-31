@@ -1455,7 +1455,12 @@ def ensure_plan(
                     for key in set(existing) | set(identity)
                     if existing.get(key) != identity.get(key)
                 }
-                if changed_fields <= {"config_sha256", "cost_projection"}:
+                if changed_fields <= {
+                    "config_sha256",
+                    "cost_projection",
+                    "created_at_utc",
+                    "plan_identity_sha256",
+                }:
                     return existing
             raise ValueError(f"Existing plan identity differs: {path}")
         return existing
