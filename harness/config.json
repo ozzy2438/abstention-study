@@ -9,6 +9,7 @@
     "jitter_seconds": 0.25,
     "max_attempts": 3,
     "max_delay_seconds": 8.0,
+    "non_retryable_error_codes": ["credit_balance_exhausted"],
     "retryable_http_statuses": [408, 409, 429, 500, 502, 503, 504]
   },
   "schema_version": "1.0.0",

@@ -11,9 +11,11 @@ from harness.models import cost_usd, load_model_tiers
 from harness.run import (
     REPO_ROOT,
     Budget,
+    ProviderCreditExhausted,
     ProgressReporter,
     Runtime,
     call_result_from_envelopes,
+    provider_error_code,
     redact_secret_material,
 )
 from harness.strategies import self_check
@@ -114,6 +116,44 @@ class CostTests(unittest.TestCase):
             guard,
             cost_usd(model, 3_352, int(config["max_completion_tokens"])),
         )
+
+    def test_provider_credit_error_is_identified(self) -> None:
+        self.assertEqual(
+            provider_error_code({"error": {"code": "credit_balance_exhausted"}}),
+            "credit_balance_exhausted",
+        )
+
+    def test_existing_credit_error_halts_without_another_attempt(self) -> None:
+        config = json.loads((REPO_ROOT / "harness" / "config.json").read_text())
+        model = load_model_tiers()["cheap"]
+        runtime = object.__new__(Runtime)
+        runtime.models = {"cheap": model}
+        runtime.config = config
+        runtime.estimator = Mock()
+        runtime.estimator.count_messages.return_value = 1
+        runtime._existing_envelopes = Mock(
+            return_value=[
+                (
+                    REPO_ROOT / "tmp" / "credit-exhausted.json",
+                    {
+                        "http_status": 429,
+                        "retryable": False,
+                        "provider_error_code": "credit_balance_exhausted",
+                    },
+                )
+            ]
+        )
+        runtime._perform_attempt = Mock()
+
+        with self.assertRaises(ProviderCreditExhausted):
+            runtime.invoke(
+                case={"case_id": "case_0001"},
+                model_tier="cheap",
+                call_role="primary",
+                call_index=1,
+                messages=[],
+            )
+        runtime._perform_attempt.assert_not_called()
 
 
 class MetricTests(unittest.TestCase):

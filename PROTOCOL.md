@@ -962,3 +962,30 @@ runtime continuation, the full 3x3 matrix must restart as a new execution
 revision from zero completed rows; no V1 result row may be reused or patched
 into the restarted matrix. The correction and restart are made before any
 Phase 5 analysis.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Provider credit-exhaustion safe halt
+
+**Type:** Harness operational-safeguard correction. It does not change the
+task, corpus, dataset, labels, prompts, output contract, confidence,
+strategies, scoring, metrics, model snapshots, price table, or approved
+hard-budget cap.
+
+**Reason:** During execution revision V2, after durable raw responses had
+been written, the provider returned HTTP 429 with the structured error code
+`credit_balance_exhausted`. HTTP 429 is normally retryable under the frozen
+backoff policy, but this specific code cannot be resolved by retrying and
+would otherwise turn unavailable provider credit into avoidable rows with no
+model output or usage record.
+
+**Correction:** `credit_balance_exhausted` is explicitly non-retryable. Once
+recorded in a raw envelope, it halts the invocation before another inference
+call is made and writes a partial-run summary. The per-logical-call maximum
+of three attempts remains unchanged for all other retryable failures.
+
+**Impact and restart decision:** V2 raw envelopes and partial result rows are
+retained as operational evidence and are marked superseded. They are not
+evaluation results. After provider credit is restored, the full 3x3 matrix
+must restart from zero completed rows under a new execution revision, with
+all known prior provider spend carried forward in the phase budget ledger. No
+partial V2 row may be combined with a later restart, and no Phase 5 analysis
+may begin before that restart completes.

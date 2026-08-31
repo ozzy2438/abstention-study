@@ -145,6 +145,20 @@ class BudgetExceeded(RuntimeError):
     """Raised before a call that would exceed the hard guard budget."""
 
 
+class ProviderCreditExhausted(RuntimeError):
+    """Raised after raw evidence records a provider balance-exhaustion response."""
+
+
+def provider_error_code(response_json: dict[str, Any] | None) -> str | None:
+    if not isinstance(response_json, dict):
+        return None
+    error = response_json.get("error")
+    if not isinstance(error, dict):
+        return None
+    code = error.get("code")
+    return code if isinstance(code, str) else None
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace(
         "+00:00", "Z"
@@ -721,6 +735,11 @@ class Runtime:
         existing = self._existing_envelopes(case["case_id"], call_index)
         if existing:
             last = existing[-1][1]
+            if last.get("provider_error_code") == "credit_balance_exhausted":
+                raise ProviderCreditExhausted(
+                    "provider reported credit_balance_exhausted; no further "
+                    "inference calls will be issued"
+                )
             if last.get("http_status") == 200 or not last.get("retryable", False):
                 return self._call_result(call_role, model_tier, model, existing)
 
@@ -752,6 +771,11 @@ class Runtime:
             guard_charge = Decimal(envelope["budget_guard_cost_usd"])
             self.budget.charge(actual, guard_charge)
             existing.append((path, envelope))
+            if envelope.get("provider_error_code") == "credit_balance_exhausted":
+                raise ProviderCreditExhausted(
+                    "provider reported credit_balance_exhausted; no further "
+                    "inference calls will be issued"
+                )
             if envelope.get("http_status") == 200:
                 break
             if not envelope.get("retryable", False) or attempt == max_attempts:
@@ -819,6 +843,7 @@ class Runtime:
         except json.JSONDecodeError:
             response_json = None
 
+        error_code = provider_error_code(response_json)
         returned_model = response_json.get("model") if response_json else None
         fingerprint = response_json.get("system_fingerprint") if response_json else None
         usage = response_json.get("usage") if response_json else None
@@ -852,7 +877,13 @@ class Runtime:
             else maximum_guard
         )
         retryable_statuses = set(self.config["retry"]["retryable_http_statuses"])
-        retryable = transport_error is not None or status in retryable_statuses
+        non_retryable_error_codes = set(
+            self.config["retry"].get("non_retryable_error_codes", [])
+        )
+        retryable = (
+            (transport_error is not None or status in retryable_statuses)
+            and error_code not in non_retryable_error_codes
+        )
         envelope = {
             "schema_version": "1.0.0",
             "run_id": self.run_id,
@@ -878,6 +909,7 @@ class Runtime:
             "response_body_base64": base64.b64encode(response_bytes).decode("ascii"),
             "response_body_sha256": sha256_bytes(response_bytes),
             "transport_error": transport_error,
+            "provider_error_code": error_code,
             "retryable": retryable,
             "requested_model": model.model_version,
             "returned_model": returned_model,
@@ -1962,6 +1994,33 @@ def main() -> None:
                         ),
                         flush=True,
                     )
+    except ProviderCreditExhausted as exc:
+        wall_clock_ms = int(round((time.perf_counter() - invocation_started) * 1000))
+        summary = write_summary(
+            scope=artifact_scope,
+            plan=plan,
+            started_at=invocation_started_at,
+            wall_clock_ms=wall_clock_ms,
+            prior_known_spend=prior_known_spend,
+        )
+        print(
+            json.dumps(
+                {
+                    "event": "provider_credit_halt",
+                    "message": str(exc),
+                    "completed_rows": summary["completed_rows"],
+                    "expected_rows": summary["expected_rows"],
+                    "known_cost_usd": summary["known_cost_usd"],
+                    "unknown_cost_rows": summary["unknown_cost_rows"],
+                    "summary_path": relative_path(
+                        RESULTS_RUNS_DIR / f"{artifact_scope}_summary.json"
+                    ),
+                },
+                sort_keys=True,
+            ),
+            flush=True,
+        )
+        raise SystemExit(3) from exc
     except BudgetExceeded as exc:
         wall_clock_ms = int(round((time.perf_counter() - invocation_started) * 1000))
         summary = write_summary(
