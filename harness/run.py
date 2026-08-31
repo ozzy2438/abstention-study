@@ -1920,6 +1920,14 @@ def parse_args() -> argparse.Namespace:
             "routing change; preserves the saved plan identity and skips completed rows"
         ),
     )
+    parser.add_argument(
+        "--skip-model-access-validation",
+        action="store_true",
+        help=(
+            "skip the non-inference provider metadata check; valid only for an "
+            "explicit provider-routing continuation"
+        ),
+    )
     return parser.parse_args()
 
 
@@ -1942,6 +1950,10 @@ def main() -> None:
     if args.continue_with_provider_routing_change and args.run_revision <= 1:
         raise SystemExit(
             "--continue-with-provider-routing-change requires an existing run revision"
+        )
+    if args.skip_model_access_validation and not args.continue_with_provider_routing_change:
+        raise SystemExit(
+            "--skip-model-access-validation requires provider-routing continuation"
         )
     try:
         budget_cap = Decimal(args.budget_usd)
@@ -2071,7 +2083,7 @@ def main() -> None:
     if not api_key:
         raise SystemExit("OPENAI_API_KEY is required for model access validation")
     availability_path = RESULTS_RUNS_DIR / f"{artifact_scope}_model_availability.json"
-    if not args.offline_dry_run:
+    if not args.offline_dry_run and not args.skip_model_access_validation:
         validate_model_access(api_key, config, availability_path)
         print(
             json.dumps(
@@ -2079,6 +2091,18 @@ def main() -> None:
                     "event": "model_access_validated",
                     "path": relative_path(availability_path),
                     "models": MODEL_BY_TIER,
+                },
+                sort_keys=True,
+            ),
+            flush=True,
+        )
+    elif args.skip_model_access_validation:
+        print(
+            json.dumps(
+                {
+                    "event": "model_access_validation_skipped",
+                    "reason": "explicit provider-routing continuation",
+                    "existing_evidence": "results/runs/full_model_availability.json",
                 },
                 sort_keys=True,
             ),

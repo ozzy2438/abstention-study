@@ -1051,3 +1051,20 @@ immutable and are skipped. Only the unfinished rows are processed; their
 `primary` call keeps the registered OpenAI model and their recurring `critic`
 call uses local Ollama `qwen3:8b`. The resulting provider split is retained in
 raw evidence and must be disclosed in the final report.
+
+### PROTOCOL_AMENDMENT 2026-08-31 - Reuse saved model availability during continuation
+
+**Type:** Phase 4 operational safeguard. It does not change inference prompts,
+model selection, task labels, scoring, metrics, or result-row definitions.
+
+**Reason:** A fresh non-inference OpenAI model-metadata check was attempted at
+continuation kickoff and stopped at the first tier because provider credit was
+already exhausted. The repository contains an earlier successful
+`full_model_availability.json` check for the same registered model-version
+strings.
+
+**Correction:** The interrupted `full_r3` continuation may skip a fresh model
+metadata request and rely on that saved availability evidence. This prevents a
+non-inference preflight from consuming or rechecking unavailable OpenAI
+provider access; it does not bypass the inference budget guard or alter which
+provider handles any inference call.
