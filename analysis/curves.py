@@ -307,7 +307,13 @@ def make_abstention_confusion(
                     )
             ax.barh(y, shares, left=cumulative, color=OUTCOME_COLORS[outcome], label=outcome)
             cumulative = [left + value for left, value in zip(cumulative, shares)]
-        ax.set_yticks(y, [category.replace("unanswerable_", "unans. ").replace("answerable_", "ans. ").replace("_", " ") for category in CATEGORIES], fontsize=7)
+        labels = []
+        for category in CATEGORIES:
+            label = category.replace("unanswerable_", "unans. ").replace("answerable_", "ans. ").replace("_", " ")
+            if category == "unanswerable_contradictory":
+                label += " (n=19)"
+            labels.append(label)
+        ax.set_yticks(y, labels, fontsize=7)
         ax.invert_yaxis()
         ax.set_title(configuration_label(configuration), fontsize=9)
         ax.grid(axis="x", alpha=0.14)
@@ -326,7 +332,10 @@ def make_abstention_confusion(
     )
 
 
-def make_cost_quality(runs: dict[str, list[dict[str, str]]]) -> None:
+def make_cost_quality(
+    runs: dict[str, list[dict[str, str]]], target_coverage: float = 0.50, suffix: str = ""
+) -> None:
+    target_n = int(round(300 * target_coverage))
     points: list[dict[str, Any]] = []
     for configuration, rows in runs.items():
         answers = sorted(
@@ -334,31 +343,33 @@ def make_cost_quality(runs: dict[str, list[dict[str, str]]]) -> None:
             key=lambda row: (-float(row["confidence"]), row["case_id"]),
         )
         total_cost = sum(Decimal(row["cost_usd"]) for row in rows)
-        attained = len(answers) >= 150
-        retained = answers[:150] if attained else []
+        attained = len(answers) >= target_n
+        retained = answers[:target_n] if attained else []
         correct = sum(row_bool(row["correct"]) is True for row in retained)
         points.append(
             {
                 "configuration": configuration,
-                "attained_0_50_coverage": attained,
+                "target_coverage": target_coverage,
+                "target_retained_answers": target_n,
+                "attained_fixed_coverage": attained,
                 "issued_answers": len(answers),
                 "retained_answers": len(retained),
                 "correct_retained": correct if attained else None,
-                "selective_accuracy_at_0_50": correct / 150 if attained else None,
+                "selective_accuracy_at_fixed_coverage": correct / target_n if attained else None,
                 "total_configuration_cost_usd": total_cost,
                 "cost_per_correct_retained_usd": total_cost / correct if attained and correct else None,
                 "dominated": None,
             }
         )
-    attained_points = [point for point in points if point["attained_0_50_coverage"]]
+    attained_points = [point for point in points if point["attained_fixed_coverage"]]
     for point in attained_points:
         point["dominated"] = any(
             other is not point
             and other["cost_per_correct_retained_usd"] <= point["cost_per_correct_retained_usd"]
-            and other["selective_accuracy_at_0_50"] >= point["selective_accuracy_at_0_50"]
+            and other["selective_accuracy_at_fixed_coverage"] >= point["selective_accuracy_at_fixed_coverage"]
             and (
                 other["cost_per_correct_retained_usd"] < point["cost_per_correct_retained_usd"]
-                or other["selective_accuracy_at_0_50"] > point["selective_accuracy_at_0_50"]
+                or other["selective_accuracy_at_fixed_coverage"] > point["selective_accuracy_at_fixed_coverage"]
             )
             for other in attained_points
         )
@@ -368,32 +379,37 @@ def make_cost_quality(runs: dict[str, list[dict[str, str]]]) -> None:
     for point in attained_points:
         tier, strategy = point["configuration"].split("__", 1)
         marker = "x" if point["dominated"] else "o"
-        ax.scatter(float(point["cost_per_correct_retained_usd"]), point["selective_accuracy_at_0_50"],
+        ax.scatter(float(point["cost_per_correct_retained_usd"]), point["selective_accuracy_at_fixed_coverage"],
                    color=PALETTE[tier], marker=marker, s=90, linewidth=2, zorder=3)
         ax.annotate(configuration_label(point["configuration"]),
-                    (float(point["cost_per_correct_retained_usd"]), point["selective_accuracy_at_0_50"]),
+                    (float(point["cost_per_correct_retained_usd"]), point["selective_accuracy_at_fixed_coverage"]),
                     xytext=(7, 5), textcoords="offset points", fontsize=9)
-    unattained = [point for point in points if not point["attained_0_50_coverage"]]
+    unattained = [point for point in points if not point["attained_fixed_coverage"]]
     note_ax.axis("off")
     note_ax.text(0.02, 0.96, "Coverage not attained", fontsize=11, fontweight="semibold", va="top")
-    note_ax.text(0.02, 0.90, "Fewer than 150 issued answers; no extrapolation.", fontsize=8.5,
+    note_ax.text(0.02, 0.90, f"Fewer than {target_n} issued answers; no extrapolation.", fontsize=8.5,
                  color="#475569", va="top")
     for index, point in enumerate(unattained):
         note_ax.text(0.04, 0.82 - index * 0.095,
-                     f"{configuration_label(point['configuration'])}  ({point['issued_answers']}/150)",
+                     f"{configuration_label(point['configuration'])}  ({point['issued_answers']}/{target_n})",
                      fontsize=9, va="top")
     ax.set_xlabel("Total configuration cost / correct retained answer (USD)")
-    ax.set_ylabel("Selective accuracy at 50% coverage")
-    ax.set_title("Cost–quality Pareto at registered 50% coverage")
+    ax.set_ylabel(f"Selective accuracy at {target_coverage:.0%} coverage")
+    ax.set_title("")
     ax.grid(True, alpha=0.18)
-    fig.suptitle("Cost–quality Pareto at registered 50% coverage", fontsize=14, fontweight="semibold")
+    fig.suptitle(
+        f"Cost–quality Pareto at {target_coverage:.0%} coverage"
+        + (" (supplementary view)" if target_coverage != 0.50 else " (registered)"),
+        fontsize=14, fontweight="semibold",
+    )
     ax.set_title("")
     fig.tight_layout(rect=(0, 0, 1, 0.96))
-    fig.savefig(FIGURES_DIR / "cost_quality_pareto.png", dpi=180)
+    figure_name = "cost_quality_pareto" + suffix
+    fig.savefig(FIGURES_DIR / f"{figure_name}.png", dpi=180)
     plt.close(fig)
     write_csv(
-        FIGURES_DIR / "cost_quality_pareto.csv",
-        ["configuration", "attained_0_50_coverage", "issued_answers", "retained_answers", "correct_retained", "selective_accuracy_at_0_50", "total_configuration_cost_usd", "cost_per_correct_retained_usd", "dominated"],
+        FIGURES_DIR / f"{figure_name}.csv",
+        ["configuration", "target_coverage", "target_retained_answers", "attained_fixed_coverage", "issued_answers", "retained_answers", "correct_retained", "selective_accuracy_at_fixed_coverage", "total_configuration_cost_usd", "cost_per_correct_retained_usd", "dominated"],
         points,
     )
 
@@ -486,7 +502,8 @@ def main() -> None:
     make_coverage_accuracy(runs)
     make_reliability(metrics)
     make_abstention_confusion(cases, runs)
-    make_cost_quality(runs)
+    make_cost_quality(runs, target_coverage=0.50, suffix="")
+    make_cost_quality(runs, target_coverage=0.20, suffix="_20pct")
     make_latency(runs)
     make_retrieval_stratification(cases, runs)
     print(f"Wrote Phase 5 analysis artifacts to {FIGURES_DIR}")

@@ -45,6 +45,7 @@ def main() -> None:
     reliability = read_csv(FIGURES / "reliability.csv")
     crossings = {row["configuration"]: row for row in read_csv(FIGURES / "coverage_accuracy_90_crossings.csv")}
     pareto = {row["configuration"]: row for row in read_csv(FIGURES / "cost_quality_pareto.csv")}
+    pareto_20 = {row["configuration"]: row for row in read_csv(FIGURES / "cost_quality_pareto_20pct.csv")}
     confusion = read_csv(FIGURES / "abstention_confusion.csv")
     latency = {(row["scope"], row["name"]): row for row in read_csv(FIGURES / "latency_percentiles.csv")}
 
@@ -118,11 +119,22 @@ def main() -> None:
 
         ranked = sorted(answers, key=lambda row: (-float(row["confidence"]), row["case_id"]))
         point = pareto[configuration]
-        assert (point["attained_0_50_coverage"] == "true") == (len(ranked) >= 150)
+        assert point["target_coverage"] == "0.500000000000"
+        assert int(point["target_retained_answers"]) == 150
+        assert (point["attained_fixed_coverage"] == "true") == (len(ranked) >= 150)
         if len(ranked) >= 150:
             retained_correct = sum(row["correct"] == "true" for row in ranked[:150])
             assert int(point["correct_retained"]) == retained_correct
-            close(retained_correct / 150, point["selective_accuracy_at_0_50"], f"{configuration} Pareto accuracy")
+            close(retained_correct / 150, point["selective_accuracy_at_fixed_coverage"], f"{configuration} Pareto accuracy")
+
+        point20 = pareto_20[configuration]
+        assert point20["target_coverage"] == "0.200000000000"
+        assert int(point20["target_retained_answers"]) == 60
+        assert (point20["attained_fixed_coverage"] == "true") == (len(ranked) >= 60)
+        if len(ranked) >= 60:
+            retained20_correct = sum(row["correct"] == "true" for row in ranked[:60])
+            assert int(point20["correct_retained"]) == retained20_correct
+            close(retained20_correct / 60, point20["selective_accuracy_at_fixed_coverage"], f"{configuration} 20% Pareto accuracy")
 
         row = latency[("configuration", configuration)]
         values = [int(item["latency_ms"]) for item in rows]
