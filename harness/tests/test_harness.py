@@ -11,8 +11,10 @@ from harness.models import cost_usd, load_model_tiers
 from harness.run import (
     REPO_ROOT,
     Budget,
+    BudgetExceeded,
     ProviderCreditExhausted,
     ProgressReporter,
+    RemainingBatchBudget,
     Runtime,
     build_ollama_request_body,
     call_result_from_envelopes,
@@ -124,6 +126,42 @@ class CostTests(unittest.TestCase):
             provider_error_code({"error": {"code": "credit_balance_exhausted"}}),
             "credit_balance_exhausted",
         )
+
+    def test_remaining_batch_budget_reserves_next_attempt_against_subcap(self) -> None:
+        budget = RemainingBatchBudget(
+            batch_cap=Decimal("4"),
+            phase_cap=Decimal("70"),
+            prior_phase_spend=Decimal("19.869177760000"),
+            initial_batch_actual=Decimal("3.98"),
+        )
+
+        with self.assertRaises(BudgetExceeded):
+            budget.check(Decimal("0.03"))
+
+    def test_remaining_batch_budget_tracks_actual_not_accumulated_guard(self) -> None:
+        budget = RemainingBatchBudget(
+            batch_cap=Decimal("4"),
+            phase_cap=Decimal("70"),
+            prior_phase_spend=Decimal("19.869177760000"),
+        )
+
+        budget.check(Decimal("0.03"))
+        budget.charge(Decimal("0.01"), Decimal("0.03"))
+        budget.check(Decimal("0.03"))
+
+        self.assertEqual(budget.batch_known_actual, Decimal("0.01"))
+        self.assertEqual(budget.known_actual, Decimal("19.879177760000"))
+
+    def test_remaining_batch_budget_halts_on_unknown_provider_cost(self) -> None:
+        budget = RemainingBatchBudget(
+            batch_cap=Decimal("4"),
+            phase_cap=Decimal("70"),
+            prior_phase_spend=Decimal("19.869177760000"),
+        )
+
+        with self.assertRaises(BudgetExceeded):
+            budget.charge(None, Decimal("0.03"))
+        self.assertTrue(budget.unknown_actual)
 
     def test_existing_credit_error_halts_without_another_attempt(self) -> None:
         config = json.loads((REPO_ROOT / "harness" / "config.json").read_text())

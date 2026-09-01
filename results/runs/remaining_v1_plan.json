@@ -1,0 +1,52 @@
+{
+  "corpus_manifest_sha256": "a21a88481f955ea9cfc84c014e0af771b4f5ceca19b1cf470cfc35a19c747920",
+  "created_at_utc": "2026-09-01T00:36:14.427Z",
+  "dataset_sha256": "1b1581710af22995c47da1aae2c481b23a293be168a20d5e5765a03d4b4e5cc0",
+  "dry_run_point_estimate_usd": "3.148995260860",
+  "execution_label": "remaining_v1",
+  "expected_rows": 373,
+  "expected_rows_by_configuration": {
+    "escalation": 300,
+    "self_check": 73
+  },
+  "model_versions": {
+    "capable": "gpt-5.4-2026-03-05",
+    "cheap": "gpt-5.4-nano-2026-03-17",
+    "standard": "gpt-5.4-mini-2026-03-17"
+  },
+  "passages_sha256": "a94e069fddd2e885da1639109b5c73bd28d0f2cd7579b56a30983755f95431db",
+  "phase_wide_cap_usd": "70.000000000000",
+  "plan_identity_sha256": "aebbece4ad6bab0e97655724f848060ea881ab9018ae935117874a57109bb693",
+  "prior_phase_known_spend_usd": "19.869177760000",
+  "projection_path": "results/runs/remaining_work_cost_projection.json",
+  "projection_sha256": "4830856650062bf9aa0b0156d8bf7c4dc174e5665a94bf4e431dfb144e47d181",
+  "prompts": {
+    "escalation": {
+      "prompt_sha256": "9d564a17727a9a389e6f0e3ef8d9395ac7376e1a033f078f37abdc7ae3cef915"
+    },
+    "self_check": {
+      "prompt_sha256": "af282e540fce4e9e9e354ee5fddfd367ffbe050c134287a35f29653f7d8a5adc"
+    }
+  },
+  "provider_by_call_role": {
+    "critic": "openai",
+    "fallback": "openai",
+    "primary": "openai"
+  },
+  "purpose": "complete exactly the two remaining Phase 4 gaps",
+  "remaining_batch_cap_usd": "4.000000000000",
+  "retrieval_sha256": "8447926d08e906f245a695f9d0b9bf3536e59ba55fa70a1caf10fd6d37a293de",
+  "retry_max_attempts_per_logical_call": 3,
+  "schema_version": "1.0.0",
+  "source_self_check_csv": "results/runs/full_r3__capable__self_check.csv",
+  "source_self_check_csv_sha256": "bce63e1a88d9bdda795c1d1a49cfaf81a3780778921b52bda1983bfdca34e69c",
+  "strategies": [
+    "self_check",
+    "escalation"
+  ],
+  "target_case_ids_sha256": {
+    "escalation": "e2dc7b1c11499ee1c2da7a739df8fef0f894a95dc80d84e49dc7e25951974c66",
+    "self_check": "deaad27a69a9580fc0d6af28c8ac57f9cce899d9bed5a79df9bc85f1db699536"
+  },
+  "tier": "capable"
+}

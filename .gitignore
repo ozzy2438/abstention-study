@@ -4,3 +4,4 @@ __pycache__/
 tmp/
 corpus/*.pdf
 .env.local
+.env.local.*

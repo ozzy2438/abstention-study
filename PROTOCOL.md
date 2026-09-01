@@ -1100,3 +1100,38 @@ used for this cell.
 `capable__escalation` rows. No `full_r3__capable__escalation.csv` or matching
 full-run raw directory exists. This dated correction preserves the original
 text while preventing the absent cell from being represented as completed.
+
+### PROTOCOL_AMENDMENT 2026-09-01 - Complete both remaining OpenAI cells under a $4 sub-cap
+
+**Type:** Owner-directed reversal of the prior incomplete-cell finalization and
+an additive operational budget safeguard. It does not change the task, corpus,
+dataset, labels, prompts, output contract, confidence definition, strategy
+definitions, model snapshots, scoring, or metric definitions.
+
+**Owner decision:** The earlier decision to finalize
+`capable__self_check` at `n=227` is superseded. The 73 missing self-check cases
+(`case_0228` through `case_0300`) and all 300 `capable__escalation` cases are
+authorized for completion. Every new primary, critic, and fallback call in
+these two cells uses OpenAI and the originally registered exact model snapshot
+for its frozen strategy role. Ollama and other providers are not used in either
+core cell.
+
+**Evidence revision:** New calls are written under a distinct remaining-work
+execution label so the saved HTTP 429 envelope for `case_0228` is preserved and
+never overwritten. Phase 5 treats the original 227 completed OpenAI
+`capable__self_check` rows plus the 73 new OpenAI rows as one logical cell, with
+both execution provenances retained. The new 300-row OpenAI escalation output
+is the previously absent ninth cell.
+
+**Budget rule:** The category-stratified, all-fresh planning estimate for the
+combined 373-row work is `$3.148995260860`. A separate `$4.000000000000`
+remaining-work sub-cap applies in addition to the existing `$70` phase-wide
+cap. Before every billed attempt, the runner reserves that attempt's maximum
+registered charge against both caps. It tracks the new batch's durable actual
+spend after every attempt and halts immediately if the batch reaches its cap,
+if the next attempt could cross it, or if provider cost becomes unknown. The
+registered maximum remains three attempts per logical call.
+
+**Gate treatment:** If either cell remains incomplete after a budget or
+provider halt, Phase 5 remains blocked pending a new owner decision. If both
+cells complete, Phase 5 may proceed using all nine configurations.

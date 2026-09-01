@@ -554,6 +554,84 @@ class Budget:
             self.known_actual += actual
 
 
+class RemainingBatchBudget:
+    """Bound new remaining-work spend independently of the phase-wide ledger.
+
+    Unlike ``Budget``, the separate batch guard does not accumulate every
+    call's maximum hypothetical charge. It retains the actual durable spend
+    from completed attempts and reserves the next attempt's maximum charge
+    before that attempt is sent. This prevents the batch from crossing its
+    owner-approved cap while avoiding a false halt caused by summing mutually
+    exclusive worst-case outputs across hundreds of successful calls.
+    """
+
+    def __init__(
+        self,
+        *,
+        batch_cap: Decimal,
+        phase_cap: Decimal,
+        prior_phase_spend: Decimal,
+        initial_batch_actual: Decimal = Decimal(0),
+        unknown_actual: bool = False,
+    ) -> None:
+        if min(batch_cap, phase_cap) <= 0:
+            raise ValueError("Budget caps must be positive")
+        if min(prior_phase_spend, initial_batch_actual) < 0:
+            raise ValueError("Recorded spend cannot be negative")
+        self.batch_cap = batch_cap
+        self.phase_cap = phase_cap
+        self.prior_phase_spend = prior_phase_spend
+        self.batch_known_actual = initial_batch_actual
+        self.known_actual = prior_phase_spend + initial_batch_actual
+        self.guard_spend = self.known_actual
+        self.cap = phase_cap
+        self.unknown_actual = unknown_actual
+
+    def check(self, maximum_charge: Decimal) -> None:
+        if self.unknown_actual:
+            raise BudgetExceeded(
+                "remaining-work spend is unknown; no further billed attempt is allowed"
+            )
+        if self.batch_known_actual + maximum_charge > self.batch_cap:
+            raise BudgetExceeded(
+                "remaining-work sub-cap would be exceeded before the next API "
+                f"attempt: batch_actual={decimal_text(self.batch_known_actual)} "
+                f"next_guard={decimal_text(maximum_charge)} "
+                f"batch_cap={decimal_text(self.batch_cap)}"
+            )
+        if self.known_actual + maximum_charge > self.phase_cap:
+            raise BudgetExceeded(
+                "phase-wide cap would be exceeded before the next API attempt: "
+                f"phase_actual={decimal_text(self.known_actual)} "
+                f"next_guard={decimal_text(maximum_charge)} "
+                f"phase_cap={decimal_text(self.phase_cap)}"
+            )
+
+    def charge(self, actual: Decimal | None, guard_charge: Decimal) -> None:
+        del guard_charge
+        if actual is None:
+            self.unknown_actual = True
+            raise BudgetExceeded(
+                "provider cost is unknown after durable raw capture; remaining-work "
+                "execution is halted"
+            )
+        self.batch_known_actual += actual
+        self.known_actual += actual
+        self.guard_spend = self.known_actual
+        if self.batch_known_actual >= self.batch_cap:
+            raise BudgetExceeded(
+                "remaining-work cumulative spend reached its sub-cap: "
+                f"batch_actual={decimal_text(self.batch_known_actual)} "
+                f"batch_cap={decimal_text(self.batch_cap)}"
+            )
+        if self.known_actual >= self.phase_cap:
+            raise BudgetExceeded(
+                "phase-wide cumulative spend reached its cap: "
+                f"phase_actual={decimal_text(self.known_actual)} "
+                f"phase_cap={decimal_text(self.phase_cap)}"
+            )
+
+
 @dataclass
 class CallResult:
     call_role: str
