@@ -26,6 +26,8 @@ An `ANSWER` is correct only when it answers every material part of the question 
 
 Confidence is the model's probability estimate that the best answer it could produce from the supplied passages would be fully correct and citation-valid. It is not a probability that the selected output label is correct. Runtime release uses the registered 0.70 threshold; post-run curves sweep the observed answer confidences without changing that runtime rule.
 
+Here, **escalation strategy** means a fallback call to a higher tier when the primary confidence is below threshold; the model's self-declared `ESCALATE` output label is a separate response label and can occur under any of the three strategies.
+
 The registered metrics are coverage, selective accuracy, Brier score, ten equal-width-bin ECE, false-confidence rate at 0.80, strict abstention precision and recall, escalation rate, invalid rate, cost per correct answer, and empirical nearest-rank p50/p95 latency. `ABSTAIN`, `ESCALATE`, and `INVALID` are not covered; `INVALID` is a non-answer and receives `correct=false`, exactly as specified before results existed. The final row-level costs include billable primary, critic, fallback and retry attempts. The metrics implementation is [`harness/scoring.py`](../harness/scoring.py); analysis is [`analysis/curves.py`](../analysis/curves.py).
 
 ## Results
@@ -69,6 +71,21 @@ The ten equal-width-bin data and ECE values are in [`reliability.csv`](../analys
 | capable / escalation | 49.67% | 71.14% | 0.225 | 0.199 | 81.40% | 1.720832 |
 
 The capable rows issue more answers but are not better calibrated in this run. The 179 confidently wrong rows are a direct warning against using self-reported confidence as an unexamined release gate. Brier and ECE are conditional on issued answers, as preregistered; they do not score a refusal as a negative-class probability forecast.
+
+Standard/self_check retained only 8/300 answers (2.67%), the lowest coverage of any cell; for the standard tier, any self-check calibration gain must therefore be read as coming with a severe coverage cost, distinct from its accuracy/ECE values.
+
+#### Escalation-strategy trigger rates
+
+The row-level fallback diagnostic counts a strategy trigger when the stored raw-response envelope includes a second call with `call_role=fallback` (equivalently, two raw response paths for the row). This is deliberately separate from the model's `ESCALATE` output label. The observed full-run counts are:
+
+| Configuration | Fallback calls | Trigger rate |
+| --- | ---: | ---: |
+| cheap / escalation | 155/300 | 51.67% |
+| standard / escalation | 157/300 | 52.33% |
+| capable / escalation | 157/300 | 52.33% |
+| **All escalation cells** | **469/900** | **52.11%** |
+
+The counts come from the final adjudicated row files in [`results/runs/adjudicated/`](../results/runs/adjudicated/). The pre-run 300-row escalation projection recorded a 52.00% point estimate (156 fallback calls) with a 146–166 bootstrap range in [`remaining_work_cost_projection.json`](../results/runs/remaining_work_cost_projection.json). The capable/escalation result, 157 calls (52.33%), is inside that projected range; the cheap and standard cells were 155 and 157 calls respectively, also close to the same 52% planning rate. Across all three cells the measured 52.11% rate confirms rather than materially diverges from the pre-run projection.
 
 ### 3. Abstention confusion
 
