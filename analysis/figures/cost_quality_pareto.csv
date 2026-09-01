@@ -1,0 +1,10 @@
+configuration,attained_0_50_coverage,issued_answers,retained_answers,correct_retained,selective_accuracy_at_0_50,total_configuration_cost_usd,cost_per_correct_retained_usd,dominated
+cheap__single_pass,false,128,0,NA,NA,0.231926640000,NA,NA
+cheap__self_check,false,76,0,NA,NA,0.313859620000,NA,NA
+cheap__escalation,false,127,0,NA,NA,0.200435910000,NA,NA
+standard__single_pass,false,34,0,NA,NA,0.828870300000,NA,NA
+standard__self_check,false,8,0,NA,NA,1.101784200000,NA,NA
+standard__escalation,false,128,0,NA,NA,0.611840880000,NA,NA
+capable__single_pass,true,166,150,120,0.800000000000,2.894634000000,0.024121950000,false
+capable__self_check,true,162,150,124,0.826666666667,4.667912000000,0.03764445161290322580645161290,false
+capable__escalation,false,149,0,NA,NA,1.720831640000,NA,NA

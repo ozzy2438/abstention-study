@@ -1,0 +1,13 @@
+scope,name,n,p50_latency_ms,p95_latency_ms
+configuration,cheap__single_pass,300,1086,1733
+configuration,cheap__self_check,300,2122,3251
+configuration,cheap__escalation,300,1810,2684
+configuration,standard__single_pass,300,875,1231
+configuration,standard__self_check,300,1754,2197
+configuration,standard__escalation,300,1763,2373
+configuration,capable__single_pass,300,1459,2367
+configuration,capable__self_check,300,2866,4899
+configuration,capable__escalation,300,2104,3812
+strategy,single_pass,900,1078,2100
+strategy,self_check,900,2127,4114
+strategy,escalation,900,1818,3251

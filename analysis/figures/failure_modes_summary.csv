@@ -1,0 +1,10 @@
+failure_mode,wrong_answer_rows,share_of_wrong_answers,confidently_wrong_rows
+Answered an under-specified question,65,0.295454545455,63
+Truncated a multihop checklist,59,0.268181818182,45
+Dropped a material exception or qualifier,34,0.154545454545,32
+Unsupported citation or invented specificity,25,0.113636363636,17
+Collapsed distinct resolution mechanisms,15,0.068181818182,10
+Substituted an adjacent procedural route,12,0.054545454545,8
+Stopped before the external-escalation duty,4,0.018181818182,0
+Returned the opposite polarity,3,0.013636363636,3
+Confused institution or role labels,3,0.013636363636,1

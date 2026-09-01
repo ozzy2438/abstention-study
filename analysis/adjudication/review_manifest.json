@@ -1,0 +1,21 @@
+{
+  "configuration_count": 9,
+  "issued_answer_rows": 978,
+  "logical_run_rows": 2700,
+  "review_blinding": {
+    "duplicate_policy": "Exact duplicate case_id, answer_text, and ordered citations share one manual evidence-equivalent review decision.",
+    "omitted_fields": [
+      "model_tier",
+      "model_version",
+      "strategy",
+      "confidence",
+      "latency_ms",
+      "cost_usd",
+      "run_id"
+    ]
+  },
+  "review_queue_path": "analysis/adjudication/review_queue.jsonl",
+  "review_queue_sha256": "3966925fe25f269b6de3065d4cd82f0bf048dab827f9862d74353d35421653ae",
+  "schema_version": "1.0.0",
+  "unique_review_items": 797
+}

@@ -1,0 +1,64 @@
+{
+  "configurations": {
+    "capable__escalation": {
+      "issued_answers": 149,
+      "path": "results/runs/adjudicated/capable__escalation.csv",
+      "rows": 300,
+      "sha256": "e71b7f0eaa76194dfc5043c6d510a5d4d4c53bd48842fc04b180497ad1909a5b"
+    },
+    "capable__self_check": {
+      "issued_answers": 162,
+      "path": "results/runs/adjudicated/capable__self_check.csv",
+      "rows": 300,
+      "sha256": "2b2f44f967634c0bca92ed213c33ec700a8c9559ebbe8ef012cb50c7fe722fb6"
+    },
+    "capable__single_pass": {
+      "issued_answers": 166,
+      "path": "results/runs/adjudicated/capable__single_pass.csv",
+      "rows": 300,
+      "sha256": "740c1f75f605a3d61042ed395a88e2a0dd00ed8845c8f072e1819d1b9c99d434"
+    },
+    "cheap__escalation": {
+      "issued_answers": 127,
+      "path": "results/runs/adjudicated/cheap__escalation.csv",
+      "rows": 300,
+      "sha256": "18cec6d4d544e5c69a4e8d7cfff992d0efdc6461a87515f2c6ada730ff26185c"
+    },
+    "cheap__self_check": {
+      "issued_answers": 76,
+      "path": "results/runs/adjudicated/cheap__self_check.csv",
+      "rows": 300,
+      "sha256": "0cbd8166c6a339d20f03da89261f13d33cf3b318f2e06d870cdde0a10c443ac9"
+    },
+    "cheap__single_pass": {
+      "issued_answers": 128,
+      "path": "results/runs/adjudicated/cheap__single_pass.csv",
+      "rows": 300,
+      "sha256": "d78e9114e46cc6426afe10277ca87b3e128bd630e2dd550fafec1ea621731657"
+    },
+    "standard__escalation": {
+      "issued_answers": 128,
+      "path": "results/runs/adjudicated/standard__escalation.csv",
+      "rows": 300,
+      "sha256": "c0794759efee6cc467116b3e82ee42aa56340b4a046a4f4450a820f3c5571349"
+    },
+    "standard__self_check": {
+      "issued_answers": 8,
+      "path": "results/runs/adjudicated/standard__self_check.csv",
+      "rows": 300,
+      "sha256": "f11954594e49eef1b1e35bb9677cbd66433e0bc348917d852008124f0a9d2727"
+    },
+    "standard__single_pass": {
+      "issued_answers": 34,
+      "path": "results/runs/adjudicated/standard__single_pass.csv",
+      "rows": 300,
+      "sha256": "0e16673af6e76d08190dab6b18afd0d29a6384b4405e5d998fbba313dc0e66c4"
+    }
+  },
+  "decision_count": 797,
+  "decisions_path": "analysis/adjudication/decisions.jsonl",
+  "decisions_sha256": "e362b0454d2c74870e59ad4b95b8ed8df563f1bcaa86d4c6a2ef0e95374bb2b4",
+  "issued_answer_rows": 978,
+  "logical_run_rows": 2700,
+  "schema_version": "1.0.0"
+}
