@@ -1,0 +1,12 @@
+{
+  "case_count": 73,
+  "case_ids_sha256": "deaad27a69a9580fc0d6af28c8ac57f9cce899d9bed5a79df9bc85f1db699536",
+  "execution_label": "remaining_v1",
+  "model_tier": "capable",
+  "model_version": "gpt-5.4-2026-03-05",
+  "plan_identity_sha256": "aebbece4ad6bab0e97655724f848060ea881ab9018ae935117874a57109bb693",
+  "prompt_sha256": "af282e540fce4e9e9e354ee5fddfd367ffbe050c134287a35f29653f7d8a5adc",
+  "run_id": "remaining_v1_v1__capable__self_check__1b1581710af2__af282e540fce",
+  "schema_version": "1.0.0",
+  "strategy": "self_check"
+}

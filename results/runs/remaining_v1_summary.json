@@ -1,0 +1,31 @@
+{
+  "completed_rows": 373,
+  "configurations": {
+    "capable__escalation": {
+      "completed_rows": 300,
+      "expected_rows": 300,
+      "run_path": "results/runs/remaining_v1__capable__escalation.csv",
+      "unknown_cost_rows": 0
+    },
+    "capable__self_check": {
+      "completed_rows": 73,
+      "expected_rows": 73,
+      "run_path": "results/runs/remaining_v1__capable__self_check.csv",
+      "unknown_cost_rows": 0
+    }
+  },
+  "execution_label": "remaining_v1",
+  "expected_rows": 373,
+  "halt_reason": null,
+  "phase_known_spend_usd": "23.050594400000",
+  "plan_identity_sha256": "aebbece4ad6bab0e97655724f848060ea881ab9018ae935117874a57109bb693",
+  "prior_phase_known_spend_usd": "19.869177760000",
+  "remaining_batch_cap_usd": "4.000000000000",
+  "remaining_batch_known_spend_usd": "3.181416640000",
+  "schema_version": "1.0.0",
+  "started_at_utc": "2026-09-01T00:37:11.902Z",
+  "state": "complete",
+  "unknown_cost_rows": 0,
+  "updated_at_utc": "2026-09-01T00:51:51.129Z",
+  "wall_clock_ms_this_invocation": 879216
+}
